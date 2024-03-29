@@ -265,15 +265,14 @@ The following is an easy way to install it, see
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Note [`pipxu` is on PyPI](https://pypi.org/project/pipxu/) and you can use
-[`pipx`][pipx] to bootstrap the installation.
-Assuming that [`pipx`][pipx] can be installed, e.g.
-via your system package manager, then type the following:
+Note [`pipxu` is on PyPI](https://pypi.org/project/pipxu/). Run the tiny
+[bootstrap shell
+script](https://github.com/bulletmark/pipxu/blob/main/pipxu/bootstrap.sh)
+which installs `pipxu` to a temporary directory then runs `pipxu` from
+there to install itself normally.
 
 ```
-$ pipx install pipxu
-$ pipxu install pipxu
-$ pipx uninstall pipxu
+$ curl -LsSf https://github.com/bulletmark/pipxu/bootstrap.sh | sh
 ```
 
 To upgrade:

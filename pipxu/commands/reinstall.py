@@ -27,7 +27,7 @@ def main(args: Namespace) -> Optional[str]:
             editpath = data.get('editpath')
             pkg = f'-e {editpath}' if editpath else pkgname
             extras = ' '.join(data.get('injected', []))
-            if not utils.piprun(vdir, f'install --reinstall '
+            if not utils.piprun(vdir, f'install --reinstall'
                                 f'{pip_args} {pkg} {extras}'):
                 return f'Error: failed to {args.name} {pkgname}'
         else:
