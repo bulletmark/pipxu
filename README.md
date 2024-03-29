@@ -272,7 +272,7 @@ which installs `pipxu` to a temporary directory then runs `pipxu` from
 there to install itself normally.
 
 ```
-$ curl -LsSf https://github.com/bulletmark/pipxu/bootstrap.sh | sh
+$ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/bootstrap.sh | sh
 ```
 
 To upgrade:
