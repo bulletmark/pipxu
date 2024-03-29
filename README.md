@@ -1,6 +1,6 @@
 ## PIPXU - Install and Run Python Applications in Isolated Environments using UV
 [![PyPi](https://img.shields.io/pypi/v/pipxu)](https://pypi.org/project/pipxu/)
-[![AUR](https://img.shields.io/aur/version/python-pipxu)](https://aur.archlinux.org/packages/python-pipxu/)
+[![AUR](https://img.shields.io/aur/version/pipxu)](https://aur.archlinux.org/packages/pipxu/)
 
 [`pipxu`][pipxu] is a re-implementation of most of the functionality of
 the [`pipx`][pipx] tool but uses [`uv`][uv] to create and install
@@ -254,7 +254,7 @@ options:
 ## Installation and Upgrade
 
 Python 3.7 or later is required. Arch Linux users can install [`pipxu`
-from the AUR](https://aur.archlinux.org/packages/python-pipxu) and skip this
+from the AUR](https://aur.archlinux.org/packages/pipxu) and skip this
 section.
 
 The [`uv`][uv] program is also required.

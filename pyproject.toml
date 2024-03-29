@@ -13,9 +13,8 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
-  "packaging",
-  "platformdirs",
   "filelock",
+  "platformdirs",
   "importlib-metadata; python_version < '3.8'",
 ]
 
