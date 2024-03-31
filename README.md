@@ -2,18 +2,18 @@
 [![PyPi](https://img.shields.io/pypi/v/pipxu)](https://pypi.org/project/pipxu/)
 [![AUR](https://img.shields.io/aur/version/pipxu)](https://aur.archlinux.org/packages/pipxu/)
 
-[`pipxu`][pipxu] installs a Python application, i.e. a Python package
-which has one or more executable programs, into an independent isolated
-virtual environment on your system. The package and it's dependencies
-are thus insulated from other applications, and from the system Python.
-[`pipxu`][pipxu] creates links to the application's executables in a
+[`pipxu`][pipxu] installs Python applications, i.e. a Python packages
+which have one or more executable programs, into independent isolated
+virtual environments on your system. Each package and it's dependencies
+are thus insulated from all other applications, and from the system
+Python. [`pipxu`][pipxu] creates links to application executables in a
 common directory, which you have in your [PATH][path]. Packages are
 typically sourced from [PyPI][pypi], the Python Package Index.
 
 [`pipxu`][pipxu] is a re-implementation of most of the functionality of
 the popular [`pipx`][pipx] tool but is **much faster** because it uses
 [`uv`][uv] to create and install application virtual environments
-instead of [`venv`][venv] and [`pip`][pip] that [`pipx`][pipx] uses.
+instead of [`venv`][venv] and [`pip`][pip] that [`pipx`][pipx] uses. The
 [`pipxu`][pipxu] code has been developed completely independently of
 [`pipx`][pipx] and is not a fork. For compatibility and ease of
 migration, the provided commands have the same names as [`pipx`][pipx].
@@ -30,7 +30,8 @@ https://github.com/bulletmark/pipxu.
 Type `pipxu` or `pipxu -h` to view the usage summary:
 
 ```
-usage: pipxu [-h] [--uv uv_path] [-m] [-V]
+usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME] [--bin-dir BIN_DIR]
+                   [--man-dir MAN_DIR] [--default-python DEFAULT_PYTHON] [-V]
                    {inject,install,list,reinstall-all,reinstall,runpip,uninject,uninstall-all,uninstall,upgrade-all,upgrade,version}
                    ...
 
@@ -42,6 +43,11 @@ options:
   -h, --help            show this help message and exit
   --uv uv_path          path to uv executable, default="uv"
   -m, --no-man-pages    do not install package man pages
+  --home HOME           specify PIPXU_HOME
+  --bin-dir BIN_DIR     specify PIPXU_BIN_DIR
+  --man-dir MAN_DIR     specify PIPXU_MAN_DIR
+  --default-python DEFAULT_PYTHON
+                        path to default python executable, default="python3"
   -V, --version         just print pipxu version and exit
 
 Commands:
@@ -321,7 +327,7 @@ modifies your PATH.
 
 `pipxu` adds some small but handy features not present in `pipx`:
 
-1. `pipxu` faciliates specifying
+1. `pipxu` facilitates specifying
    [`pyenv`](https://github.com/pyenv/pyenv) python versions with an
    added `-P/--pyenv` command option to `install`.
 
@@ -335,7 +341,7 @@ modifies your PATH.
 3. If run as root or with `sudo`, `pipxu` installs applications to a
    global location.
 
-At the time of initial release, the `pipxu` application comprises 701
+At the time of initial release, the `pipxu` application comprises 703
 lines of Python code whereas the `pipx` application is 4300 lines of
 Python code.
 
@@ -369,13 +375,13 @@ PIPXU_DEFAULT_PYTHON = python3
 WARNING: Your PATH does not contain PIPXU_BIN_DIR (/usr/local/bin).
 ```
 
-You can set those environment variables to override the defaults if you
-want. Note, as seen in the output above, `pipxu` reports if
-`PIPXU_BIN_DIR` is included or not in your PATH. To ensure you can run
-the applications installed by `pipxu`, that directory **must be in your
-PATH**. E.g. for most users on Linux using the default locations, ensure
-that `~/.local/bin` is [added to your PATH environment
-variable][path].
+You can set those environment variables, or provide them as command line
+options, to override the defaults if you want. Note, as seen in the
+output above, `pipxu` reports if `PIPXU_BIN_DIR` is included or not in
+your PATH. To ensure you can run the applications installed by `pipxu`,
+that directory **must be in your PATH**. E.g. for most users on Linux
+using the default locations, ensure that `~/.local/bin` is [added to
+your PATH environment variable][path].
 
 ## Command Default Options
 
@@ -385,8 +391,9 @@ options will be concatenated and automatically prepended to your `pipxu`
 command line arguments. Comments in the file (i.e. `#` and anything
 after on a line) are ignored. Type `pipxu` to see all supported options.
 
-At least currently, the global options `--uv` and `--no-man-pages`, are
-the only sensible candidates to consider setting as a default.
+The global options: `--uv`, `--no-man-pages`, `--home`, `--bin-dir`,
+`--man-dir`, `--default-python`, are the only sensible candidates to
+consider setting as a default.
 
 ## License
 

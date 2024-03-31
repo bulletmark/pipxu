@@ -21,10 +21,12 @@ from .run import run
 from . import utils
 
 DEFUV = 'uv'
+DEFPY = 'python3'
 
 # Some constants
 MOD = Path(__file__)
 PROG = MOD.stem
+PROGU = PROG.upper()
 CNFFILE = platformdirs.user_config_path(f'{PROG}-flags.conf')
 
 def path_check(bin_name: str, bin_dir: Path) -> str:
@@ -47,6 +49,15 @@ def main() -> Optional[str]:
                             help=f'path to uv executable, default="{DEFUV}"')
     mainparser.add_argument('-m', '--no-man-pages', action='store_true',
                             help='do not install package man pages')
+    mainparser.add_argument('--home',
+                            help=f'specify {PROGU}_HOME')
+    mainparser.add_argument('--bin-dir',
+                            help=f'specify {PROGU}_BIN_DIR')
+    mainparser.add_argument('--man-dir',
+                            help=f'specify {PROGU}_MAN_DIR')
+    mainparser.add_argument('--default-python',
+                            help='path to default python executable, '
+                            f'default="{DEFPY}"')
     mainparser.add_argument('-V', '--version', action='store_true',
                             help=f'just print {PROG} version and exit')
     subparser = mainparser.add_subparsers(title='Commands',
@@ -87,12 +98,10 @@ def main() -> Optional[str]:
         print(f'{PROG}=={utils.version()}')
         return None
 
-    progu = PROG.upper()
-
-    homedir = os.getenv(f'{progu}_HOME')
-    bindir = os.getenv(f'{progu}_BIN_DIR')
-    mandir = os.getenv(f'{progu}_MAN_DIR')
-    pyexe = os.getenv(f'{progu}_DEFAULT_PYTHON', 'python3')
+    homedir = args.home or os.getenv(f'{PROGU}_HOME')
+    bindir = args.bin_dir or os.getenv(f'{PROGU}_BIN_DIR')
+    mandir = args.man_dir or os.getenv(f'{PROGU}_MAN_DIR')
+    pyexe = args.default_python or os.getenv(f'{PROGU}_DEFAULT_PYTHON') or DEFPY
 
     if os.geteuid() == 0:
         home_dir = Path(homedir if homedir else f'/opt/{PROG}')
@@ -109,12 +118,12 @@ def main() -> Optional[str]:
     if not args.func:
         mainparser.print_help()
         print('\nEnvironment:')
-        print(f'{progu}_HOME = {home_dir}')
-        print(f'{progu}_BIN_DIR = {bin_dir}')
-        print(f'{progu}_MAN_DIR = {man_dir}')
-        print(f'{progu}_DEFAULT_PYTHON = {pyexe}')
+        print(f'{PROGU}_HOME = {home_dir}')
+        print(f'{PROGU}_BIN_DIR = {bin_dir}')
+        print(f'{PROGU}_MAN_DIR = {man_dir}')
+        print(f'{PROGU}_DEFAULT_PYTHON = {pyexe}')
         print()
-        print(path_check(f'{progu}_BIN_DIR', bin_dir))
+        print(path_check(f'{PROGU}_BIN_DIR', bin_dir))
         return None
 
     # Ensure uv is installed/available
