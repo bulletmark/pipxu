@@ -13,8 +13,8 @@ typically sourced from [PyPI][pypi], the Python Package Index.
 [`pipxu`][pipxu] is a re-implementation of most of the functionality of
 the popular [`pipx`][pipx] tool but is **much faster** because it uses
 [`uv`][uv] to create and install application virtual environments
-instead of [`venv`][venv] and [`pip`][pip] that [`pipx`][pipx] uses. The
-[`pipxu`][pipxu] code has been developed completely independently of
+instead of [`venv`][venv] and [`pip`][pip] as used by [`pipx`][pipx].
+The [`pipxu`][pipxu] code has been developed completely independently of
 [`pipx`][pipx] and is not a fork. For compatibility and ease of
 migration, the provided commands have the same names as [`pipx`][pipx].
 Most commands are implemented, at least for common use cases, although
