@@ -6,19 +6,19 @@
 which has one or more executable programs, into an independent isolated
 virtual environment on your system. The package and it's dependencies
 are thus insulated from other applications, and from the system Python.
-It create links to the application's executables in a common directory,
-which you have in your [PATH][path]. Packages are typically sourced from
-[PyPI][pypi], the Python Package Index.
+[`pipxu`][pipxu] creates links to the application's executables in a
+common directory, which you have in your [PATH][path]. Packages are
+typically sourced from [PyPI][pypi], the Python Package Index.
 
 [`pipxu`][pipxu] is a re-implementation of most of the functionality of
-the [`pipx`][pipx] tool but uses [`uv`][uv] to create and install
-application virtual environments instead of [`venv`][venv] and
-[`pip`][pip] so is **much faster** than [`pipx`][pipx]. The code has
-been developed completely independently of [`pipx`][pipx] and is not a
-fork. For compatibility and ease of migration, the provided commands
-have the same names as [`pipx`][pipx]. Most commands are implemented, at
-least for common use cases, although some command functionality,
-options, and output are different.
+the popular [`pipx`][pipx] tool but is **much faster** because it uses
+[`uv`][uv] to create and install application virtual environments
+instead of [`venv`][venv] and [`pip`][pip] that [`pipx`][pipx] uses.
+[`pipxu`][pipxu] code has been developed completely independently of
+[`pipx`][pipx] and is not a fork. For compatibility and ease of
+migration, the provided commands have the same names as [`pipx`][pipx].
+Most commands are implemented, at least for common use cases, although
+some command functionality, options, and output are different.
 
 The latest documentation and code is available at
 https://github.com/bulletmark/pipxu.
