@@ -2,6 +2,14 @@
 [![PyPi](https://img.shields.io/pypi/v/pipxu)](https://pypi.org/project/pipxu/)
 [![AUR](https://img.shields.io/aur/version/pipxu)](https://aur.archlinux.org/packages/pipxu/)
 
+[`pipxu`][pipxu] installs a Python application, i.e. a Python package
+which has one or more executable programs, into an independent isolated
+virtual environment on your system. The package and it's dependencies
+are thus insulated from other applications, and from the system Python.
+It create links to the application's executables in a common directory,
+which you add to your [PATH][path]. Packages are typically sourced from
+[PyPI][pypi], the Python Package Index.
+
 [`pipxu`][pipxu] is a re-implementation of most of the functionality of
 the [`pipx`][pipx] tool but uses [`uv`][uv] to create and install
 application virtual environments instead of [`venv`][venv] and
@@ -301,8 +309,8 @@ install packages whereas `pipxu` uses `uv` for these operations.
 faster**. Also, `pipx` installs `pip` into each virtual environment
 using a shared overlay which it has to update periodically so you
 sometimes experience `pipx` seeming to hang for a while while this
-update occurs. `pipxu` just creates a minimal virtual environment and
-uses `uv` for all operations so does not need to do this periodic
+update occurs. `pipxu` just creates a minimal lean virtual environment
+and uses `uv` for all operations so does not need to do this periodic
 update.
 
 Note that `pipx` offers some esoteric options and features which `pipxu`
@@ -365,7 +373,7 @@ want. Note, as seen in the output above, `pipxu` reports if
 the applications installed by `pipxu`, that directory **must be in your
 PATH**. E.g. for most users on Linux using the default locations, ensure
 that `~/.local/bin` is [added to your PATH environment
-variable](https://www.baeldung.com/linux/path-variable).
+variable][path].
 
 ## Command Default Options
 
@@ -395,5 +403,7 @@ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License at
 [pipxu]: https://github.com/bulletmark/pipxu
 [uv]: https://github.com/astral-sh/uv
 [venv]: https://docs.python.org/3/library/venv.html
+[pypi]: https://pypi.org/
+[path]: https://www.baeldung.com/linux/path-variable
 
 <!-- vim: se ai syn=markdown: -->
