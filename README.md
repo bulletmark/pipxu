@@ -7,7 +7,7 @@ which has one or more executable programs, into an independent isolated
 virtual environment on your system. The package and it's dependencies
 are thus insulated from other applications, and from the system Python.
 It create links to the application's executables in a common directory,
-which you add to your [PATH][path]. Packages are typically sourced from
+which you have in your [PATH][path]. Packages are typically sourced from
 [PyPI][pypi], the Python Package Index.
 
 [`pipxu`][pipxu] is a re-implementation of most of the functionality of
