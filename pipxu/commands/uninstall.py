@@ -1,5 +1,5 @@
 # Author: Mark Blakeney, Feb 2024.
-"Uninstall a Python application and it's virtual environment"
+'Uninstall a Python application and it\'s virtual environment'
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
@@ -8,7 +8,7 @@ from typing import Optional
 from .. import utils
 
 def init(parser: ArgumentParser) -> None:
-    "Called to add this command's arguments to parser at init"
+    'Called to add command arguments to parser at init'
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='give more output')
     parser.add_argument('package', nargs='+',

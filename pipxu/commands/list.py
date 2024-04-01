@@ -13,7 +13,7 @@ def show(value: str) -> str:
     return f'"{value}"' if isinstance(value, str) else value
 
 def init(parser: ArgumentParser) -> None:
-    "Called to add this command's arguments to parser at init"
+    'Called to add command arguments to parser at init'
     parser.add_argument('--json', action='store_true',
                         help='output json instead')
     parser.add_argument('package', nargs='*',

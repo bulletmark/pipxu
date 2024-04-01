@@ -24,7 +24,7 @@ def get_next_vdir(vdirbase: Path, maxn) -> Optional[Path]:
     return None
 
 def init(parser: ArgumentParser) -> None:
-    "Called to add this command's arguments to parser at init"
+    'Called to add command arguments to parser at init'
     xgroup = parser.add_mutually_exclusive_group()
     xgroup.add_argument('-p', '--python',
                         help='specify explicit python executable path')

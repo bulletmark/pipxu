@@ -1,5 +1,5 @@
 # Author: Mark Blakeney, Feb 2024.
-"Reinstall a package and it's executables."
+'Reinstall a package and it\'s executables.'
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
@@ -12,6 +12,7 @@ from .. import utils
 from ..run import run
 
 def init(parser: ArgumentParser) -> None:
+    'Called to add command arguments to parser at init'
     xgroup = parser.add_mutually_exclusive_group()
     xgroup.add_argument('-p', '--python',
                         help='specify explicit python executable path')
@@ -24,6 +25,7 @@ def init(parser: ArgumentParser) -> None:
                         help='package name[s] to upgrade')
 
 def main(args: Namespace) -> Optional[str]:
+    'Called to action this command'
     pyexe = utils.get_python(args)
     venv_args = utils.make_args((args.verbose, '-v'), (not args.verbose, '-q'),
                                 (bool(pyexe), f'--python={pyexe}'))

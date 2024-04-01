@@ -8,7 +8,7 @@ from typing import Optional
 from .. import utils
 
 def init(parser: ArgumentParser) -> None:
-    "Called to add this command's arguments to parser at init"
+    'Called to add command arguments to parser at init'
     parser.add_argument('package', nargs='?',
                         help='report specific package and dependent '
                         'package versions')
