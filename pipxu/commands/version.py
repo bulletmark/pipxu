@@ -1,5 +1,5 @@
 # Author: Mark Blakeney, Feb 2024.
-'List installed package versions.'
+'List installed application versions.'
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
@@ -10,7 +10,7 @@ from .. import utils
 def init(parser: ArgumentParser) -> None:
     'Called to add command arguments to parser at init'
     parser.add_argument('package', nargs='?',
-                        help='report specific package and dependent '
+                        help='report specific application and dependent '
                         'package versions')
 
 def main(args: Namespace) -> Optional[str]:
@@ -24,11 +24,11 @@ def main(args: Namespace) -> Optional[str]:
     if args.package:
         pkgname, vdir = utils.get_package_from_arg(args.package, args)
         if not vdir:
-            return f'Package {pkgname} not found.'
+            return f'Application {pkgname} not found.'
 
         versions = utils.get_versions(args._packages_dir / pkgname)
         if not versions:
-            return f'Package {pkgname} versions not found.'
+            return f'Application {pkgname} versions not found.'
 
         # Reorder version dict to put pkgname first
         if pkgname in versions:

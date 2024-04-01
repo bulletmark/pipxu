@@ -1,5 +1,5 @@
 # Author: Mark Blakeney, Feb 2024.
-'List Python applications installed by this tool.'
+'List all applications installed by this tool.'
 from __future__ import annotations
 
 import json
@@ -17,7 +17,7 @@ def init(parser: ArgumentParser) -> None:
     parser.add_argument('--json', action='store_true',
                         help='output json instead')
     parser.add_argument('package', nargs='*',
-                        help='list the given package[s] only')
+                        help='list the given application[s] only')
 
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'

@@ -1,5 +1,5 @@
 # Author: Mark Blakeney, Feb 2024.
-'Upgrade a package and it\'s executables.'
+'Upgrade an application.'
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
@@ -12,7 +12,7 @@ def init(parser: ArgumentParser) -> None:
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='give more output')
     parser.add_argument('package', nargs='+',
-                        help='package name[s] to upgrade')
+                        help='application[s] to upgrade')
 
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
@@ -20,7 +20,7 @@ def main(args: Namespace) -> Optional[str]:
     for pkgname in args.package:
         pkgname, vdir = utils.get_package_from_arg(pkgname, args)
         if not vdir:
-            return f'package {pkgname} is not installed.'
+            return f'Application {pkgname} is not installed.'
 
         data = utils.get_json(vdir, args) or {}
         editpath = data.get('editpath')
@@ -34,6 +34,6 @@ def main(args: Namespace) -> Optional[str]:
         if err:
             return err
 
-        print(f'Upgrade of {pkgname} completed.')
+        print(f'{pkgname} upgraded.')
 
     return None

@@ -1,12 +1,12 @@
 # Author: Mark Blakeney, Feb 2024.
-'Reinstall a package and it\'s executables.'
+'Reinstall an application.'
 from __future__ import annotations
 
-from argparse import ArgumentParser, Namespace
-from typing import Optional
 import shutil
 import tempfile
+from argparse import ArgumentParser, Namespace
 from pathlib import Path
+from typing import Optional
 
 from .. import utils
 from ..run import run
@@ -22,7 +22,7 @@ def init(parser: ArgumentParser) -> None:
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='give more output')
     parser.add_argument('package', nargs='+',
-                        help='package name[s] to upgrade')
+                        help='application[s] to reinstall')
 
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
@@ -33,7 +33,7 @@ def main(args: Namespace) -> Optional[str]:
     for pkgname in args.package:
         pkgname, vdir = utils.get_package_from_arg(pkgname, args)
         if not vdir:
-            return f'package {pkgname} is not installed.'
+            return f'Application {pkgname} is not installed.'
 
         data = utils.get_json(vdir, args) or {}
 
@@ -54,6 +54,6 @@ def main(args: Namespace) -> Optional[str]:
         if err:
             return err
 
-        print(f'Reinstall of {pkgname} completed.')
+        print(f'{pkgname} reinstalled.')
 
     return None

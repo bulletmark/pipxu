@@ -17,8 +17,8 @@ from typing import Optional
 
 import platformdirs
 
-from .run import run
 from . import utils
+from .run import run
 
 DEFUV = 'uv'
 DEFPY = 'python3'

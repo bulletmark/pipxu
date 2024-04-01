@@ -52,24 +52,20 @@ options:
 
 Commands:
   {inject,install,list,reinstall-all,reinstall,runpip,uninject,uninstall-all,uninstall,upgrade-all,upgrade,version}
-    inject              Install extra packages into an application's virtual
-                        environment.
+    inject              Install extra packages into an application.
     install             Install a Python application using an isolated virtual
                         environment.
-    list                List Python applications installed by this tool.
-    reinstall-all       Reinstall all packages and their executables.
-    reinstall           Reinstall a package and it's executables.
+    list                List all applications installed by this tool.
+    reinstall-all       Reinstall all applications.
+    reinstall           Reinstall an application.
     runpip              Run pip with given arguments on virtual environment
-                        for the given package.
-    uninject            Uninstall extra packages from an application's virtual
-                        environment.
-    uninstall-all       Uninstall all Python applications and their virtual
-                        environments.
-    uninstall           Uninstall a Python application and it's virtual
-                        environment
-    upgrade-all         Upgrade all packages and their executables.
-    upgrade             Upgrade a package and it's executables.
-    version             List installed package versions.
+                        for the given application.
+    uninject            Uninstall extra packages from an application.
+    uninstall-all       Uninstall all applications.
+    uninstall           Uninstall an application.
+    upgrade-all         Upgrade all applications.
+    upgrade             Upgrade an application.
+    version             List installed application versions.
 
 Note you can set default starting global options in $HOME/.config/pipxu-
 flags.conf.
@@ -83,10 +79,10 @@ individual command:
 ```
 usage: pipxu inject [-h] [-v] package extras [extras ...]
 
-Install extra packages into an application's virtual environment.
+Install extra packages into an application.
 
 positional arguments:
-  package        existing package name
+  package        existing application name
   extras         extra package name[s] to inject/install
 
 options:
@@ -103,7 +99,7 @@ usage: pipxu install [-h] [-p PYTHON | -P PYENV] [-f] [-e] [-d] [-v]
 Install a Python application using an isolated virtual environment.
 
 positional arguments:
-  package               package[s] to install
+  package               application[s] to install
 
 options:
   -h, --help            show this help message and exit
@@ -113,7 +109,7 @@ options:
                         pyenv python version to use, i.e. from `pyenv
                         versions`, e.g. "3.9".
   -f, --force           recreate any existing venv
-  -e, --editable        install package[s] in editable mode
+  -e, --editable        install application[s] in editable mode
   -d, --include-deps    include executables from dependencies
   -v, --verbose         give more output
 ```
@@ -123,10 +119,10 @@ options:
 ```
 usage: pipxu list [-h] [--json] [package ...]
 
-List Python applications installed by this tool.
+List all applications installed by this tool.
 
 positional arguments:
-  package     list the given package[s] only
+  package     list the given application[s] only
 
 options:
   -h, --help  show this help message and exit
@@ -139,7 +135,7 @@ options:
 usage: pipxu reinstall-all [-h] [-p PYTHON | -P PYENV] [-v]
                                  [-s [SKIP ...]]
 
-Reinstall all packages and their executables.
+Reinstall all applications.
 
 options:
   -h, --help            show this help message and exit
@@ -150,7 +146,7 @@ options:
                         versions`, e.g. "3.9".
   -v, --verbose         give more output
   -s [SKIP ...], --skip [SKIP ...]
-                        skip these packages, e.g. package1 package2
+                        skip these applications, e.g. "-s package1 package2"
 ```
 
 ### Command `reinstall`
@@ -159,10 +155,10 @@ options:
 usage: pipxu reinstall [-h] [-p PYTHON | -P PYENV] [-v]
                              package [package ...]
 
-Reinstall a package and it's executables.
+Reinstall an application.
 
 positional arguments:
-  package               package name[s] to upgrade
+  package               application[s] to reinstall
 
 options:
   -h, --help            show this help message and exit
@@ -179,10 +175,10 @@ options:
 ```
 usage: pipxu runpip [-h] package [args ...]
 
-Run pip with given arguments on virtual environment for the given package.
+Run pip with given arguments on virtual environment for the given application.
 
 positional arguments:
-  package     existing package name
+  package     existing application name
   args        arguments to pass to uv pip. should start with "--".
 
 options:
@@ -194,10 +190,10 @@ options:
 ```
 usage: pipxu uninject [-h] [-v] package extras [extras ...]
 
-Uninstall extra packages from an application's virtual environment.
+Uninstall extra packages from an application.
 
 positional arguments:
-  package        existing package name
+  package        existing application name
   extras         extra package name[s] to uninstall
 
 options:
@@ -210,13 +206,13 @@ options:
 ```
 usage: pipxu uninstall-all [-h] [-v] [-s [SKIP ...]]
 
-Uninstall all Python applications and their virtual environments.
+Uninstall all applications.
 
 options:
   -h, --help            show this help message and exit
   -v, --verbose         give more output
   -s [SKIP ...], --skip [SKIP ...]
-                        skip these packages, e.g. package1 package2
+                        skip these applications, e.g. "-s package1 package2"
 ```
 
 ### Command `uninstall`
@@ -224,10 +220,10 @@ options:
 ```
 usage: pipxu uninstall [-h] [-v] package [package ...]
 
-Uninstall a Python application and it's virtual environment
+Uninstall an application.
 
 positional arguments:
-  package        package name[s] to uninstall
+  package        application[s] to uninstall
 
 options:
   -h, --help     show this help message and exit
@@ -239,13 +235,13 @@ options:
 ```
 usage: pipxu upgrade-all [-h] [-v] [-s [SKIP ...]]
 
-Upgrade all packages and their executables.
+Upgrade all applications.
 
 options:
   -h, --help            show this help message and exit
   -v, --verbose         give more output
   -s [SKIP ...], --skip [SKIP ...]
-                        skip these packages, e.g. package1 package2
+                        skip these applications, e.g. "-s package1 package2"
 ```
 
 ### Command `upgrade`
@@ -253,10 +249,10 @@ options:
 ```
 usage: pipxu upgrade [-h] [-v] package [package ...]
 
-Upgrade a package and it's executables.
+Upgrade an application.
 
 positional arguments:
-  package        package name[s] to upgrade
+  package        application[s] to upgrade
 
 options:
   -h, --help     show this help message and exit
@@ -268,10 +264,10 @@ options:
 ```
 usage: pipxu version [-h] [package]
 
-List installed package versions.
+List installed application versions.
 
 positional arguments:
-  package     report specific package and dependent package versions
+  package     report specific application and dependent package versions
 
 options:
   -h, --help  show this help message and exit
@@ -350,10 +346,6 @@ modifies your PATH.
 
 3. If run as root or with `sudo`, `pipxu` installs applications to a
    global location.
-
-At the time of initial release, the `pipxu` application comprises 736
-lines of Python code whereas the `pipx` application is 4300 lines of
-Python code.
 
 ## Environment Variables
 

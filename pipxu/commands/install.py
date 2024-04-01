@@ -14,10 +14,10 @@ from ..run import run
 
 MAX_VDIRS = 1_000_000
 
-def get_next_vdir(vdirbase: Path, maxn) -> Optional[Path]:
+def get_next_vdir(vdirbase: Path) -> Optional[Path]:
     'Return the first available venv directory'
     vdirs = set(int(f.name) for f in vdirbase.iterdir())
-    for n in range(1, maxn + 1):
+    for n in range(1, MAX_VDIRS + 1):
         if n not in vdirs:
             return vdirbase / str(n)
 
@@ -34,13 +34,13 @@ def init(parser: ArgumentParser) -> None:
     parser.add_argument('-f', '--force', action='store_true',
                         help='recreate any existing venv')
     parser.add_argument('-e', '--editable', action='store_true',
-                        help='install package[s] in editable mode')
+                        help='install application[s] in editable mode')
     parser.add_argument('-d', '--include-deps', action='store_true',
                         help='include executables from dependencies')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='give more output')
     parser.add_argument('package', nargs='+',
-                        help='package[s] to install')
+                        help='application[s] to install')
 
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
@@ -54,7 +54,7 @@ def main(args: Namespace) -> Optional[str]:
     for pkg in args.package:
         # Use a lock file in case we are running multiple installs in parallel
         with FileLock(lockfile):
-            vdir = get_next_vdir(vdirbase, MAX_VDIRS)
+            vdir = get_next_vdir(vdirbase)
             if not vdir:
                 return f'Error: Too many vdirs (>{MAX_VDIRS}) in {vdirbase}'
 
