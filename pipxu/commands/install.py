@@ -2,7 +2,6 @@
 'Install a Python application using an isolated virtual environment.'
 from __future__ import annotations
 
-import sys
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
 from typing import Optional
@@ -14,29 +13,6 @@ from .. import utils
 from ..run import run
 
 MAX_VDIRS = 1_000_000
-
-def get_python(args: Namespace) -> str:
-    'Return the python executable based on command line args'
-    if args.pyenv:
-        pyenv_root = run('pyenv root', capture=True)
-        if not pyenv_root:
-            sys.exit('Error: Can not find pyenv. Is it installed?')
-
-        pyenv_version = run(f'pyenv latest {args.pyenv}', capture=True)
-        if not pyenv_version:
-            sys.exit(f'Error: no pyenv version {args.pyenv} installed.')
-
-        pyexe = Path(pyenv_root, 'versions', pyenv_version, 'bin', 'python')
-        if not pyexe.exists():
-            sys.exit(f'Can not determine pyenv version for {args.pyenv}')
-    elif args.python:
-        pyexe = Path(args.python)
-        if not pyexe.exists():
-            sys.exit(f'{pyexe} does not exist.')
-    else:
-        pyexe = args._pyexe
-
-    return str(pyexe)
 
 def get_next_vdir(vdirbase: Path, maxn) -> Optional[Path]:
     'Return the first available venv directory'
@@ -68,7 +44,7 @@ def init(parser: ArgumentParser) -> None:
 
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
-    pyexe = get_python(args)
+    pyexe = utils.get_python(args)
     venv_args = utils.make_args((args.verbose, '-v'), (not args.verbose, '-q'),
                                 (bool(pyexe), f'--python={pyexe}'))
     pip_args = utils.make_args((args.verbose, '-v'), (args.editable, '-e'))
@@ -83,7 +59,7 @@ def main(args: Namespace) -> Optional[str]:
                 return f'Error: Too many vdirs (>{MAX_VDIRS}) in {vdirbase}'
 
             # Create the vdir
-            if not run(f'uv venv {venv_args} {vdir}'):
+            if not run(f'uv venv{venv_args} {vdir}'):
                 utils.rm_vdir(vdir, args)
                 return f'Error: failed to create {vdir} for {pkg}.'
 

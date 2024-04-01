@@ -14,7 +14,7 @@ from .run import run
 
 def get_json(vdir: Path, args: Namespace) -> Optional[dict]:
     'Get JSON data for this virtual environment'
-    tgt = vdir.resolve() / args._meta
+    tgt = vdir.resolve() / args._meta_file
     try:
         with tgt.open() as fp:
             return json.load(fp)
@@ -23,7 +23,7 @@ def get_json(vdir: Path, args: Namespace) -> Optional[dict]:
 
 def _set_json(vdir: Path, args: Namespace, data: dict) -> Optional[str]:
     'Set JSON data for this virtual environment'
-    tgt = vdir.resolve() / args._meta
+    tgt = vdir.resolve() / args._meta_file
     try:
         with tgt.open('w') as fp:
             json.dump(data, fp)
@@ -154,6 +154,11 @@ def make_links(vdir: Path, pkgname: str, args: Namespace,
     if not apps:
         return f'Error: {pkgname} has no executables to install.'
 
+    freeze = piprun(vdir, 'freeze', capture=True)
+    if not freeze:
+        return 'Error: Failed to fetch freeze list.'
+
+    (vdir / args._freeze_file).write_text(freeze)
     data['apps'] = sorted(apps)
     return _set_json(vdir, args, data)
 
@@ -246,6 +251,29 @@ def get_all_package_names(args: Namespace) -> list[str]:
     'Return a sorted list of all package names'
     return sorted(set(f.name for f in args._packages_dir.iterdir())
                   - set(args.skip or []))
+
+def get_python(args: Namespace) -> str:
+    'Return the python executable based on command line args'
+    if args.pyenv:
+        pyenv_root = run('pyenv root', capture=True)
+        if not pyenv_root:
+            sys.exit('Error: Can not find pyenv. Is it installed?')
+
+        pyenv_version = run(f'pyenv latest {args.pyenv}', capture=True)
+        if not pyenv_version:
+            sys.exit(f'Error: no pyenv version {args.pyenv} installed.')
+
+        pyexe = Path(pyenv_root, 'versions', pyenv_version, 'bin', 'python')
+        if not pyexe.exists():
+            sys.exit(f'Can not determine pyenv version for {args.pyenv}')
+    elif args.python:
+        pyexe = Path(args.python)
+        if not pyexe.exists():
+            sys.exit(f'{pyexe} does not exist.')
+    else:
+        pyexe = args._pyexe
+
+    return str(pyexe)
 
 def version() -> str:
     'Return the version of this package'

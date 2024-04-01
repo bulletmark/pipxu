@@ -57,8 +57,8 @@ Commands:
     install             Install a Python application using an isolated virtual
                         environment.
     list                List Python applications installed by this tool.
-    reinstall-all       Reinstall all packages executables.
-    reinstall           Reinstall a package's executables.
+    reinstall-all       Reinstall all packages and their executables.
+    reinstall           Reinstall a package and it's executables.
     runpip              Run pip with given arguments on virtual environment
                         for the given package.
     uninject            Uninstall extra packages from an application's virtual
@@ -68,7 +68,7 @@ Commands:
     uninstall           Uninstall a Python application and it's virtual
                         environment
     upgrade-all         Upgrade all packages and their executables.
-    upgrade             Upgrade a package and their executables.
+    upgrade             Upgrade a package and it's executables.
     version             List installed package versions.
 
 Note you can set default starting global options in $HOME/.config/pipxu-
@@ -136,14 +136,19 @@ options:
 ### Command `reinstall-all`
 
 ```
-usage: pipxu reinstall-all [-h] [-v] [-U] [-s [SKIP ...]]
+usage: pipxu reinstall-all [-h] [-p PYTHON | -P PYENV] [-v]
+                                 [-s [SKIP ...]]
 
-Reinstall all packages executables.
+Reinstall all packages and their executables.
 
 options:
   -h, --help            show this help message and exit
+  -p PYTHON, --python PYTHON
+                        specify explicit python executable path
+  -P PYENV, --pyenv PYENV
+                        pyenv python version to use, i.e. from `pyenv
+                        versions`, e.g. "3.9".
   -v, --verbose         give more output
-  -U, --upgrade         also upgrade the package[s] to latest version
   -s [SKIP ...], --skip [SKIP ...]
                         skip these packages, e.g. package1 package2
 ```
@@ -151,17 +156,22 @@ options:
 ### Command `reinstall`
 
 ```
-usage: pipxu reinstall [-h] [-v] [-U] package [package ...]
+usage: pipxu reinstall [-h] [-p PYTHON | -P PYENV] [-v]
+                             package [package ...]
 
-Reinstall a package's executables.
+Reinstall a package and it's executables.
 
 positional arguments:
-  package        package name[s] to reinstall
+  package               package name[s] to upgrade
 
 options:
-  -h, --help     show this help message and exit
-  -v, --verbose  give more output
-  -U, --upgrade  also upgrade package[s] to the latest version
+  -h, --help            show this help message and exit
+  -p PYTHON, --python PYTHON
+                        specify explicit python executable path
+  -P PYENV, --pyenv PYENV
+                        pyenv python version to use, i.e. from `pyenv
+                        versions`, e.g. "3.9".
+  -v, --verbose         give more output
 ```
 
 ### Command `runpip`
@@ -243,7 +253,7 @@ options:
 ```
 usage: pipxu upgrade [-h] [-v] package [package ...]
 
-Upgrade a package and their executables.
+Upgrade a package and it's executables.
 
 positional arguments:
   package        package name[s] to upgrade
@@ -341,7 +351,7 @@ modifies your PATH.
 3. If run as root or with `sudo`, `pipxu` installs applications to a
    global location.
 
-At the time of initial release, the `pipxu` application comprises 703
+At the time of initial release, the `pipxu` application comprises 736
 lines of Python code whereas the `pipx` application is 4300 lines of
 Python code.
 

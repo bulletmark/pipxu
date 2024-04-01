@@ -146,7 +146,8 @@ def main() -> Optional[str]:
     args._man_dir = man_dir
     args._pyexe = pyexe
     args._prog = PROG
-    args._meta = f'{PROG}_metadata.json'
+    args._meta_file = f'{PROG}_metadata.json'
+    args._freeze_file = f'{PROG}_freeze.txt'
     if not hasattr(args, 'verbose'):
         args.verbose = False
 
