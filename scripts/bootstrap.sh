@@ -1,6 +1,7 @@
 #!/bin/sh
-# Install this utility in a temporary virtual environment to then
-# run itself to install itself.
+# Script which installs the pipxu program from PyPi to a temporary
+# Python virtual environment where pipxu is then run to install itself
+# again normally.
 # M.Blakeney, Feb 2024.
 trap 'rm -rf $VENV' EXIT
 VENV=$(mktemp -d)
