@@ -31,6 +31,9 @@ pipxu = "pipxu.pipxu:main"
 [project.license]
 text = "GPLv3"
 
+[tool.setuptools]
+script-files = ["pipxu-bootstrap"]
+
 [tool.setuptools_scm]
 version_scheme = "post-release"
 

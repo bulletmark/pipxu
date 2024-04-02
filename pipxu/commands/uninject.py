@@ -12,7 +12,7 @@ def init(parser: ArgumentParser) -> None:
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='give more output')
     parser.add_argument('package',
-                        help='existing application name')
+                        help='installed application name')
     parser.add_argument('extras', nargs='+',
                         help='extra package name[s] to uninstall')
 

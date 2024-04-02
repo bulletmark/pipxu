@@ -32,7 +32,7 @@ Type `pipxu` or `pipxu -h` to view the usage summary:
 ```
 usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME] [--bin-dir BIN_DIR]
                    [--man-dir MAN_DIR] [--default-python DEFAULT_PYTHON] [-V]
-                   {inject,install,list,reinstall-all,reinstall,runpip,uninject,uninstall-all,uninstall,upgrade-all,upgrade,version}
+                   {debug,inject,install,list,reinstall-all,reinstall,runpip,uninject,uninstall-all,uninstall,upgrade-all,upgrade,version}
                    ...
 
 Install Python applications into isolated virtual environments and create
@@ -51,7 +51,8 @@ options:
   -V, --version         just print pipxu version and exit
 
 Commands:
-  {inject,install,list,reinstall-all,reinstall,runpip,uninject,uninstall-all,uninstall,upgrade-all,upgrade,version}
+  {debug,inject,install,list,reinstall-all,reinstall,runpip,uninject,uninstall-all,uninstall,upgrade-all,upgrade,version}
+    debug               Run an installed application using a debugger.
     inject              Install extra packages into an application.
     install             Install a Python application using an isolated virtual
                         environment.
@@ -74,6 +75,30 @@ flags.conf.
 Type `pipxu <command> -h` to see specific help/usage for any
 individual command:
 
+### Command `debug`
+
+```
+usage: pipxu debug [-h] [-e EXECUTABLE] [-d DEBUGGER] package [args ...]
+
+Run an installed application using a debugger.
+
+Tries to work out your preferred debugger from the PYTHONBREAKPOINT
+environment variable. If not set, defaults to pdb. Or you can set it
+explicitly with the -d/--debugger option.
+
+positional arguments:
+  package               installed application name
+  args                  options and arguments to pass to application. should
+                        start with "--".
+
+options:
+  -h, --help            show this help message and exit
+  -e EXECUTABLE, --executable EXECUTABLE
+                        executable to run, default is same as "package" name
+  -d DEBUGGER, --debugger DEBUGGER
+                        explicit debugger package to use
+```
+
 ### Command `inject`
 
 ```
@@ -82,7 +107,7 @@ usage: pipxu inject [-h] [-v] package extras [extras ...]
 Install extra packages into an application.
 
 positional arguments:
-  package        existing application name
+  package        installed application name
   extras         extra package name[s] to inject/install
 
 options:
@@ -108,7 +133,7 @@ options:
   -P PYENV, --pyenv PYENV
                         pyenv python version to use, i.e. from `pyenv
                         versions`, e.g. "3.9".
-  -f, --force           recreate any existing venv
+  -f, --force           recreate any already installed venv
   -e, --editable        install application[s] in editable mode
   -d, --include-deps    include executables from dependencies
   -v, --verbose         give more output
@@ -178,7 +203,7 @@ usage: pipxu runpip [-h] package [args ...]
 Run pip with given arguments on virtual environment for the given application.
 
 positional arguments:
-  package     existing application name
+  package     installed application name
   args        arguments to pass to uv pip. should start with "--".
 
 options:
@@ -193,7 +218,7 @@ usage: pipxu uninject [-h] [-v] package extras [extras ...]
 Uninstall extra packages from an application.
 
 positional arguments:
-  package        existing application name
+  package        installed application name
   extras         extra package name[s] to uninstall
 
 options:
@@ -289,13 +314,17 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 Note [`pipxu` is on PyPI](https://pypi.org/project/pipxu/). Run the tiny
 [bootstrap shell
-script](https://github.com/bulletmark/pipxu/blob/main/scripts/bootstrap.sh)
+script](https://github.com/bulletmark/pipxu/blob/main/pipxu-bootstrap)
 which installs `pipxu` to a temporary directory then runs `pipxu` from
 there to install itself normally.
 
 ```
-$ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/scripts/bootstrap.sh | sh
+$ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/pipxu-bootstrap | sh
 ```
+
+:warning: Note that the `pipxu` package also installs the
+`pipxu-bootstrap` script on your system so you can always recover easily
+from a broken `pipxu` installation by running that script.
 
 To upgrade:
 
@@ -344,7 +373,10 @@ modifies your PATH.
    the package name associated with the current directory. Note that
    `pipx` accepts "`.`" for the install command, but not for any others.
 
-3. If run as root or with `sudo`, `pipxu` installs applications to a
+3. `pipxu` adds a `debug` command to run an installed application using a
+   Python debugger.
+
+4. If run as root or with `sudo`, `pipxu` installs applications to a
    global location.
 
 ## Environment Variables

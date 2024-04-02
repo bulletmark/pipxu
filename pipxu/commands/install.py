@@ -32,7 +32,7 @@ def init(parser: ArgumentParser) -> None:
                         help='pyenv python version to use, '
                         'i.e. from `pyenv versions`, e.g. "3.9".')
     parser.add_argument('-f', '--force', action='store_true',
-                        help='recreate any existing venv')
+                        help='recreate any already installed venv')
     parser.add_argument('-e', '--editable', action='store_true',
                         help='install application[s] in editable mode')
     parser.add_argument('-d', '--include-deps', action='store_true',

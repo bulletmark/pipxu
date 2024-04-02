@@ -10,7 +10,7 @@ from .. import utils
 def init(parser: ArgumentParser) -> None:
     'Called to add command arguments to parser at init'
     parser.add_argument('package',
-                        help='existing application name')
+                        help='installed application name')
     parser.add_argument('args', nargs='*',
                         help='arguments to pass to uv pip. '
                         'should start with "--".')

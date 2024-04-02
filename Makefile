@@ -8,6 +8,7 @@ check:
 	pyright $(NAME)
 	vermin -vv --exclude importlib.metadata --exclude tomllib \
 		--no-tips -i $(NAME)/*.py $(NAME)/*/*.py
+	shellcheck $(NAME)-bootstrap
 
 upload: build
 	twine upload dist/*
