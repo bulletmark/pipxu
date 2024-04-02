@@ -35,6 +35,7 @@ def main(args: Namespace) -> Optional[str]:
         if not vdir:
             return f'Application {pkgname} is not installed.'
 
+        print(f'Reinstalling {pkgname} ..')
         data = utils.get_json(vdir, args) or {}
 
         with tempfile.TemporaryDirectory() as tdir:

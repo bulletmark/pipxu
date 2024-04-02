@@ -22,6 +22,7 @@ def main(args: Namespace) -> Optional[str]:
         if not vdir:
             return f'Application {pkgname} is not installed.'
 
+        print(f'Upgrading {pkgname} ..')
         data = utils.get_json(vdir, args) or {}
         editpath = data.get('editpath')
         pkg = f'-e {editpath}' if editpath else pkgname

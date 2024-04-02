@@ -18,8 +18,11 @@ def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
     for pkgname in args.package:
         pkgname, vdir = utils.get_package_from_arg(pkgname, args)
-        if not vdir or not utils.rm_package(pkgname, args):
+        if not vdir:
             return f'Application {pkgname} is not installed.'
+
+        if not utils.rm_package(pkgname, args):
+            return f'Failed to uninstall {pkgname}.'
 
         print(f'{pkgname} uninstalled.')
 
