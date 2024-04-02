@@ -117,7 +117,10 @@ def _link_all_files(srcdir: Path, tgtdir: Path, pat: str,
 
 def _unlink_all_files(vdir: Path, args: Namespace) -> None:
     'Unlink all link files'
-    for srcdir, pat in ((args._bin_dir, '*'), (args._man_dir, '*/*')):
+    dirlist = [(args._bin_dir, '*')]
+    if args._man_dir.is_dir():
+        dirlist.append((args._man_dir, '*/*'))
+    for srcdir, pat in dirlist:
         if srcdir.is_dir():
             for file in srcdir.glob(pat):
                 if file.is_symlink() and vdir in file.resolve().parents:
@@ -232,8 +235,8 @@ def rm_path(path: Path) -> None:
     else:
         path.unlink()
 
-def purge_old_venvs(args: Namespace) -> None:
-    'Clean out any old virtual environments and package names'
+def purge_old_files(args: Namespace) -> None:
+    'Clean out any old virtual environments, packages, and executables'
     # Remove any packages that do not point to a dir in the venvs directory
     valids_venvs = set()
     for pkg in args._packages_dir.iterdir():
@@ -248,6 +251,12 @@ def purge_old_venvs(args: Namespace) -> None:
     for vdir in args._venvs_dir.iterdir():
         if vdir.name not in valids_venvs:
             rm_path(vdir)
+
+    # Remove any executables that point to a non-existent path
+    for exe in args._bin_dir.iterdir():
+        rexe = exe.resolve()
+        if args._venvs_dir in rexe.parents and not rexe.exists():
+            rm_path(exe)
 
 def get_all_package_names(args: Namespace) -> list[str]:
     'Return a sorted list of all package names'

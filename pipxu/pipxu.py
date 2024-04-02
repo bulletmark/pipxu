@@ -143,7 +143,10 @@ def main() -> Optional[str]:
     args._venvs_dir = home_dir / 'venvs'
     args._venvs_dir.mkdir(parents=True, exist_ok=True)
     args._bin_dir = bin_dir
+    args._bin_dir.mkdir(parents=True, exist_ok=True)
     args._man_dir = man_dir
+    if not args.no_man_pages:
+        args._man_dir.mkdir(parents=True, exist_ok=True)
     args._pyexe = pyexe
     args._prog = PROG
     args._meta_file = f'{PROG}_metadata.json'
@@ -151,8 +154,8 @@ def main() -> Optional[str]:
     if not hasattr(args, 'verbose'):
         args.verbose = False
 
-    # Purge any old venvs left lying around
-    utils.purge_old_venvs(args)
+    # Purge any old files left lying around
+    utils.purge_old_files(args)
 
     # Run the command that the user specified
     return args.func(args)
