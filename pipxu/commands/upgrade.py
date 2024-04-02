@@ -16,7 +16,7 @@ def init(parser: ArgumentParser) -> None:
 
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
-    pip_args = utils.make_args((args.verbose, '-v'), (True, '-U'))
+    pip_args = utils.make_args((args.verbose, '-v'))
     for pkgname in args.package:
         pkgname, vdir = utils.get_package_from_arg(pkgname, args)
         if not vdir:
@@ -26,7 +26,7 @@ def main(args: Namespace) -> Optional[str]:
         editpath = data.get('editpath')
         pkg = f'-e {editpath}' if editpath else pkgname
         extras = ' '.join(data.get('injected', []))
-        if not utils.piprun(vdir, f'install --reinstall'
+        if not utils.piprun(vdir, f'install --reinstall -U'
                             f'{pip_args} {pkg} {extras}'):
             return f'Error: failed to {args.name} {pkgname}'
 

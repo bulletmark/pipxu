@@ -18,7 +18,7 @@ The [`pipxu`][pipxu] code has been developed completely independently of
 [`pipx`][pipx] and is not a fork. For compatibility and ease of
 migration, the provided commands have the same names as [`pipx`][pipx].
 Most commands are implemented, at least for common use cases, although
-some command functionality, options, and output are different.
+some command functionality, options, and output are slightly different.
 
 This utility has been developed and tested on Linux. It may work on
 other platforms, such as Windows and macOS, but has not been tried
@@ -395,7 +395,7 @@ after on a line) are ignored. Type `pipxu` to see all supported options.
 
 The global options: `--uv`, `--no-man-pages`, `--home`, `--bin-dir`,
 `--man-dir`, `--default-python`, are the only sensible candidates to
-consider setting as a default.
+consider setting as defaults.
 
 ## License
 
