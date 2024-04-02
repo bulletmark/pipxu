@@ -323,8 +323,8 @@ $ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/pipxu-boots
 ```
 
 :warning: Note that the `pipxu` package also installs the
-`pipxu-bootstrap` script on your system so you can always recover easily
-from a broken `pipxu` installation by running that script.
+`pipxu-bootstrap` shell script on your system so you can always recover
+easily from a broken `pipxu` installation by running that script.
 
 To upgrade:
 
