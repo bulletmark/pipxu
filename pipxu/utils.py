@@ -224,28 +224,30 @@ def get_package_from_arg(name: str, args: Namespace) \
     path = (args._packages_dir / name).resolve()
     return name, (path if path.exists() else None)
 
+def rm_path(path: Path) -> None:
+    'Remove the given path'
+    print(f'Purging stray {path}', file=sys.stderr)
+    if path.is_dir():
+        shutil.rmtree(path)
+    else:
+        path.unlink()
+
 def purge_old_venvs(args: Namespace) -> None:
     'Clean out any old virtual environments and package names'
-    valids = set(f.resolve().name for f in args._packages_dir.iterdir())
-    vdirs = set(f.name for f in args._venvs_dir.iterdir())
+    # Remove any packages that do not point to a dir in the venvs directory
+    valids_venvs = set()
+    for pkg in args._packages_dir.iterdir():
+        vdir = pkg.resolve()
+        if vdir.parent != args._venvs_dir or not vdir.is_dir() \
+                or not vdir.name.isdigit():
+            rm_path(pkg)
+        else:
+            valids_venvs.add(vdir.name)
 
     # Remove any venvs that are not in the packages directory
-    for vdir in (vdirs - valids):
-        tgt = args._venvs_dir / vdir
-        print(f'Purging stray venv {tgt}', file=sys.stderr)
-        if tgt.is_dir():
-            rm_vdir(args._venvs_dir / vdir, args)
-        else:
-            tgt.unlink()
-
-    # Remove any packages that are not in the venvs directory
-    for pkg in (valids - vdirs):
-        tgt = args._packages_dir / pkg
-        print(f'Purging stray package link {tgt}', file=sys.stderr)
-        if tgt.is_dir():
-            shutil.rmtree(tgt)
-        else:
-            tgt.unlink()
+    for vdir in args._venvs_dir.iterdir():
+        if vdir.name not in valids_venvs:
+            rm_path(vdir)
 
 def get_all_package_names(args: Namespace) -> list[str]:
     'Return a sorted list of all package names'
