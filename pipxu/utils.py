@@ -117,9 +117,10 @@ def _link_all_files(srcdir: Path, tgtdir: Path, pat: str,
 
 def _unlink_all_files(vdir: Path, args: Namespace) -> None:
     'Unlink all link files'
-    dirlist = [(args._bin_dir, '*')]
+    dirlist: list[tuple[Path, str]] = [(args._bin_dir, '*')]
     if args._man_dir.is_dir():
         dirlist.append((args._man_dir, '*/*'))
+
     for srcdir, pat in dirlist:
         if srcdir.is_dir():
             for file in srcdir.glob(pat):
