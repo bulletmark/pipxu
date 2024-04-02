@@ -1,0 +1,19 @@
+#!/bin/bash
+# Script to facilite debugging pipxu applications with pudb.
+# M.Blakeney, Feb 2024.
+if [[ $# -lt 1 ]]; then
+    echo "Usage: pipxu-pudb <package> [args...]"
+    exit 1
+fi
+
+pkg="$1"
+shift
+
+binpath="$HOME/.local/share/pipxu/packages/$pkg/bin/"
+pudb="$binpath/pudb"
+if [[ ! -e $pudb ]]; then
+    echo "$pkg does not have pudb installed. Install it with \"pipxu inject $pkg pudb\""
+    exit 1
+fi
+
+exec $pudb $binpath/$pkg "$@"

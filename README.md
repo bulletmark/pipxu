@@ -289,12 +289,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 Note [`pipxu` is on PyPI](https://pypi.org/project/pipxu/). Run the tiny
 [bootstrap shell
-script](https://github.com/bulletmark/pipxu/blob/main/bootstrap.sh)
+script](https://github.com/bulletmark/pipxu/blob/main/scripts/bootstrap.sh)
 which installs `pipxu` to a temporary directory then runs `pipxu` from
 there to install itself normally.
 
 ```
-$ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/bootstrap.sh | sh
+$ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/scripts/bootstrap.sh | sh
 ```
 
 To upgrade:
