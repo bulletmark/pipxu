@@ -228,7 +228,7 @@ def get_package_from_arg(name: str, args: Namespace) \
     path = (args._packages_dir / name).resolve()
     return name, (path if path.exists() else None)
 
-def rm_path(path: Path) -> None:
+def _rm_path(path: Path) -> None:
     'Remove the given path'
     print(f'Purging stray {path}', file=sys.stderr)
     if path.is_dir():
@@ -244,20 +244,20 @@ def purge_old_files(args: Namespace) -> None:
         vdir = pkg.resolve()
         if vdir.parent != args._venvs_dir or not vdir.is_dir() \
                 or not vdir.name.isdigit():
-            rm_path(pkg)
+            _rm_path(pkg)
         else:
             valids_venvs.add(vdir.name)
 
     # Remove any venvs that are not in the packages directory
     for vdir in args._venvs_dir.iterdir():
         if vdir.name not in valids_venvs:
-            rm_path(vdir)
+            _rm_path(vdir)
 
     # Remove any executables that point to a non-existent path
     for exe in args._bin_dir.iterdir():
         rexe = exe.resolve()
         if args._venvs_dir in rexe.parents and not rexe.exists():
-            rm_path(exe)
+            _rm_path(exe)
 
 def get_all_package_names(args: Namespace) -> list[str]:
     'Return a sorted list of all package names'
