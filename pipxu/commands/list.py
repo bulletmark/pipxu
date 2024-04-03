@@ -21,14 +21,17 @@ def init(parser: ArgumentParser) -> None:
 
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
-    pkgs = set(utils.get_package_from_arg(p, args)[0] for p in args.package)
-    json_out = {}
-    for pdir in sorted(args._packages_dir.iterdir()):
-        pkgname = pdir.name
-        if pkgs and pkgname not in pkgs:
-            continue
+    if args.package:
+        pkgs = [utils.get_package_from_arg(p, args) for p in args.package]
+    else:
+        pkgs = sorted((p.name, p) for p in args._packages_dir.iterdir())
 
-        data = utils.get_json(pdir, args)
+    json_out = {}
+    for pkgname, vdir in pkgs:
+        if not vdir:
+            return f'Application {pkgname} is not installed.'
+
+        data = utils.get_json(vdir, args)
         if data:
             data.pop('name', None)
             if args.json:
