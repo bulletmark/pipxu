@@ -24,7 +24,7 @@ def main(args: Namespace) -> Optional[str]:
 
     pip_args = utils.make_args((args.verbose, '-v'))
     extras = ' '.join(f'"{a}"' for a in args.extras)
-    if not utils.piprun(vdir, f'install{pip_args} {extras}'):
+    if not utils.piprun(vdir, f'install{pip_args} --compile {extras}'):
         return f'Error: failed to install "{extras}" to {pkgname}'
 
     return utils.add_or_remove_pkg(vdir, pkgname, args.extras, args, add=True)

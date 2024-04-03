@@ -69,7 +69,8 @@ def main(args: Namespace) -> Optional[str]:
         print(f'Created {vdir} using {python_exe} ({python_ver})')
 
         # Install the package
-        if not utils.piprun(vdir, f'install --no-deps{pip_args} "{pkg}"'):
+        if not utils.piprun(vdir, f'install --compile --no-deps{pip_args} '
+                            f'"{pkg}"'):
             utils.rm_vdir(vdir, args)
             return f'Error: failed to preinstall "{pkg}".'
 
@@ -92,7 +93,7 @@ def main(args: Namespace) -> Optional[str]:
             utils.rm_vdir(pdir, args)
             pdir.unlink()
 
-        if not utils.piprun(vdir, f'install{pip_args} "{pkg}"'):
+        if not utils.piprun(vdir, f'install --compile{pip_args} "{pkg}"'):
             utils.rm_vdir(vdir, args)
             return f'Error: failed to install "{pkg}".'
 

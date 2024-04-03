@@ -47,7 +47,8 @@ def main(args: Namespace) -> Optional[str]:
                 utils.rm_vdir(vdir, args)
                 return f'Error: failed to recreate {vdir} for {pkgname}.'
 
-            if not utils.piprun(vdir, f'sync{pip_args} --reinstall {tfile}'):
+            if not utils.piprun(vdir, f'sync{pip_args} --compile --reinstall '
+                                f'{tfile}'):
                 utils.rm_vdir(vdir, args)
                 return f'Error: failed to resync {pkgname}'
 
