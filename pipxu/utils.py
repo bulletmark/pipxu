@@ -202,7 +202,11 @@ def rm_package(pkgname: str, args: Namespace) -> bool:
         return False
 
     vdir = pdir.resolve()
+
+    if args.verbose:
+        print(f'Removing link {pdir}')
     pdir.unlink()
+
     rm_vdir(vdir, args)
     return True
 

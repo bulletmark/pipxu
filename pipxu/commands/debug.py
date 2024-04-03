@@ -2,9 +2,9 @@
 '''
 Run an installed application using a debugger.
 
-Tries to work out your preferred debugger from the PYTHONBREAKPOINT
-environment variable. If not set, defaults to pdb. Or you can set it
-explicitly with the -d/--debugger option.
+Tries to work out your preferred debugger from the standard
+PYTHONBREAKPOINT environment variable. If not set it defaults to pdb. Or
+you can set it explicitly with the -d/--debugger option.
 '''
 
 from __future__ import annotations

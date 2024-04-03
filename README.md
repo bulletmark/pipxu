@@ -82,9 +82,9 @@ usage: pipxu debug [-h] [-e EXECUTABLE] [-d DEBUGGER] package [args ...]
 
 Run an installed application using a debugger.
 
-Tries to work out your preferred debugger from the PYTHONBREAKPOINT
-environment variable. If not set, defaults to pdb. Or you can set it
-explicitly with the -d/--debugger option.
+Tries to work out your preferred debugger from the standard
+PYTHONBREAKPOINT environment variable. If not set it defaults to pdb. Or
+you can set it explicitly with the -d/--debugger option.
 
 positional arguments:
   package               installed application name
@@ -343,7 +343,10 @@ $ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/pipxu-boots
 
 :warning: Note that the `pipxu` package also installs the
 `pipxu-bootstrap` shell script on your system so you can always recover
-easily from a broken `pipxu` installation by running that script.
+easily from a broken `pipxu` installation by running that script. E.g.
+this may be needed after a major/incompatible Python version upgrade.
+Run that script to reinstall `pipxu` and then run `pipxu reinstall-all`
+to reinstall all your applications.
 
 To upgrade:
 
