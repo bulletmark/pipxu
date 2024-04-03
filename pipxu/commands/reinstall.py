@@ -19,6 +19,12 @@ def init(parser: ArgumentParser) -> None:
     xgroup.add_argument('-P', '--pyenv',
                         help='pyenv python version to use, '
                         'i.e. from `pyenv versions`, e.g. "3.9".')
+    parser.add_argument('--system-site-packages', action='store_true',
+                        help='allow venv access to system packages. '
+                        'Overrides the per-application setting.')
+    parser.add_argument('--no-system-site-packages', action='store_true',
+                        help='remove venv access to system packages. '
+                        'Overrides the per-application setting.')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='give more output')
     parser.add_argument('package', nargs='+',
@@ -38,12 +44,19 @@ def main(args: Namespace) -> Optional[str]:
         print(f'Reinstalling {pkgname} ..')
         data = utils.get_json(vdir, args) or {}
 
+        if args.system_site_packages or (
+                not args.no_system_site_packages and data.get('sys')):
+            data['sys'] = True
+        else:
+            data.pop('sys', None)
+
+        sysp = ' --system-site-packages' if data.get('sys') else ''
         with tempfile.TemporaryDirectory() as tdir:
             tfile = Path(tdir, args._freeze_file)
             shutil.copyfile(vdir / args._freeze_file, tfile)
 
             # Recreate the vdir
-            if not run(f'uv venv{venv_args} {vdir}'):
+            if not run(f'uv venv{venv_args}{sysp} {vdir}'):
                 utils.rm_vdir(vdir, args)
                 return f'Error: failed to recreate {vdir} for {pkgname}.'
 

@@ -37,6 +37,8 @@ def init(parser: ArgumentParser) -> None:
                         help='install application[s] in editable mode')
     parser.add_argument('-d', '--include-deps', action='store_true',
                         help='include executables from dependencies')
+    parser.add_argument('--system-site-packages', action='store_true',
+                        help='allow venv access to system packages')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='give more output')
     parser.add_argument('package', nargs='+',
@@ -46,6 +48,8 @@ def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
     pyexe = utils.get_python(args)
     venv_args = utils.make_args((args.verbose, '-v'), (not args.verbose, '-q'),
+                                (args.system_site_packages,
+                                 '--system-site-packages'),
                                 (bool(pyexe), f'--python={pyexe}'))
     pip_args = utils.make_args((args.verbose, '-v'), (args.editable, '-e'))
 
@@ -105,6 +109,9 @@ def main(args: Namespace) -> Optional[str]:
 
         if args.include_deps:
             data['deps'] = True
+
+        if args.system_site_packages:
+            data['sys'] = True
 
         err = utils.make_links(vdir, pkgname, args, data)
         if err:

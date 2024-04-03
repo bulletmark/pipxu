@@ -118,7 +118,8 @@ options:
 ### Command `install`
 
 ```
-usage: pipxu install [-h] [-p PYTHON | -P PYENV] [-f] [-e] [-d] [-v]
+usage: pipxu install [-h] [-p PYTHON | -P PYENV] [-f] [-e] [-d]
+                           [--system-site-packages] [-v]
                            package [package ...]
 
 Install a Python application using an isolated virtual environment.
@@ -136,6 +137,8 @@ options:
   -f, --force           recreate any already installed venv
   -e, --editable        install application[s] in editable mode
   -d, --include-deps    include executables from dependencies
+  --system-site-packages
+                        allow venv access to system packages
   -v, --verbose         give more output
 ```
 
@@ -157,7 +160,9 @@ options:
 ### Command `reinstall-all`
 
 ```
-usage: pipxu reinstall-all [-h] [-p PYTHON | -P PYENV] [-v]
+usage: pipxu reinstall-all [-h] [-p PYTHON | -P PYENV]
+                                 [--system-site-packages]
+                                 [--no-system-site-packages] [-v]
                                  [-s [SKIP ...]]
 
 Reinstall all applications.
@@ -169,6 +174,12 @@ options:
   -P PYENV, --pyenv PYENV
                         pyenv python version to use, i.e. from `pyenv
                         versions`, e.g. "3.9".
+  --system-site-packages
+                        allow venv access to system packages. Overrides the
+                        per-application setting.
+  --no-system-site-packages
+                        remove venv access to system packages. Overrides the
+                        per-application setting.
   -v, --verbose         give more output
   -s [SKIP ...], --skip [SKIP ...]
                         skip these applications, e.g. "-s package1 package2"
@@ -177,7 +188,9 @@ options:
 ### Command `reinstall`
 
 ```
-usage: pipxu reinstall [-h] [-p PYTHON | -P PYENV] [-v]
+usage: pipxu reinstall [-h] [-p PYTHON | -P PYENV]
+                             [--system-site-packages]
+                             [--no-system-site-packages] [-v]
                              package [package ...]
 
 Reinstall an application.
@@ -192,6 +205,12 @@ options:
   -P PYENV, --pyenv PYENV
                         pyenv python version to use, i.e. from `pyenv
                         versions`, e.g. "3.9".
+  --system-site-packages
+                        allow venv access to system packages. Overrides the
+                        per-application setting.
+  --no-system-site-packages
+                        remove venv access to system packages. Overrides the
+                        per-application setting.
   -v, --verbose         give more output
 ```
 
