@@ -341,13 +341,6 @@ there to install itself normally.
 $ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/pipxu-bootstrap | sh
 ```
 
-:warning: Note that the `pipxu` package also installs the
-`pipxu-bootstrap` shell script on your system so you can always recover
-easily from a broken `pipxu` installation by running that script. E.g.
-this may be needed after a major/incompatible Python version upgrade.
-Run that script to reinstall `pipxu` and then run `pipxu reinstall-all`
-to reinstall all your applications.
-
 To upgrade:
 
 ```
@@ -360,6 +353,19 @@ To uninstall all `pipxu` installed applications, and then uninstall
 ```
 $ pipxu uninstall-all --skip pipxu
 $ pipxu uninstall pipxu
+```
+
+## Recovery
+
+The `pipxu` package also installs the `pipxu-bootstrap` shell script on
+your system so you can always recover easily from a broken `pipxu`
+installation by manually running that script. E.g. The following may be
+needed after a major or incompatible Python version upgrade where
+`pipxu` may have stopped working:
+
+```
+$ pipxu-bootstrap
+$ pipxu reinstall-all --skip pipxu
 ```
 
 ## Comparison to pipx
