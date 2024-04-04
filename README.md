@@ -337,20 +337,20 @@ script](https://github.com/bulletmark/pipxu/blob/main/pipxu-bootstrap)
 which installs `pipxu` to a temporary directory then runs `pipxu` from
 there to install itself normally.
 
-```
+```sh
 $ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/pipxu-bootstrap | sh
 ```
 
 To upgrade:
 
-```
+```sh
 $ pipxu upgrade pipxu
 ```
 
 To uninstall all `pipxu` installed applications, and then uninstall
 `pipxu` itself:
 
-```
+```sh
 $ pipxu uninstall-all --skip pipxu
 $ pipxu uninstall pipxu
 ```
@@ -363,7 +363,7 @@ installation by manually running that script. E.g. The following may be
 needed after a major or incompatible Python version upgrade where
 `pipxu` may have stopped working:
 
-```
+```sh
 $ pipxu-bootstrap
 $ pipxu reinstall-all --skip pipxu
 ```
@@ -401,8 +401,10 @@ modifies your PATH.
    the package name associated with the current directory. Note that
    `pipx` accepts "`.`" for the install command, but not for any others.
 
-3. `pipxu` adds a `debug` command to run an installed application using a
-   Python debugger.
+3. For Python developers,`pipxu` adds a [`debug`](#command-debug)
+   command to conveniently run an installed application using a
+   debugger. `pipx` does not have this command. Read more about the
+   `debug` command [here](doc/debug.md).
 
 4. If run as root or with `sudo`, `pipxu` installs applications to a
    global location.
@@ -469,11 +471,11 @@ WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License at
 <http://www.gnu.org/licenses/> for more details.
 
-[pip]: https://pip.pypa.io/en/stable/
-[pipx]: https://github.com/pypa/pipx
 [pipxu]: https://github.com/bulletmark/pipxu
+[pipx]: https://github.com/pypa/pipx
 [uv]: https://github.com/astral-sh/uv
 [venv]: https://docs.python.org/3/library/venv.html
+[pip]: https://pip.pypa.io/en/stable/
 [pypi]: https://pypi.org/
 [path]: https://www.baeldung.com/linux/path-variable
 
