@@ -17,7 +17,7 @@ build:
 	rm -rf dist
 	python3 -m build
 
-doc:
+doc::
 	update-readme-usage -a
 
 clean:
