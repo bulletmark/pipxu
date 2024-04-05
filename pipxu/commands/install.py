@@ -50,7 +50,7 @@ def main(args: Namespace) -> Optional[str]:
     venv_args = utils.make_args((args.verbose, '-v'), (not args.verbose, '-q'),
                                 (args.system_site_packages,
                                  '--system-site-packages'),
-                                (bool(pyexe), f'--python={pyexe}'))
+                                (True, f'--python={pyexe}'))
     pip_args = utils.make_args((args.verbose, '-v'), (args.editable, '-e'))
 
     lockfile = user_runtime_path() / f'{args._prog}.lock'

@@ -12,6 +12,10 @@ from typing import Iterable, Optional
 
 from .run import run
 
+def subenvars(path: str) -> Path:
+    'Substitute environment variables in a path string'
+    return Path(os.path.expandvars(path)).expanduser()
+
 def get_json(vdir: Path, args: Namespace) -> Optional[dict]:
     'Get JSON data for this virtual environment'
     tgt = vdir.resolve() / args._meta_file
@@ -268,7 +272,7 @@ def get_all_package_names(args: Namespace) -> list[str]:
     return sorted(set(f.name for f in args._packages_dir.iterdir())
                   - set(args.skip or []))
 
-def get_python(args: Namespace) -> str:
+def get_python(args: Namespace) -> Path:
     'Return the python executable based on command line args'
     if args.pyenv:
         pyenv_root = run('pyenv root', capture=True)
@@ -283,13 +287,13 @@ def get_python(args: Namespace) -> str:
         if not pyexe.exists():
             sys.exit(f'Can not determine pyenv version for {args.pyenv}')
     elif args.python:
-        pyexe = Path(args.python)
+        pyexe = subenvars(args.python)
         if not pyexe.exists():
             sys.exit(f'{pyexe} does not exist.')
     else:
         pyexe = args._pyexe
 
-    return str(pyexe)
+    return pyexe
 
 def version() -> str:
     'Return the version of this package'

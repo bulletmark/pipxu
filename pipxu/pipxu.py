@@ -98,22 +98,24 @@ def main() -> Optional[str]:
         print(f'{PROG}=={utils.version()}')
         return None
 
-    homedir = args.home or os.getenv(f'{PROGU}_HOME')
-    bindir = args.bin_dir or os.getenv(f'{PROGU}_BIN_DIR')
-    mandir = args.man_dir or os.getenv(f'{PROGU}_MAN_DIR')
+    is_root = os.geteuid() == 0
+    home_dir = args.home or os.getenv(f'{PROGU}_HOME')
+    bin_dir = args.bin_dir or os.getenv(f'{PROGU}_BIN_DIR')
+    man_dir = args.man_dir or os.getenv(f'{PROGU}_MAN_DIR')
     pyexe = args.default_python or os.getenv(f'{PROGU}_DEFAULT_PYTHON') or DEFPY
 
-    if os.geteuid() == 0:
-        home_dir = Path(homedir if homedir else f'/opt/{PROG}')
-        bin_dir = Path(bindir if bindir else '/usr/local/bin')
-        man_dir = Path(mandir if mandir else '/usr/local/share/man')
-    else:
-        home_dir = Path(homedir) if homedir else \
-                        (platformdirs.user_data_path() / PROG)
-        bin_dir = Path(bindir) if bindir else \
-                Path('~/.local/bin').expanduser()
-        man_dir = Path(mandir) if mandir else \
-                Path('~/.local/share/man').expanduser()
+    if not home_dir:
+        home_dir = f'/opt/{PROG}' if is_root else \
+                f'{platformdirs.user_data_dir()}/{PROG}'
+    if not bin_dir:
+        bin_dir = '/usr/local/bin' if is_root else '~/.local/bin'
+    if not man_dir:
+        man_dir = '/usr/local/share/man' if is_root else '~/.local/share/man'
+
+    home_dir = utils.subenvars(home_dir)
+    bin_dir = utils.subenvars(bin_dir)
+    man_dir = utils.subenvars(man_dir)
+    pyexe = utils.subenvars(pyexe)
 
     if not args.func:
         mainparser.print_help()
