@@ -28,7 +28,7 @@ def main(args: Namespace) -> Optional[str]:
         pkg = f'-e {editpath}' if editpath else pkgname
         extras = ' '.join(data.get('injected', []))
         if not utils.piprun(vdir, 'install --compile --reinstall -U'
-                            f'{pip_args} {pkg} {extras}'):
+                            f'{pip_args} {pkg} {extras}', args):
             return f'Error: failed to {args.name} {pkgname}'
 
         err = utils.make_links(vdir, pkgname, args, data)

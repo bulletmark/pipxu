@@ -26,7 +26,7 @@ def main(args: Namespace) -> Optional[str]:
         if not vdir:
             return f'Application {pkgname} not found.'
 
-        versions = utils.get_versions(args._packages_dir / pkgname)
+        versions = utils.get_versions(args._packages_dir / pkgname, args)
         if not versions:
             return f'Application {pkgname} versions not found.'
 
@@ -44,7 +44,7 @@ def main(args: Namespace) -> Optional[str]:
 
     for pdir, data in utils.get_all_pkg_venvs(args):
         package = pdir.name
-        versions = utils.get_versions(pdir)
+        versions = utils.get_versions(pdir, args)
         if versions:
             display(package, versions.get(package, ("unknown", None)))
 

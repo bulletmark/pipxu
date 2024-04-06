@@ -63,22 +63,23 @@ def main(args: Namespace) -> Optional[str]:
                 return f'Error: Too many vdirs (>{MAX_VDIRS}) in {vdirbase}'
 
             # Create the vdir
-            if not run(f'uv venv{venv_args} {vdir}'):
+            if not run(f'{args._uv} venv{venv_args} {vdir}'):
                 utils.rm_vdir(vdir, args)
                 return f'Error: failed to create {vdir} for {pkg}.'
 
         python_exe = (vdir / 'bin' / 'python').resolve()
-        python_ver = run(f'{python_exe} -V', capture=True)
+        python_ver = run(f'{python_exe} -V', capture=True, shell=False,
+                         ignore_error=True)
         python_ver = python_ver.strip().split()[1] if python_ver else '?ver?'
         print(f'Created {vdir} using {python_exe} ({python_ver})')
 
         # Install the package
         if not utils.piprun(vdir, f'install --compile --no-deps{pip_args} '
-                            f'"{pkg}"'):
+                            f'"{pkg}"', args):
             utils.rm_vdir(vdir, args)
             return f'Error: failed to preinstall "{pkg}".'
 
-        versions = utils.get_versions(vdir)
+        versions = utils.get_versions(vdir, args)
         if not versions:
             utils.rm_vdir(vdir, args)
             return f'Error: failed to get versions for {pkg}.'
@@ -97,7 +98,7 @@ def main(args: Namespace) -> Optional[str]:
             utils.rm_vdir(pdir, args)
             pdir.unlink()
 
-        if not utils.piprun(vdir, f'install --compile{pip_args} "{pkg}"'):
+        if not utils.piprun(vdir, f'install --compile{pip_args} "{pkg}"', args):
             utils.rm_vdir(vdir, args)
             return f'Error: failed to install "{pkg}".'
 

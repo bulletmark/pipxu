@@ -130,10 +130,11 @@ def main() -> Optional[str]:
 
     # Ensure uv is installed/available
     uv = args.uv or DEFUV
-    version = run(f'{uv} --version', capture=True)
+    version = run(f'{uv} --version', capture=True, shell=False,
+                  ignore_error=True)
     if not version:
         if args.uv:
-            return f'Error: uv program not found at "{uv}"'
+            return f'Error: specified uv "{uv}" program not found.'
 
         return f'Error: {uv} program must be installed, and in your PATH '\
                 'or specified with --uv option.'

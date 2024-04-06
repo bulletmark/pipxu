@@ -36,14 +36,15 @@ def _set_json(vdir: Path, args: Namespace, data: dict) -> Optional[str]:
 
     return None
 
-def piprun(vdir: Path, cmd: str, **args) -> Optional[str]:
+def piprun(vdir: Path, cmd: str, args: Namespace, **kargs) -> Optional[str]:
     'Run given pip command in the virtual environment'
     os.environ['VIRTUAL_ENV'] = str(vdir.resolve())
-    return run(f'uv pip {cmd}', **args)
+    return run(f'{args._uv} pip {cmd}', **kargs)
 
-def get_versions(vdir: Path) -> Optional[dict[str, tuple[str, Optional[str]]]]:
+def get_versions(vdir: Path, args: Namespace) -> \
+        Optional[dict[str, tuple[str, Optional[str]]]]:
     'Return the versions of the packages in the virtual environment'
-    out = piprun(vdir, 'list', capture=True)
+    out = piprun(vdir, 'list', args, capture=True, shell=False)
     if not out:
         return None
 
@@ -162,7 +163,7 @@ def make_links(vdir: Path, pkgname: str, args: Namespace,
     if not apps:
         return f'Error: {pkgname} has no executables to install.'
 
-    freeze = piprun(vdir, 'freeze', capture=True)
+    freeze = piprun(vdir, 'freeze', args, capture=True, shell=False)
     if not freeze:
         return 'Error: Failed to fetch freeze list.'
 
@@ -276,11 +277,13 @@ def get_all_package_names(args: Namespace) -> list[str]:
 def get_python(args: Namespace) -> Path:
     'Return the python executable based on command line args'
     if args.pyenv:
-        pyenv_root = run('pyenv root', capture=True)
+        pyenv_root = run('pyenv root', capture=True, shell=False,
+                         ignore_error=True)
         if not pyenv_root:
             sys.exit('Error: Can not find pyenv. Is it installed?')
 
-        pyenv_version = run(f'pyenv latest {args.pyenv}', capture=True)
+        pyenv_version = run(f'pyenv latest {args.pyenv}', capture=True,
+                            shell=False, ignore_error=True)
         if not pyenv_version:
             sys.exit(f'Error: no pyenv version {args.pyenv} installed.')
 
@@ -289,8 +292,6 @@ def get_python(args: Namespace) -> Path:
             sys.exit(f'Can not determine pyenv version for {args.pyenv}')
     elif args.python:
         pyexe = subenvars(args.python)
-        if not pyexe.exists():
-            sys.exit(f'{pyexe} does not exist.')
     else:
         pyexe = args._pyexe
 

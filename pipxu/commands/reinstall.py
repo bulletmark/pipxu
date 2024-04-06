@@ -56,12 +56,12 @@ def main(args: Namespace) -> Optional[str]:
             shutil.copyfile(vdir / args._freeze_file, tfile)
 
             # Recreate the vdir
-            if not run(f'uv venv{venv_args}{sysp} {vdir}'):
+            if not run(f'{args._uv} venv{venv_args}{sysp} {vdir}'):
                 utils.rm_vdir(vdir, args)
                 return f'Error: failed to recreate {vdir} for {pkgname}.'
 
             if not utils.piprun(vdir, f'sync{pip_args} --compile --reinstall '
-                                f'{tfile}'):
+                                f'{tfile}', args):
                 utils.rm_vdir(vdir, args)
                 return f'Error: failed to resync {pkgname}'
 
