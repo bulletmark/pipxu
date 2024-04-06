@@ -357,11 +357,12 @@ $ pipxu uninstall pipxu
 
 ## Recovery
 
-The `pipxu` package also installs the `pipxu-bootstrap` shell script on
-your system so you can always recover easily from a broken `pipxu`
-installation by manually running that script. E.g. The following may be
-needed after a major or incompatible Python version upgrade where
-`pipxu` may have stopped working:
+The `pipxu` package also installs the aforementioned
+[`pipxu-bootstrap`](https://github.com/bulletmark/pipxu/blob/main/pipxu-bootstrap)
+shell script on your system so you can always recover easily from a
+broken `pipxu` installation by manually running that script. E.g. The
+following may be needed after a major or incompatible Python version
+upgrade where `pipxu` may have stopped working:
 
 ```sh
 $ pipxu-bootstrap
