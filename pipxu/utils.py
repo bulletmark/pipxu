@@ -176,10 +176,11 @@ def rm_vdir(vdir: Path, args: Namespace) -> None:
     _unlink_all_files(vdir, args)
 
     # Remove the venv
-    if args.verbose:
-        print(f'Removing {vdir}')
+    if vdir.exists():
+        if args.verbose:
+            print(f'Removing {vdir}')
 
-    shutil.rmtree(vdir)
+        shutil.rmtree(vdir)
 
 def add_or_remove_pkg(vdir: Path, pkgname: str, pkgs: list[str],
                       args: Namespace, *, add: bool) -> Optional[str]:
@@ -241,7 +242,7 @@ def _rm_path(path: Path) -> None:
     print(f'Purging stray {path}', file=sys.stderr)
     if path.is_dir():
         shutil.rmtree(path)
-    else:
+    elif path.exists():
         path.unlink()
 
 def purge_old_files(args: Namespace) -> None:
