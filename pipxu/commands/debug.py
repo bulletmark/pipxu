@@ -27,8 +27,8 @@ def init(parser: ArgumentParser) -> None:
     parser.add_argument('package',
                         help='installed application name')
     parser.add_argument('args', nargs='*',
-                        help='options and arguments to pass to application. '
-                        'should start with "--".')
+                        help='options and arguments to pass to application, '
+                        'should start with "--"')
 
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'

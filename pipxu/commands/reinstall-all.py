@@ -15,13 +15,13 @@ def init(parser: ArgumentParser) -> None:
                         help='specify explicit python executable path')
     xgroup.add_argument('-P', '--pyenv',
                         help='pyenv python version to use, '
-                        'i.e. from `pyenv versions`, e.g. "3.9".')
+                        'i.e. from `pyenv versions`, e.g. "3.9"')
     parser.add_argument('--system-site-packages', action='store_true',
-                        help='allow venv access to system packages. '
-                        'Overrides the per-application setting.')
+                        help='allow venv access to system packages, '
+                        'overrides the per-application setting')
     parser.add_argument('--no-system-site-packages', action='store_true',
-                        help='remove venv access to system packages. '
-                        'Overrides the per-application setting.')
+                        help='remove venv access to system packages, '
+                        'overrides the per-application setting')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='give more output')
     parser.add_argument('-s', '--skip', nargs='*',

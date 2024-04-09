@@ -12,7 +12,7 @@ def init(parser: ArgumentParser) -> None:
     parser.add_argument('package',
                         help='installed application name')
     parser.add_argument('args', nargs='*',
-                        help='arguments to pass to uv pip. '
+                        help='arguments to pass to uv pip, '
                         'should start with "--".')
 
 def main(args: Namespace) -> Optional[str]:

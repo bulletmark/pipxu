@@ -88,8 +88,8 @@ you can set it explicitly with the -d/--debugger option.
 
 positional arguments:
   package               installed application name
-  args                  options and arguments to pass to application. should
-                        start with "--".
+  args                  options and arguments to pass to application, should
+                        start with "--"
 
 options:
   -h, --help            show this help message and exit
@@ -133,7 +133,7 @@ options:
                         specify explicit python executable path
   -P PYENV, --pyenv PYENV
                         pyenv python version to use, i.e. from `pyenv
-                        versions`, e.g. "3.9".
+                        versions`, e.g. "3.9"
   -f, --force           recreate any already installed venv
   -e, --editable        install application[s] in editable mode
   -d, --include-deps    include executables from dependencies
@@ -173,13 +173,13 @@ options:
                         specify explicit python executable path
   -P PYENV, --pyenv PYENV
                         pyenv python version to use, i.e. from `pyenv
-                        versions`, e.g. "3.9".
+                        versions`, e.g. "3.9"
   --system-site-packages
-                        allow venv access to system packages. Overrides the
-                        per-application setting.
+                        allow venv access to system packages, overrides the
+                        per-application setting
   --no-system-site-packages
-                        remove venv access to system packages. Overrides the
-                        per-application setting.
+                        remove venv access to system packages, overrides the
+                        per-application setting
   -v, --verbose         give more output
   -s [SKIP ...], --skip [SKIP ...]
                         skip these applications, e.g. "-s package1 package2"
@@ -204,13 +204,13 @@ options:
                         specify explicit python executable path
   -P PYENV, --pyenv PYENV
                         pyenv python version to use, i.e. from `pyenv
-                        versions`, e.g. "3.9".
+                        versions`, e.g. "3.9"
   --system-site-packages
-                        allow venv access to system packages. Overrides the
-                        per-application setting.
+                        allow venv access to system packages, overrides the
+                        per-application setting
   --no-system-site-packages
-                        remove venv access to system packages. Overrides the
-                        per-application setting.
+                        remove venv access to system packages, overrides the
+                        per-application setting
   -v, --verbose         give more output
 ```
 
@@ -223,7 +223,7 @@ Run pip with given arguments on virtual environment for the given application.
 
 positional arguments:
   package     installed application name
-  args        arguments to pass to uv pip. should start with "--".
+  args        arguments to pass to uv pip, should start with "--".
 
 options:
   -h, --help  show this help message and exit
