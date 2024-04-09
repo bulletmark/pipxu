@@ -106,6 +106,8 @@ usage: pipxu inject [-h] [-v] package extras [extras ...]
 
 Install extra packages into an application.
 
+Note the same --index-url is used as/if specified in the original install.
+
 positional arguments:
   package        installed application name
   extras         extra package name[s] to inject/install

@@ -1,5 +1,9 @@
 # Author: Mark Blakeney, Feb 2024.
-'Install extra packages into an application.'
+'''
+Install extra packages into an application.
+
+Note the same --index-url is used as/if specified in the original install.
+'''
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
