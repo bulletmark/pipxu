@@ -35,7 +35,6 @@ def main(args: Namespace) -> Optional[str]:
     pyexe = utils.get_python(args)
     venv_args = utils.make_args((args.verbose, '-v'), (not args.verbose, '-q'),
                                 (True, f'--python={pyexe}'))
-    pip_args = utils.make_args((args.verbose, '-v'))
     for pkgname in args.package:
         pkgname, vdir = utils.get_package_from_arg(pkgname, args)
         if not vdir:
@@ -43,6 +42,8 @@ def main(args: Namespace) -> Optional[str]:
 
         print(f'Reinstalling {pkgname} ..')
         data = utils.get_json(vdir, args) or {}
+        url = data.get('url')
+        pip_args = utils.make_args((args.verbose, '-v'), (url, f'-i "{url}"'))
 
         if args.system_site_packages or (
                 not args.no_system_site_packages and data.get('sys')):

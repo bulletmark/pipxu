@@ -8,7 +8,7 @@ import shutil
 import sys
 from argparse import Namespace
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Any
 
 from .run import run
 
@@ -62,7 +62,7 @@ def get_versions(vdir: Path, args: Namespace) -> \
 
     return data
 
-def make_args(*args: tuple[bool, str]) -> str:
+def make_args(*args: tuple[Any, str]) -> str:
     'Build a string of args based on (bool, arg) pairs'
     argstr = ' '.join(v2 for v1, v2 in args if v1)
     return ' ' + argstr if argstr else ''
@@ -184,11 +184,13 @@ def rm_vdir(vdir: Path, args: Namespace) -> None:
         shutil.rmtree(vdir)
 
 def add_or_remove_pkg(vdir: Path, pkgname: str, pkgs: list[str],
-                      args: Namespace, *, add: bool) -> Optional[str]:
+                      args: Namespace, *,
+                      add: bool, data: Optional[dict] = None) -> Optional[str]:
     'Record the addition/removal of a package into the virtual environment'
-    data = get_json(vdir, args)
     if not data:
-        return 'No JSON data found'
+        data = get_json(vdir, args)
+        if not data:
+            return 'No JSON data found'
 
     dataset = set(data.get('injected') or [])
     pkgset = set(pkgs)

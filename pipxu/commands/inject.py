@@ -22,9 +22,12 @@ def main(args: Namespace) -> Optional[str]:
     if not vdir:
         return f'Application {pkgname} is not installed.'
 
-    pip_args = utils.make_args((args.verbose, '-v'))
+    data = utils.get_json(vdir, args) or {}
+    url = data.get('url')
+    pip_args = utils.make_args((args.verbose, '-v'), (url, f'-i "{url}"'))
     extras = ' '.join(f'"{a}"' for a in args.extras)
     if not utils.piprun(vdir, f'install{pip_args} --compile {extras}', args):
         return f'Error: failed to install "{extras}" to {pkgname}'
 
-    return utils.add_or_remove_pkg(vdir, pkgname, args.extras, args, add=True)
+    return utils.add_or_remove_pkg(vdir, pkgname, args.extras, args,
+                                   data=data, add=True)

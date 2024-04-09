@@ -119,7 +119,7 @@ options:
 
 ```
 usage: pipxu install [-h] [-p PYTHON | -P PYENV] [-f] [-e] [-d]
-                           [--system-site-packages] [-v]
+                           [--system-site-packages] [-i INDEX_URL] [-v]
                            package [package ...]
 
 Install a Python application using an isolated virtual environment.
@@ -139,6 +139,8 @@ options:
   -d, --include-deps    include executables from dependencies
   --system-site-packages
                         allow venv access to system packages
+  -i INDEX_URL, --index-url INDEX_URL
+                        base URL of Python Package Index
   -v, --verbose         give more output
 ```
 

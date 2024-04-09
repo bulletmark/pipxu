@@ -39,6 +39,8 @@ def init(parser: ArgumentParser) -> None:
                         help='include executables from dependencies')
     parser.add_argument('--system-site-packages', action='store_true',
                         help='allow venv access to system packages')
+    parser.add_argument('-i', '--index-url',
+                        help='base URL of Python Package Index')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='give more output')
     parser.add_argument('package', nargs='+',
@@ -51,7 +53,9 @@ def main(args: Namespace) -> Optional[str]:
                                 (args.system_site_packages,
                                  '--system-site-packages'),
                                 (True, f'--python={pyexe}'))
-    pip_args = utils.make_args((args.verbose, '-v'), (args.editable, '-e'))
+    pip_args = utils.make_args((args.verbose, '-v'),
+                               (args.index_url, f'-i "{args.index_url}"'),
+                               (args.editable, '-e'))
 
     lockfile = user_runtime_path() / f'{args._prog}.lock'
     vdirbase = args._venvs_dir
@@ -113,6 +117,9 @@ def main(args: Namespace) -> Optional[str]:
 
         if args.system_site_packages:
             data['sys'] = True
+
+        if args.index_url:
+            data['url'] = args.index_url
 
         err = utils.make_links(vdir, pkgname, args, data)
         if err:
