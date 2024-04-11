@@ -15,7 +15,10 @@ def init(parser: ArgumentParser) -> None:
                         help='specify explicit python executable path')
     xgroup.add_argument('-P', '--pyenv',
                         help='pyenv python version to use, '
-                        'i.e. from `pyenv versions`, e.g. "3.9"')
+                        'i.e. from `pyenv versions`, e.g. "3.12"')
+    xgroup.add_argument('--reset-python', action='store_true',
+                        help='reset any explicit python path or pyenv '
+                        'version to default python')
     parser.add_argument('--system-site-packages', action='store_true',
                         help='allow venv access to system packages, '
                         'overrides the per-application setting')

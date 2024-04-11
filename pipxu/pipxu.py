@@ -55,9 +55,13 @@ def main() -> Optional[str]:
                             help=f'specify {PROGU}_BIN_DIR')
     mainparser.add_argument('--man-dir',
                             help=f'specify {PROGU}_MAN_DIR')
-    mainparser.add_argument('--default-python',
+    mutexgroup = mainparser.add_mutually_exclusive_group()
+    mutexgroup.add_argument('--default-python',
                             help='path to default python executable, '
                             f'default="{DEFPY}"')
+    mutexgroup.add_argument('--default-pyenv',
+                            help='default pyenv python version to use, '
+                            'i.e. from `pyenv versions`, e.g. "3.12"')
     mainparser.add_argument('-V', '--version', action='store_true',
                             help=f'just print {PROG} version and exit')
     subparser = mainparser.add_subparsers(title='Commands',
@@ -102,7 +106,8 @@ def main() -> Optional[str]:
     home_dir = args.home or os.getenv(f'{PROGU}_HOME')
     bin_dir = args.bin_dir or os.getenv(f'{PROGU}_BIN_DIR')
     man_dir = args.man_dir or os.getenv(f'{PROGU}_MAN_DIR')
-    pyexe = args.default_python or os.getenv(f'{PROGU}_DEFAULT_PYTHON') or DEFPY
+    pyexe = utils.get_python(args, global_py=True) or \
+            utils.subenvars(os.getenv(f'{PROGU}_DEFAULT_PYTHON') or DEFPY)
 
     if not home_dir:
         home_dir = f'/opt/{PROG}' if is_root else \
@@ -115,7 +120,6 @@ def main() -> Optional[str]:
     home_dir = utils.subenvars(home_dir)
     bin_dir = utils.subenvars(bin_dir)
     man_dir = utils.subenvars(man_dir)
-    pyexe = utils.subenvars(pyexe)
 
     if not args.func:
         mainparser.print_help()

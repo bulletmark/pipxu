@@ -276,28 +276,38 @@ def get_all_package_names(args: Namespace) -> list[str]:
     return sorted(set(f.name for f in args._packages_dir.iterdir())
                   - set(args.skip or []))
 
-def get_python(args: Namespace) -> Path:
+pyenv_cache: dict[str, Path] = {}
+
+def get_python(args: Namespace, *, global_py: bool = False) -> Optional[Path]:
     'Return the python executable based on command line args'
-    if args.pyenv:
+    pyenv = args.default_pyenv if global_py else args.pyenv
+    python = args.default_python if global_py else args.python
+
+    if pyenv:
+        if pyenv in pyenv_cache:
+            return pyenv_cache[pyenv]
+
         pyenv_root = run('pyenv root', capture=True, shell=False,
                          ignore_error=True)
         if not pyenv_root:
             sys.exit('Error: Can not find pyenv. Is it installed?')
 
-        pyenv_version = run(f'pyenv latest {args.pyenv}', capture=True,
+        pyenv_version = run(f'pyenv latest {pyenv}', capture=True,
                             shell=False, ignore_error=True)
         if not pyenv_version:
-            sys.exit(f'Error: no pyenv version {args.pyenv} installed.')
+            sys.exit(f'Error: no pyenv version {pyenv} installed.')
 
         pyexe = Path(pyenv_root, 'versions', pyenv_version, 'bin', 'python')
         if not pyexe.exists():
-            sys.exit(f'Can not determine pyenv version for {args.pyenv}')
-    elif args.python:
-        pyexe = subenvars(args.python)
-    else:
-        pyexe = args._pyexe
+            sys.exit(f'Can not determine pyenv version for {pyenv}')
 
-    return pyexe
+        pyenv_cache[pyenv] = pyexe
+        return pyexe
+
+    if python:
+        return subenvars(python)
+
+    return None if global_py else args._pyexe
 
 def version() -> str:
     'Return the version of this package'

@@ -31,7 +31,9 @@ Type `pipxu` or `pipxu -h` to view the usage summary:
 
 ```
 usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME] [--bin-dir BIN_DIR]
-                   [--man-dir MAN_DIR] [--default-python DEFAULT_PYTHON] [-V]
+                   [--man-dir MAN_DIR]
+                   [--default-python DEFAULT_PYTHON | --default-pyenv DEFAULT_PYENV]
+                   [-V]
                    {debug,inject,install,list,reinstall-all,reinstall,runpip,uninject,uninstall-all,uninstall,upgrade-all,upgrade,version}
                    ...
 
@@ -48,6 +50,9 @@ options:
   --man-dir MAN_DIR     specify PIPXU_MAN_DIR
   --default-python DEFAULT_PYTHON
                         path to default python executable, default="python3"
+  --default-pyenv DEFAULT_PYENV
+                        default pyenv python version to use, i.e. from `pyenv
+                        versions`, e.g. "3.12"
   -V, --version         just print pipxu version and exit
 
 Commands:
@@ -135,7 +140,7 @@ options:
                         specify explicit python executable path
   -P PYENV, --pyenv PYENV
                         pyenv python version to use, i.e. from `pyenv
-                        versions`, e.g. "3.9"
+                        versions`, e.g. "3.12"
   -f, --force           recreate any already installed venv
   -e, --editable        install application[s] in editable mode
   -d, --include-deps    include executables from dependencies
@@ -164,7 +169,7 @@ options:
 ### Command `reinstall-all`
 
 ```
-usage: pipxu reinstall-all [-h] [-p PYTHON | -P PYENV]
+usage: pipxu reinstall-all [-h] [-p PYTHON | -P PYENV | --reset-python]
                                  [--system-site-packages]
                                  [--no-system-site-packages] [-v]
                                  [-s [SKIP ...]]
@@ -177,7 +182,9 @@ options:
                         specify explicit python executable path
   -P PYENV, --pyenv PYENV
                         pyenv python version to use, i.e. from `pyenv
-                        versions`, e.g. "3.9"
+                        versions`, e.g. "3.12"
+  --reset-python        reset any explicit python path or pyenv version to
+                        default python
   --system-site-packages
                         allow venv access to system packages, overrides the
                         per-application setting
@@ -192,9 +199,9 @@ options:
 ### Command `reinstall`
 
 ```
-usage: pipxu reinstall [-h] [-p PYTHON | -P PYENV]
-                             [--system-site-packages]
-                             [--no-system-site-packages] [-v]
+usage: pipxu reinstall [-h] [-p PYTHON | -P PYENV | --reset-python]
+                             [--system-site-packages | --no-system-site-packages]
+                             [-v]
                              package [package ...]
 
 Reinstall an application.
@@ -208,7 +215,9 @@ options:
                         specify explicit python executable path
   -P PYENV, --pyenv PYENV
                         pyenv python version to use, i.e. from `pyenv
-                        versions`, e.g. "3.9"
+                        versions`, e.g. "3.12"
+  --reset-python        reset any explicit python path or pyenv version to
+                        default python
   --system-site-packages
                         allow venv access to system packages, overrides the
                         per-application setting
@@ -461,8 +470,8 @@ command line arguments. Comments in the file (i.e. `#` and anything
 after on a line) are ignored. Type `pipxu` to see all supported options.
 
 The global options: `--uv`, `--no-man-pages`, `--home`, `--bin-dir`,
-`--man-dir`, `--default-python`, are the only sensible candidates to
-consider setting as defaults.
+`--man-dir`, `--default-python`, `--default-pyenv`, are the only
+sensible candidates to consider setting as defaults.
 
 ## License
 

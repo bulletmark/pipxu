@@ -30,7 +30,7 @@ def init(parser: ArgumentParser) -> None:
                         help='specify explicit python executable path')
     xgroup.add_argument('-P', '--pyenv',
                         help='pyenv python version to use, '
-                        'i.e. from `pyenv versions`, e.g. "3.9"')
+                        'i.e. from `pyenv versions`, e.g. "3.12"')
     parser.add_argument('-f', '--force', action='store_true',
                         help='recreate any already installed venv')
     parser.add_argument('-e', '--editable', action='store_true',
@@ -120,6 +120,11 @@ def main(args: Namespace) -> Optional[str]:
 
         if args.index_url:
             data['url'] = args.index_url
+
+        if args.pyenv:
+            data['pyenv'] = args.pyenv
+        elif args.python:
+            data['python'] = args.python
 
         err = utils.make_links(vdir, pkgname, args, data)
         if err:
