@@ -6,12 +6,12 @@ pipx but uses uv instead of venv + pip.
 '''
 from __future__ import annotations
 
-import argparse
 import importlib
 import os
 import re
 import shlex
 import sys
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from pathlib import Path
 from typing import Optional
 
@@ -42,7 +42,7 @@ def path_check(bin_name: str, bin_dir: Path) -> str:
 
 def main() -> Optional[str]:
     'Main code'
-    mainparser = argparse.ArgumentParser(description=__doc__,
+    mainparser = ArgumentParser(description=__doc__,
         epilog='Note you can set default starting global options '
         f'in {CNFFILE}.')
     mainparser.add_argument('--uv', metavar='uv_path',
@@ -68,16 +68,12 @@ def main() -> Optional[str]:
             dest='func')
 
     # Iterate over the commands to set up their parsers
-    progs = {}
     for modfile in sorted((MOD.parent / 'commands').glob('[!_]*.py')):
         name = modfile.stem
         mod = importlib.import_module(f'{PROG}.commands.{name}')
         docstr = mod.__doc__.strip().split('\n\n')[0] if mod.__doc__ else None
         parser = subparser.add_parser(name, description=mod.__doc__,
-                formatter_class=argparse.RawDescriptionHelpFormatter,
-                help=docstr)
-
-        progs[name] = parser.prog
+                formatter_class=RawDescriptionHelpFormatter, help=docstr)
 
         if hasattr(mod, 'init'):
             mod.init(parser)

@@ -275,15 +275,19 @@ def get_package_names(args: Namespace) -> list[str]:
     'Return a list of package names based on command line args'
     if args.all:
         if not args.skip and args.package:
-            sys.exit('Error: can not specify packages with --all unless '
-                     'also specifying --skip.')
+            args.parser.error('Can not specify packages with '
+                              '--all unless also specifying --skip.')
 
         # Return a sorted list of all package names, filtered by the
         # skip list if specified
         return sorted(set(f.name for f in args._packages_dir.iterdir())
                       - set(args.package))
-    elif args.skip:
-        sys.exit('Error: --skip can only be specified with --all.')
+
+    if not args.package:
+        args.parser.error('Must specify at least one package, or --all.')
+
+    if args.skip:
+        args.parser.error('--skip can only be specified with --all.')
 
     return args.package
 
