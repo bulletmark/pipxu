@@ -271,10 +271,21 @@ def purge_old_files(args: Namespace) -> None:
         if args._venvs_dir in rexe.parents and not rexe.exists():
             _rm_path(exe)
 
-def get_all_package_names(args: Namespace) -> list[str]:
-    'Return a sorted list of all package names'
-    return sorted(set(f.name for f in args._packages_dir.iterdir())
-                  - set(args.skip or []))
+def get_package_names(args: Namespace) -> list[str]:
+    'Return a list of package names based on command line args'
+    if args.all:
+        if not args.skip and args.package:
+            sys.exit('Error: can not specify packages with --all unless '
+                     'also specifying --skip.')
+
+        # Return a sorted list of all package names, filtered by the
+        # skip list if specified
+        return sorted(set(f.name for f in args._packages_dir.iterdir())
+                      - set(args.package))
+    elif args.skip:
+        sys.exit('Error: --skip can only be specified with --all.')
+
+    return args.package
 
 pyenv_cache: dict[str, Path] = {}
 

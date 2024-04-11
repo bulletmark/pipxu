@@ -1,5 +1,5 @@
 # Author: Mark Blakeney, Feb 2024.
-'Install a Python application using an isolated virtual environment.'
+'Install one or more Python applications using isolated virtual environments.'
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace

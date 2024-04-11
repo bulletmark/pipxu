@@ -1,5 +1,5 @@
 # Author: Mark Blakeney, Feb 2024.
-'List all applications installed by this tool.'
+'List applications installed by this tool.'
 from __future__ import annotations
 
 import json

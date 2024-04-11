@@ -34,7 +34,7 @@ usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME] [--bin-dir BIN_DIR]
                    [--man-dir MAN_DIR]
                    [--default-python DEFAULT_PYTHON | --default-pyenv DEFAULT_PYENV]
                    [-V]
-                   {debug,inject,install,list,reinstall-all,reinstall,runpip,uninject,uninstall-all,uninstall,upgrade-all,upgrade,version}
+                   {debug,inject,install,list,reinstall,runpip,uninject,uninstall,upgrade,version}
                    ...
 
 Install Python applications into isolated virtual environments and create
@@ -56,21 +56,18 @@ options:
   -V, --version         just print pipxu version and exit
 
 Commands:
-  {debug,inject,install,list,reinstall-all,reinstall,runpip,uninject,uninstall-all,uninstall,upgrade-all,upgrade,version}
+  {debug,inject,install,list,reinstall,runpip,uninject,uninstall,upgrade,version}
     debug               Run an installed application using a debugger.
     inject              Install extra packages into an application.
-    install             Install a Python application using an isolated virtual
-                        environment.
-    list                List all applications installed by this tool.
-    reinstall-all       Reinstall all applications.
-    reinstall           Reinstall an application.
+    install             Install one or more Python applications using isolated
+                        virtual environments.
+    list                List applications installed by this tool.
+    reinstall           Reinstall one, or more, or all applications.
     runpip              Run pip with given arguments on virtual environment
                         for the given application.
     uninject            Uninstall extra packages from an application.
-    uninstall-all       Uninstall all applications.
-    uninstall           Uninstall an application.
-    upgrade-all         Upgrade all applications.
-    upgrade             Upgrade an application.
+    uninstall           Uninstall one, or more, or all applications.
+    upgrade             Upgrade one, or more, or all applications.
     version             List installed application versions.
 
 Note you can set default starting global options in $HOME/.config/pipxu-
@@ -129,7 +126,7 @@ usage: pipxu install [-h] [-p PYTHON | -P PYENV] [-f] [-e] [-d]
                            [--system-site-packages] [-i INDEX_URL] [-v]
                            package [package ...]
 
-Install a Python application using an isolated virtual environment.
+Install one or more Python applications using isolated virtual environments.
 
 positional arguments:
   package               application[s] to install
@@ -156,7 +153,7 @@ options:
 ```
 usage: pipxu list [-h] [--json] [package ...]
 
-List all applications installed by this tool.
+List applications installed by this tool.
 
 positional arguments:
   package     list the given application[s] only
@@ -166,48 +163,19 @@ options:
   --json      output json instead
 ```
 
-### Command `reinstall-all`
-
-```
-usage: pipxu reinstall-all [-h] [-p PYTHON | -P PYENV | --reset-python]
-                                 [--system-site-packages]
-                                 [--no-system-site-packages] [-v]
-                                 [-s [SKIP ...]]
-
-Reinstall all applications.
-
-options:
-  -h, --help            show this help message and exit
-  -p PYTHON, --python PYTHON
-                        specify explicit python executable path
-  -P PYENV, --pyenv PYENV
-                        pyenv python version to use, i.e. from `pyenv
-                        versions`, e.g. "3.12"
-  --reset-python        reset any explicit python path or pyenv version to
-                        default python
-  --system-site-packages
-                        allow venv access to system packages, overrides the
-                        per-application setting
-  --no-system-site-packages
-                        remove venv access to system packages, overrides the
-                        per-application setting
-  -v, --verbose         give more output
-  -s [SKIP ...], --skip [SKIP ...]
-                        skip these applications, e.g. "-s package1 package2"
-```
-
 ### Command `reinstall`
 
 ```
 usage: pipxu reinstall [-h] [-p PYTHON | -P PYENV | --reset-python]
                              [--system-site-packages | --no-system-site-packages]
-                             [-v]
-                             package [package ...]
+                             [-v] [--all] [--skip]
+                             [package ...]
 
-Reinstall an application.
+Reinstall one, or more, or all applications.
 
 positional arguments:
-  package               application[s] to reinstall
+  package               application[s] to reinstall (or to skip for --all
+                        --skip)
 
 options:
   -h, --help            show this help message and exit
@@ -225,6 +193,9 @@ options:
                         remove venv access to system packages, overrides the
                         per-application setting
   -v, --verbose         give more output
+  --all                 reinstall ALL applications
+  --skip                skip the specified applications when reinstalling all
+                        (only can be specified with --all)
 ```
 
 ### Command `runpip`
@@ -258,62 +229,40 @@ options:
   -v, --verbose  give more output
 ```
 
-### Command `uninstall-all`
-
-```
-usage: pipxu uninstall-all [-h] [-v] [-s [SKIP ...]]
-
-Uninstall all applications.
-
-options:
-  -h, --help            show this help message and exit
-  -v, --verbose         give more output
-  -s [SKIP ...], --skip [SKIP ...]
-                        skip these applications, e.g. "-s package1 package2"
-```
-
 ### Command `uninstall`
 
 ```
-usage: pipxu uninstall [-h] [-v] package [package ...]
+usage: pipxu uninstall [-h] [-v] [--all] [--skip] [package ...]
 
-Uninstall an application.
+Uninstall one, or more, or all applications.
 
 positional arguments:
-  package        application[s] to uninstall
+  package        application[s] to uninstall (or to skip for --all --skip)
 
 options:
   -h, --help     show this help message and exit
   -v, --verbose  give more output
-```
-
-### Command `upgrade-all`
-
-```
-usage: pipxu upgrade-all [-h] [-v] [-s [SKIP ...]]
-
-Upgrade all applications.
-
-options:
-  -h, --help            show this help message and exit
-  -v, --verbose         give more output
-  -s [SKIP ...], --skip [SKIP ...]
-                        skip these applications, e.g. "-s package1 package2"
+  --all          uninstall ALL applications
+  --skip         skip the specified applications when uninstalling all (only
+                 can be specified with --all)
 ```
 
 ### Command `upgrade`
 
 ```
-usage: pipxu upgrade [-h] [-v] package [package ...]
+usage: pipxu upgrade [-h] [-v] [--all] [--skip] [package ...]
 
-Upgrade an application.
+Upgrade one, or more, or all applications.
 
 positional arguments:
-  package        application[s] to upgrade
+  package        application[s] to upgrade (or to skip for --all --skip)
 
 options:
   -h, --help     show this help message and exit
   -v, --verbose  give more output
+  --all          upgrade ALL applications
+  --skip         skip the specified applications when upgrading all (only can
+                 be specified with --all)
 ```
 
 ### Command `version`
@@ -364,7 +313,7 @@ To uninstall all `pipxu` installed applications, and then uninstall
 `pipxu` itself:
 
 ```sh
-$ pipxu uninstall-all --skip pipxu
+$ pipxu uninstall --all --skip pipxu
 $ pipxu uninstall pipxu
 ```
 
@@ -379,7 +328,7 @@ upgrade where `pipxu` may have stopped working:
 
 ```sh
 $ pipxu-bootstrap
-$ pipxu reinstall-all --skip pipxu
+$ pipxu reinstall --all --skip pipxu
 ```
 
 ## Comparison to pipx
@@ -404,23 +353,35 @@ modifies your PATH.
 
 `pipxu` adds some small but handy features not present in `pipx`:
 
-1. `pipxu` facilitates specifying
+1. For the commands `uninstall`, `reinstall`, and `upgrade`, `pipx` only
+   allows you to specify one application name whereas `pipxu` allows you
+   to specify one, or more, application names for all those commands. To
+   do an operation on all applications, `pipx`, requires you use a
+   corresponding `*-all` command, e.g. to `upgrade` all applications you
+   use `upgrade-all`. `pipxu` simply offers a `--all` option on each of
+   those base commands so does not pollute the command namespace with
+   superfluous `*-all` commands. Also, `pipx` also does not offer
+   `--skip` for all those `*-all` commands consistently, whereas `pipxu`
+   does. In short, `pipxu` does not have redundant `*-all` commands, and
+   is carefully consistent across its commands and options.
+
+2. `pipxu` facilitates specifying
    [`pyenv`](https://github.com/pyenv/pyenv) python versions with an
    added `-P/--pyenv` command option to `install`.
 
-2. You can do `pipxu` commands on an editable projects (as often used by
+3. You can do `pipxu` commands on an editable projects (as often used by
    developers) in the current directory by simply typing "`.`" as the
    package name and this works for all commands. E.g. `pipxu uninstall
    .` or `pipxu inject . pudb`. I.e. `pipxu` automatically determines
    the package name associated with the current directory. Note that
    `pipx` accepts "`.`" for the install command, but not for any others.
 
-3. For Python developers,`pipxu` adds a [`debug`](#command-debug)
+4. For Python developers,`pipxu` adds a [`debug`](#command-debug)
    command to conveniently run an installed application using a
    debugger. `pipx` does not have this command. Read more about the
    `debug` command [here](doc/debug.md).
 
-4. If run as root or with `sudo`, `pipxu` installs applications to a
+5. If run as root or with `sudo`, `pipxu` installs applications to a
    global location.
 
 ## Environment Variables
