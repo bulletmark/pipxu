@@ -297,10 +297,18 @@ Note [`pipxu` is on PyPI](https://pypi.org/project/pipxu/). Run the tiny
 [bootstrap shell
 script](https://github.com/bulletmark/pipxu/blob/main/pipxu-bootstrap)
 which installs `pipxu` to a temporary directory then runs `pipxu` from
-there to install itself normally.
+there to install itself normally:
 
 ```sh
 $ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/pipxu-bootstrap | sh
+```
+
+Or install `pipxu` using `pipx` if you prefer:
+
+```sh
+$ pipx install pipxu
+$ pipxu install pipxu
+$ pipx uninstall pipxu
 ```
 
 To upgrade:
