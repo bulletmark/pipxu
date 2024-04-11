@@ -362,16 +362,14 @@ modifies your PATH.
 `pipxu` adds some small but handy features not present in `pipx`:
 
 1. For the commands `uninstall`, `reinstall`, and `upgrade`, `pipx` only
-   allows you to specify one application name whereas `pipxu` allows you
-   to specify one, or more, application names for all those commands. To
-   do an operation on all applications, `pipx`, requires you use a
-   corresponding `*-all` command, e.g. to `upgrade` all applications you
-   use `upgrade-all`. `pipxu` simply offers a `--all` option on each of
-   those base commands so does not pollute the command namespace with
-   superfluous `*-all` commands. Also, `pipx` also does not offer
-   `--skip` for all those `*-all` commands consistently, whereas `pipxu`
-   does. In short, `pipxu` does not have redundant `*-all` commands, and
-   is carefully consistent across its commands and options.
+   allows you to specify one application whereas `pipxu` allows you to
+   specify one or more applications. To do an operation on **all**
+   applications, `pipx`, requires you use a corresponding `*-all`
+   command, e.g. to `upgrade` all applications you use `upgrade-all`.
+   `pipxu` simply offers a `--all` option on each of those base commands
+   to do the same thing, thus avoiding the need for the extra `*-all`
+   commands. Also, `pipx` also does not offer `--skip` for all those
+   `*-all` commands consistently, whereas `pipxu` does.
 
 2. `pipxu` facilitates specifying
    [`pyenv`](https://github.com/pyenv/pyenv) python versions with an
