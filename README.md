@@ -343,11 +343,11 @@ $ pipxu reinstall --all --skip pipxu
 
 Why would you use [`pipxu`][pipxu] instead of [`pipx`][pipx]? The main
 reason is to gain a massive speed improvement. `pipx` uses [`python -m
-venv`][venv] to create and install virtual environments and `pip` to
-install packages whereas `pipxu` uses `uv` for these operations.
-[`uv`][uv] is [a new project](https://astral.sh/blog/uv) written in
-[rust](https://www.rust-lang.org/) which has a better design than
-[`venv`][venv] + [`pip`][pip], caches aggressively, and is **much
+venv`][venv] to create and install virtual environments and [`pip`][pip]
+to install packages whereas `pipxu` uses [`uv`][uv] for these
+operations. [`uv`][uv] is [a new project](https://astral.sh/blog/uv)
+written in [rust](https://www.rust-lang.org/) which has a better design
+than [`venv`][venv] + [`pip`][pip], caches aggressively, and is **much
 faster**. Also, `pipx` installs `pip` into each virtual environment
 using a shared overlay which it has to update periodically so you
 sometimes experience `pipx` seeming to hang for a while while this
