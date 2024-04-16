@@ -31,9 +31,7 @@ Type `pipxu` or `pipxu -h` to view the usage summary:
 
 ```
 usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME] [--bin-dir BIN_DIR]
-                   [--man-dir MAN_DIR]
-                   [--default-python DEFAULT_PYTHON | --default-pyenv DEFAULT_PYENV]
-                   [-V]
+                   [--man-dir MAN_DIR] [--default-python DEFAULT_PYTHON] [-V]
                    {debug,inject,install,list,reinstall,runpip,uninject,uninstall,upgrade,version}
                    ...
 
@@ -50,9 +48,6 @@ options:
   --man-dir MAN_DIR     specify PIPXU_MAN_DIR
   --default-python DEFAULT_PYTHON
                         path to default python executable, default="python3"
-  --default-pyenv DEFAULT_PYENV
-                        default pyenv python version to use, i.e. from `pyenv
-                        versions`, e.g. "3.12"
   -V, --version         just print pipxu version and exit
 
 Commands:
@@ -122,7 +117,7 @@ options:
 ### Command `install`
 
 ```
-usage: pipxu install [-h] [-p PYTHON | -P PYENV] [-f] [-e] [-d]
+usage: pipxu install [-h] [-p PYTHON] [-f] [-e] [-d]
                            [--system-site-packages] [-i INDEX_URL] [-v]
                            package [package ...]
 
@@ -135,9 +130,6 @@ options:
   -h, --help            show this help message and exit
   -p PYTHON, --python PYTHON
                         specify explicit python executable path
-  -P PYENV, --pyenv PYENV
-                        pyenv python version to use, i.e. from `pyenv
-                        versions`, e.g. "3.12"
   -f, --force           recreate any already installed venv
   -e, --editable        install application[s] in editable mode
   -d, --include-deps    include executables from dependencies
@@ -166,7 +158,7 @@ options:
 ### Command `reinstall`
 
 ```
-usage: pipxu reinstall [-h] [-p PYTHON | -P PYENV | --reset-python]
+usage: pipxu reinstall [-h] [-p PYTHON | --reset-python]
                              [--system-site-packages | --no-system-site-packages]
                              [-v] [--all] [--skip]
                              [package ...]
@@ -181,11 +173,7 @@ options:
   -h, --help            show this help message and exit
   -p PYTHON, --python PYTHON
                         specify explicit python executable path
-  -P PYENV, --pyenv PYENV
-                        pyenv python version to use, i.e. from `pyenv
-                        versions`, e.g. "3.12"
-  --reset-python        reset any explicit python path or pyenv version to
-                        default python
+  --reset-python        reset any explicit python path to default python
   --system-site-packages
                         allow venv access to system packages, overrides the
                         per-application setting
@@ -371,23 +359,19 @@ modifies your PATH.
    commands. Also, `pipx` also does not offer `--skip` for all those
    `*-all` commands consistently, whereas `pipxu` does.
 
-2. `pipxu` facilitates specifying
-   [`pyenv`](https://github.com/pyenv/pyenv) python versions with an
-   added `-P/--pyenv` command option to `install`.
-
-3. You can do `pipxu` commands on an editable projects (as often used by
+2. You can do `pipxu` commands on an editable projects (as often used by
    developers) in the current directory by simply typing "`.`" as the
    package name and this works for all commands. E.g. `pipxu uninstall
    .` or `pipxu inject . pudb`. I.e. `pipxu` automatically determines
    the package name associated with the current directory. Note that
    `pipx` accepts "`.`" for the install command, but not for any others.
 
-4. For Python developers,`pipxu` adds a [`debug`](#command-debug)
+3. For Python developers,`pipxu` adds a [`debug`](#command-debug)
    command to conveniently run an installed application using a
    debugger. `pipx` does not have this command. Read more about the
    `debug` command [here](doc/debug.md).
 
-5. If run as root or with `sudo`, `pipxu` installs applications to a
+4. If run as root or with `sudo`, `pipxu` installs applications to a
    global location.
 
 ## Environment Variables
@@ -437,8 +421,8 @@ command line arguments. Comments in the file (i.e. `#` and anything
 after on a line) are ignored. Type `pipxu` to see all supported options.
 
 The global options: `--uv`, `--no-man-pages`, `--home`, `--bin-dir`,
-`--man-dir`, `--default-python`, `--default-pyenv`, are the only
-sensible candidates to consider setting as defaults.
+`--man-dir`, `--default-python`, are the only sensible candidates to
+consider setting as defaults.
 
 ## License
 

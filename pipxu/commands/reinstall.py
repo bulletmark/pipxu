@@ -35,16 +35,10 @@ def reinstall(args: Namespace, pkgname: str, venv_args: str) -> Optional[str]:
     # python
     nargs = copy(args)
     if args.reset_python:
-        data.pop('pyenv', None)
-        data.pop('python', None)
-    elif args.pyenv:
-        data['pyenv'] = args.pyenv
         data.pop('python', None)
     elif args.python:
         data['python'] = args.python
-        data.pop('pyenv', None)
     else:
-        nargs.pyenv = data.get('pyenv')
         nargs.python = data.get('python')
 
     pyexe = utils.get_python(nargs)
@@ -75,12 +69,8 @@ def init(parser: ArgumentParser) -> None:
     xgroup = parser.add_mutually_exclusive_group()
     xgroup.add_argument('-p', '--python',
                         help='specify explicit python executable path')
-    xgroup.add_argument('-P', '--pyenv',
-                        help='pyenv python version to use, '
-                        'i.e. from `pyenv versions`, e.g. "3.12"')
     xgroup.add_argument('--reset-python', action='store_true',
-                        help='reset any explicit python path or pyenv '
-                        'version to default python')
+                        help='reset any explicit python path to default python')
     ygroup = parser.add_mutually_exclusive_group()
     ygroup.add_argument('--system-site-packages', action='store_true',
                         help='allow venv access to system packages, '

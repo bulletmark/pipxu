@@ -55,13 +55,9 @@ def main() -> Optional[str]:
                             help=f'specify {PROGU}_BIN_DIR')
     mainparser.add_argument('--man-dir',
                             help=f'specify {PROGU}_MAN_DIR')
-    mutexgroup = mainparser.add_mutually_exclusive_group()
-    mutexgroup.add_argument('--default-python',
+    mainparser.add_argument('--default-python',
                             help='path to default python executable, '
                             f'default="{DEFPY}"')
-    mutexgroup.add_argument('--default-pyenv',
-                            help='default pyenv python version to use, '
-                            'i.e. from `pyenv versions`, e.g. "3.12"')
     mainparser.add_argument('-V', '--version', action='store_true',
                             help=f'just print {PROG} version and exit')
     subparser = mainparser.add_subparsers(title='Commands',

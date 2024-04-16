@@ -25,12 +25,8 @@ def get_next_vdir(vdirbase: Path) -> Optional[Path]:
 
 def init(parser: ArgumentParser) -> None:
     'Called to add command arguments to parser at init'
-    xgroup = parser.add_mutually_exclusive_group()
-    xgroup.add_argument('-p', '--python',
+    parser.add_argument('-p', '--python',
                         help='specify explicit python executable path')
-    xgroup.add_argument('-P', '--pyenv',
-                        help='pyenv python version to use, '
-                        'i.e. from `pyenv versions`, e.g. "3.12"')
     parser.add_argument('-f', '--force', action='store_true',
                         help='recreate any already installed venv')
     parser.add_argument('-e', '--editable', action='store_true',
@@ -121,9 +117,7 @@ def main(args: Namespace) -> Optional[str]:
         if args.index_url:
             data['url'] = args.index_url
 
-        if args.pyenv:
-            data['pyenv'] = args.pyenv
-        elif args.python:
+        if args.python:
             data['python'] = args.python
 
         err = utils.make_links(vdir, pkgname, args, data)
