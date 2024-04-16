@@ -62,10 +62,11 @@ command for your project. In that case you simply install the debugger
 package, e.g.`pudb`, to that virtual environment, i.e:
 
 ```sh
-pipxu inject <myproject> pudb
+pipxu inject myproject pudb
 ```
 
-Or if you are within that <myproject> directory you can use the shorthand:
+Or if you are within your `myproject` source directory you can use the
+shorthand:
 
 ```sh
 pipxu inject . pudb
