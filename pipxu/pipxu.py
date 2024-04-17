@@ -98,8 +98,9 @@ def main() -> Optional[str]:
     home_dir = args.home or os.getenv(f'{PROGU}_HOME')
     bin_dir = args.bin_dir or os.getenv(f'{PROGU}_BIN_DIR')
     man_dir = args.man_dir or os.getenv(f'{PROGU}_MAN_DIR')
-    pyexe = utils.get_python(args, global_py=True) or \
-            utils.subenvars(os.getenv(f'{PROGU}_DEFAULT_PYTHON') or DEFPY)
+
+    pyexe = utils.subenvars(args.default_python if args.default_python
+                else (os.getenv(f'{PROGU}_DEFAULT_PYTHON') or DEFPY))
 
     if not home_dir:
         home_dir = f'/opt/{PROG}' if is_root else \

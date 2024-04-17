@@ -291,14 +291,9 @@ def get_package_names(args: Namespace) -> list[str]:
 
     return args.package
 
-def get_python(args: Namespace, *, global_py: bool = False) -> Optional[Path]:
+def get_python(args: Namespace) -> Path:
     'Return the python executable based on command line args'
-    python = args.default_python if global_py else args.python
-
-    if python:
-        return subenvars(python)
-
-    return None if global_py else args._pyexe
+    return subenvars(args.python) if args.python else args._pyexe
 
 def version() -> str:
     'Return the version of this package'
