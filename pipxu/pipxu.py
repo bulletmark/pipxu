@@ -21,7 +21,7 @@ from . import utils
 from .run import run
 
 DEFUV = 'uv'
-DEFPY = 'python3'
+DEFPY = 'python' if utils.is_windows else 'python3'
 
 # Some constants
 MOD = Path(__file__)
@@ -29,13 +29,26 @@ PROG = MOD.stem
 PROGU = PROG.upper()
 CNFFILE = platformdirs.user_config_path(f'{PROG}-flags.conf')
 
-def path_check(bin_name: str, bin_dir: Path) -> str:
+def is_admin() -> bool:
+    'Check if we are running as root'
+    if utils.is_windows:
+        import ctypes
+        is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0  # type: ignore
+    else:
+        is_admin = os.geteuid() == 0
+
+    return is_admin
+
+def path_check(bin_name: str, bin_dir: str) -> str:
     'Check and report that users PATH is set up correctly'
     path = os.getenv('PATH')
     if not path:
         return 'WARNING: Your PATH is not set.'
 
-    if str(bin_dir) not in path.split(':'):
+    in_path = bin_dir.lower() in path.split(';') if utils.is_windows \
+            else bin_dir in path.split(':')
+
+    if not in_path:
         return f'WARNING: Your PATH does not contain {bin_name} ({bin_dir}).'
 
     return f'Your PATH contains {bin_name} ({bin_dir}).'
@@ -94,7 +107,7 @@ def main() -> Optional[str]:
         print(f'{PROG}=={utils.version()}')
         return None
 
-    is_root = os.geteuid() == 0
+    is_root = is_admin()
     home_dir = args.home or os.getenv(f'{PROGU}_HOME')
     bin_dir = args.bin_dir or os.getenv(f'{PROGU}_BIN_DIR')
     man_dir = args.man_dir or os.getenv(f'{PROGU}_MAN_DIR')
@@ -122,7 +135,7 @@ def main() -> Optional[str]:
         print(f'{PROGU}_MAN_DIR = {man_dir}')
         print(f'{PROGU}_DEFAULT_PYTHON = {pyexe}')
         print()
-        print(path_check(f'{PROGU}_BIN_DIR', bin_dir))
+        print(path_check(f'{PROGU}_BIN_DIR', str(bin_dir)))
         return None
 
     # Ensure uv is installed/available

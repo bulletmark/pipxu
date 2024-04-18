@@ -43,7 +43,7 @@ def main(args: Namespace) -> Optional[str]:
         if not debugger or debugger == '0':
             debugger = 'pdb'
 
-    python = vdir / 'bin' / 'python'
+    python = utils.vdir_bin(vdir) / 'python'
     exe = args._bin_dir / (args.executable or pkgname)
     argstr = ' '.join(args.args)
     run(f'{python} -m {debugger} {exe} {argstr}', quiet=True)

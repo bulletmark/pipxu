@@ -4,13 +4,16 @@ from __future__ import annotations
 
 import json
 import os
+import platform
 import shutil
 import sys
 from argparse import Namespace
 from pathlib import Path
-from typing import Iterable, Optional, Any
+from typing import Any, Iterable, Optional
 
 from .run import run
+
+is_windows = platform.system() == 'Windows'
 
 def subenvars(path: str) -> Path:
     'Substitute environment variables in a path string'
@@ -67,12 +70,16 @@ def make_args(*args: tuple[Any, str]) -> str:
     argstr = ' '.join(v2 for v1, v2 in args if v1)
     return ' ' + argstr if argstr else ''
 
-def _load_record(rfile: Path) -> Iterable[str]:
+def vdir_bin(vdir: Path) -> Path:
+    'Return the bin directory for the virtual environment'
+    return vdir / ('Scripts' if is_windows else 'bin')
+
+def _load_record(rfile: Path, embedpath: str) -> Iterable[str]:
     'Yield the executable names from a RECORD file'
     with rfile.open() as fp:
         for line in fp:
             line = line.strip()
-            if line.startswith('../../../bin/'):
+            if line.startswith(embedpath):
                 yield Path(line.split(',', 1)[0]).name
 
 def _link_exists(path: Path) -> bool:
@@ -88,11 +95,15 @@ def _link_exists(path: Path) -> bool:
 def _link_app_files(vdir: Path, tgtdir: Path, pkgname: str,
                     args: Namespace, include_deps: bool) -> Iterable[str]:
     'Link app files from entry_points to tgtdir'
+    vpath = vdir_bin(vdir)
+    embedpath = '../../../bin/' if vpath.name == 'bin' \
+            else f'..\\..\\{vpath.name}\\'
+
     pkgname = pkgname.replace('-', '_')
     for efile in vdir.glob('**/*.dist-info/RECORD'):
         if include_deps or efile.parent.name.startswith(f'{pkgname}-'):
-            for app in _load_record(efile):
-                srcfile = vdir / 'bin' / app
+            for app in _load_record(efile, embedpath):
+                srcfile = vpath / app
                 if srcfile.is_file() and not srcfile.is_symlink() and \
                       (srcfile.stat().st_mode & 0o111) == 0o111:
                     tgtfile = tgtdir / app

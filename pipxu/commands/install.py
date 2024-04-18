@@ -67,7 +67,7 @@ def main(args: Namespace) -> Optional[str]:
                 utils.rm_vdir(vdir, args)
                 return f'Error: failed to create {vdir} for {pkg}.'
 
-        python_exe = (vdir / 'bin' / 'python').resolve()
+        python_exe = (utils.vdir_bin(vdir) / 'python').resolve()
         python_ver = run(f'{python_exe} -V', capture=True, shell=False,
                          ignore_error=True)
         python_ver = python_ver.strip().split()[1] if python_ver else '?ver?'

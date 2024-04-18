@@ -20,10 +20,10 @@ migration, the provided commands have the same names as [`pipx`][pipx].
 Most commands are implemented, at least for common use cases, although
 some command functionality, options, and output are slightly different.
 
-This utility has been developed and tested on Linux. It may work on
-macOS, but has not been tried there. It does not work on Windows. The
-latest documentation and code is available at
-https://github.com/bulletmark/pipxu.
+This utility has been developed and tested on Linux. It has been briefly
+tested and seems to run ok on Windows. It will likely work on macOS, but
+has not been tried there. The latest documentation and code is available
+at https://github.com/bulletmark/pipxu.
 
 ## Usage
 
