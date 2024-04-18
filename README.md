@@ -291,7 +291,8 @@ there to install itself normally:
 $ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/pipxu-bootstrap | sh
 ```
 
-Or install `pipxu` using `pipx` if you prefer:
+Or install `pipxu` using `pipx` if you prefer (or you are using Windows
+where `pipxu-bootstrap` does not work):
 
 ```sh
 $ pipx install pipxu
