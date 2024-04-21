@@ -94,6 +94,9 @@ def main() -> Optional[str]:
 
         parser.set_defaults(func=mod.main, parser=parser, name=name)
 
+    # Command arguments are now defined, so we can set up argcomplete
+    argcomplete.autocomplete(mainparser)
+
     # Merge in default args from user config file. Then parse the
     # command line.
     if CNFFILE.exists():
@@ -103,7 +106,6 @@ def main() -> Optional[str]:
     else:
         cnflines = ''
 
-    argcomplete.autocomplete(mainparser)
     args = mainparser.parse_args(shlex.split(cnflines) + sys.argv[1:])
 
     if args.version:
