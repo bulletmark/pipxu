@@ -1,4 +1,5 @@
 # Author: Mark Blakeney, Feb 2024.
+# PYTHON_ARGCOMPLETE_OK
 '''
 Install Python applications into isolated virtual environments and
 create links to the executables in a bin directory for your PATH. Like
@@ -15,6 +16,7 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from pathlib import Path
 from typing import Optional
 
+import argcomplete
 import platformdirs
 
 from . import utils
@@ -101,6 +103,7 @@ def main() -> Optional[str]:
     else:
         cnflines = ''
 
+    argcomplete.autocomplete(mainparser)
     args = mainparser.parse_args(shlex.split(cnflines) + sys.argv[1:])
 
     if args.version:
