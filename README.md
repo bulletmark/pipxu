@@ -425,7 +425,7 @@ The global options: `--uv`, `--no-man-pages`, `--home`, `--bin-dir`,
 `--man-dir`, `--default-python`, are the only sensible candidates to
 consider setting as defaults.
 
-## Shell Tab Completion
+## Command Line Tab Completion
 
 Command line shell [tab
 completion](https://en.wikipedia.org/wiki/Command-line_completion) is
