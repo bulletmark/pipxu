@@ -22,9 +22,9 @@ def main(args: Namespace) -> Optional[str]:
     if not vdir:
         return f'Application {pkgname} is not installed.'
 
-    pip_args = utils.make_args((args.verbose, '-v'))
-    extras = ' '.join(f'"{a}"' for a in args.extras)
-    if not utils.piprun(vdir, f'uninstall{pip_args} {extras}', args):
-        return f'Error: failed to uninstall {extras} to {pkgname}'
+    pip_args = ['uninstall'] + \
+            utils.make_args((args.verbose, '-v')) + args.extras
+    if not utils.piprun(vdir, args, pip_args):
+        return f'Error: failed to uninstall "{args.extras}" from {pkgname}'
 
-    return utils.add_or_remove_pkg(vdir, pkgname, args.extras, args, add=False)
+    return utils.add_or_remove_pkg(vdir, args, pkgname, args.extras, add=False)

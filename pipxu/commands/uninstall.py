@@ -7,7 +7,7 @@ from typing import Optional
 
 from .. import utils
 
-def uninstall(args: Namespace, pkgname: str) -> Optional[str]:
+def _uninstall(args: Namespace, pkgname: str) -> Optional[str]:
     'Uninstall given package'
     pkgname, vdir = utils.get_package_from_arg(pkgname, args)
     if not vdir:
@@ -35,7 +35,7 @@ def init(parser: ArgumentParser) -> None:
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
     for pkgname in utils.get_package_names(args):
-        error = uninstall(args, pkgname)
+        error = _uninstall(args, pkgname)
         if error:
             return error
 

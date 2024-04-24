@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "pipxu"
 description = "Install and Run Python Applications in Isolated Environments using UV"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 keywords = ["pipx", "pip", "uv", "venv", "virtualenv"]
 classifiers = [
   "Programming Language :: Python :: 3",

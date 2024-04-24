@@ -9,7 +9,7 @@ import shutil
 import sys
 from argparse import Namespace
 from pathlib import Path
-from typing import Any, Iterable, Optional
+from typing import Iterable, Optional, Sequence
 
 from .run import run
 
@@ -39,15 +39,16 @@ def _set_json(vdir: Path, args: Namespace, data: dict) -> Optional[str]:
 
     return None
 
-def piprun(vdir: Path, cmd: str, args: Namespace, **kargs) -> Optional[str]:
+def piprun(vdir: Path, args: Namespace, cmd: list[str],
+           **kargs) -> Optional[str]:
     'Run given pip command in the virtual environment'
     os.environ['VIRTUAL_ENV'] = str(vdir.resolve())
-    return run(f'{args._uv} pip {cmd}', **kargs)
+    return run([args._uv, 'pip'] + cmd, **kargs)
 
 def get_versions(vdir: Path, args: Namespace) -> \
         Optional[dict[str, tuple[str, Optional[str]]]]:
     'Return the versions of the packages in the virtual environment'
-    out = piprun(vdir, 'list', args, capture=True, shell=False)
+    out = piprun(vdir, args, ['list'], capture=True)
     if not out:
         return None
 
@@ -65,10 +66,14 @@ def get_versions(vdir: Path, args: Namespace) -> \
 
     return data
 
-def make_args(*args: tuple[Any, str]) -> str:
-    'Build a string of args based on (bool, arg) pairs'
-    argstr = ' '.join(v2 for v1, v2 in args if v1)
-    return ' ' + argstr if argstr else ''
+def make_args(*args: Sequence) -> list[str]:
+    'Build a list of args based on (bool, arg1, [arg2]) sequences'
+    retlist: list[str] = []
+    for alist in args:
+        if alist[0]:
+            retlist.extend(alist[1:])
+
+    return retlist
 
 def vdir_bin(vdir: Path) -> Path:
     'Return the bin directory for the virtual environment'
@@ -111,7 +116,7 @@ def _link_app_files(vdir: Path, tgtdir: Path, pkgname: str,
                         tgtfile.unlink()
 
                     if args.verbose:
-                        print(f'Linking {srcfile} -> {tgtfile}')
+                        print(f'Linking "{srcfile}" -> "{tgtfile}"')
 
                     tgtfile.parent.mkdir(parents=True, exist_ok=True)
                     tgtfile.symlink_to(srcfile)
@@ -126,7 +131,7 @@ def _link_all_files(srcdir: Path, tgtdir: Path, pat: str,
             tgtfile.unlink()
 
         if verbose:
-            print(f'Linking {srcfile} -> {tgtfile}')
+            print(f'Linking "{srcfile}" -> "{tgtfile}"')
 
         tgtfile.parent.mkdir(parents=True, exist_ok=True)
         tgtfile.symlink_to(srcfile)
@@ -142,7 +147,7 @@ def _unlink_all_files(vdir: Path, args: Namespace) -> None:
             for file in srcdir.glob(pat):
                 if file.is_symlink() and vdir in file.resolve().parents:
                     if args.verbose:
-                        print(f'Removing link {file}')
+                        print(f'Removing link "{file}"')
                     file.unlink()
 
 def make_links(vdir: Path, pkgname: str, args: Namespace,
@@ -174,7 +179,7 @@ def make_links(vdir: Path, pkgname: str, args: Namespace,
     if not apps:
         return f'Error: {pkgname} has no executables to install.'
 
-    freeze = piprun(vdir, 'freeze', args, capture=True, shell=False)
+    freeze = piprun(vdir, args, ['freeze'], capture=True)
     if not freeze:
         return 'Error: Failed to fetch freeze list.'
 
@@ -190,12 +195,12 @@ def rm_vdir(vdir: Path, args: Namespace) -> None:
     # Remove the venv
     if vdir.exists():
         if args.verbose:
-            print(f'Removing {vdir}')
+            print(f'Removing "{vdir}"')
 
         shutil.rmtree(vdir)
 
-def add_or_remove_pkg(vdir: Path, pkgname: str, pkgs: list[str],
-                      args: Namespace, *,
+def add_or_remove_pkg(vdir: Path, args: Namespace, pkgname: str,
+                      pkgs: list[str], *,
                       add: bool, data: Optional[dict] = None) -> Optional[str]:
     'Record the addition/removal of a package into the virtual environment'
     if not data:
@@ -223,7 +228,7 @@ def rm_package(pkgname: str, args: Namespace) -> bool:
     vdir = pdir.resolve()
 
     if args.verbose:
-        print(f'Removing link {pdir}')
+        print(f'Removing link "{pdir}"')
     pdir.unlink()
 
     rm_vdir(vdir, args)
@@ -253,8 +258,10 @@ def get_package_from_arg(name: str, args: Namespace) \
 
 def _rm_path(path: Path) -> None:
     'Remove the given path'
-    print(f'Purging stray {path}', file=sys.stderr)
-    if path.is_dir():
+    print(f'Purging stray "{path}"', file=sys.stderr)
+    if _link_exists(path):
+        path.unlink()
+    elif path.is_dir():
         shutil.rmtree(path)
     elif path.exists():
         path.unlink()

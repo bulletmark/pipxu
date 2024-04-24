@@ -21,6 +21,6 @@ def main(args: Namespace) -> Optional[str]:
     if not vdir:
         return f'Application {pkgname} is not installed.'
 
-    if not utils.piprun(vdir, ' '.join(args.args), args, quiet=True):
+    if not utils.piprun(vdir, args, args.args, quiet=True):
         return f'Error: failed to run pip for {pkgname}'
     return None

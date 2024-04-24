@@ -7,7 +7,7 @@ from typing import Optional
 
 from .. import utils
 
-def upgrade(args: Namespace, pkgname: str) -> Optional[str]:
+def _upgrade(args: Namespace, pkgname: str) -> Optional[str]:
     'Upgrade given package'
     pkgname, vdir = utils.get_package_from_arg(pkgname, args)
     if not vdir:
@@ -15,13 +15,18 @@ def upgrade(args: Namespace, pkgname: str) -> Optional[str]:
 
     print(f'Upgrading {pkgname} ..')
     data = utils.get_json(vdir, args) or {}
-    editpath = data.get('editpath')
-    pkg = f'-e "{editpath}"' if editpath else pkgname
     url = data.get('url')
-    pip_args = utils.make_args((args.verbose, '-v'), (url, f'-i "{url}"'))
-    extras = ' '.join(data.get('injected', []))
-    if not utils.piprun(vdir, 'install --compile --reinstall -U'
-                        f'{pip_args} {pkg} {extras}', args):
+    pip_args = 'install --compile --reinstall -U'.split() + \
+            utils.make_args((args.verbose, '-v'), (url, '-i', url))
+    editpath = data.get('editpath')
+    if editpath:
+        pip_args += ['-e', editpath]
+    else:
+        pip_args.append(pkgname)
+
+    pip_args += data.get('injected', [])
+
+    if not utils.piprun(vdir, args, pip_args):
         return f'Error: failed to {args.name} {pkgname}'
 
     err = utils.make_links(vdir, pkgname, args, data)
@@ -47,7 +52,7 @@ def init(parser: ArgumentParser) -> None:
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
     for pkgname in utils.get_package_names(args):
-        error = upgrade(args, pkgname)
+        error = _upgrade(args, pkgname)
         if error:
             return error
 

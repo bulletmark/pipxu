@@ -8,7 +8,7 @@ from typing import Optional
 
 from .. import utils
 
-def show(value: str) -> str:
+def _show(value: str) -> str:
     'Show a string with quotes'
     return f'"{value}"' if isinstance(value, str) else value
 
@@ -37,7 +37,7 @@ def main(args: Namespace) -> Optional[str]:
             if args.json:
                 json_out[pkgname] = data
             else:
-                d = ', '.join(f'{k}={show(data[k])}' for k in sorted(data))
+                d = ', '.join(f'{k}={_show(data[k])}' for k in sorted(data))
                 print(f'{pkgname}: {d}')
 
     if args.json:

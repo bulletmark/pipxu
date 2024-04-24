@@ -14,7 +14,7 @@ from ..run import run
 
 MAX_VDIRS = 1_000_000
 
-def get_next_vdir(vdirbase: Path) -> Optional[Path]:
+def _get_next_vdir(vdirbase: Path) -> Optional[Path]:
     'Return the first available venv directory'
     vdirs = set(int(f.name) for f in vdirbase.iterdir())
     for n in range(1, MAX_VDIRS + 1):
@@ -44,38 +44,37 @@ def init(parser: ArgumentParser) -> None:
 
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
-    pyexe = utils.get_python(args)
-    venv_args = utils.make_args((args.verbose, '-v'), (not args.verbose, '-q'),
-                                (args.system_site_packages,
-                                 '--system-site-packages'),
-                                (True, f'--python={pyexe}'))
-    pip_args = utils.make_args((args.verbose, '-v'),
-                               (args.index_url, f'-i "{args.index_url}"'),
-                               (args.editable, '-e'))
+    pyexe = str(utils.get_python(args))
+    venv_args = [args._uv, 'venv', '-p', pyexe] + utils.make_args(
+            (args.verbose, '-v'), (not args.verbose, '-q'),
+            (args.system_site_packages, '--system-site-packages'))
+
+    pip_args = 'install --compile'.split() + utils.make_args(
+            (args.verbose, '-v'), (args.index_url, '-i', args.index_url))
+    pip_earg = utils.make_args((args.editable, '-e'))
 
     lockfile = user_runtime_path() / f'{args._prog}.lock'
     vdirbase = args._venvs_dir
     for pkg in args.package:
         # Use a lock file in case we are running multiple installs in parallel
         with FileLock(lockfile):
-            vdir = get_next_vdir(vdirbase)
+            vdir = _get_next_vdir(vdirbase)
             if not vdir:
                 return f'Error: Too many vdirs (>{MAX_VDIRS}) in {vdirbase}'
 
             # Create the vdir
-            if not run(f'{args._uv} venv{venv_args} {vdir}'):
+            if not run(venv_args + [str(vdir)]):
                 utils.rm_vdir(vdir, args)
                 return f'Error: failed to create {vdir} for {pkg}.'
 
-        python_exe = (utils.vdir_bin(vdir) / 'python').resolve()
-        python_ver = run(f'{python_exe} -V', capture=True, shell=False,
-                         ignore_error=True)
+        python_exe = str((utils.vdir_bin(vdir) / 'python').resolve())
+        python_ver = run((python_exe, '-V'), capture=True, ignore_error=True)
         python_ver = python_ver.strip().split()[1] if python_ver else '?ver?'
-        print(f'Created {vdir} using {python_exe} ({python_ver})')
+        print(f'Created "{vdir}" using "{python_exe}" ({python_ver})')
 
         # Install the package
-        if not utils.piprun(vdir, f'install --compile --no-deps{pip_args} '
-                            f'"{pkg}"', args):
+        if not utils.piprun(vdir, args,
+                            pip_args + ['--no-deps'] + pip_earg + [pkg]):
             utils.rm_vdir(vdir, args)
             return f'Error: failed to preinstall "{pkg}".'
 
@@ -98,7 +97,7 @@ def main(args: Namespace) -> Optional[str]:
             utils.rm_vdir(pdir, args)
             pdir.unlink()
 
-        if not utils.piprun(vdir, f'install --compile{pip_args} "{pkg}"', args):
+        if not utils.piprun(vdir, args, pip_args + pip_earg + [pkg]):
             utils.rm_vdir(vdir, args)
             return f'Error: failed to install "{pkg}".'
 

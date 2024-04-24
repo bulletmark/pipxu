@@ -269,7 +269,7 @@ options:
 
 ## Installation and Upgrade
 
-Python 3.7 or later is required. Arch Linux users can install [`pipxu`
+Python 3.8 or later is required. Arch Linux users can install [`pipxu`
 from the AUR](https://aur.archlinux.org/packages/pipxu) and skip this
 section.
 

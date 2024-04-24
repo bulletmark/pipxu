@@ -12,23 +12,21 @@ from typing import Optional
 from .. import utils
 from ..run import run
 
-def reinstall(args: Namespace, pkgname: str, venv_args: str) -> Optional[str]:
+def _reinstall(args: Namespace, pkgname: str,
+              venv_args: list[str]) -> Optional[str]:
     'Reinstall given application'
     pkgname, vdir = utils.get_package_from_arg(pkgname, args)
     if not vdir:
         return f'Application {pkgname} is not installed.'
 
     print(f'Reinstalling {pkgname} ..')
+    pip_args = 'sync --compile --reinstall'.split() + \
+            utils.make_args((args.verbose, '-v'))
+
     data = utils.get_json(vdir, args) or {}
     url = data.get('url')
-    pip_args = utils.make_args((args.verbose, '-v'), (url, f'-i "{url}"'))
-
-    if args.system_site_packages:
-        data['sys'] = True
-    elif args.no_system_site_packages:
-        data.pop('sys', None)
-
-    sysp = ' --system-site-packages' if data.get('sys') else ''
+    if url:
+        pip_args.extend(['-i', url])
 
     # Use explicit python (or reset) if given, else use what was
     # explicitly specified in original install, else use default
@@ -41,20 +39,26 @@ def reinstall(args: Namespace, pkgname: str, venv_args: str) -> Optional[str]:
     else:
         nargs.python = data.get('python')
 
-    pyexe = utils.get_python(nargs)
+    venv_args.extend(['-p', str(utils.get_python(nargs))])
+
+    if args.system_site_packages:
+        data['sys'] = True
+    elif args.no_system_site_packages:
+        data.pop('sys', None)
+
+    if data.get('sys'):
+        venv_args.append('--system-site-packages')
 
     with tempfile.TemporaryDirectory() as tdir:
         tfile = Path(tdir, args._freeze_file)
         shutil.copyfile(vdir / args._freeze_file, tfile)
 
         # Recreate the vdir
-        if not run(f'{args._uv} venv{venv_args}{sysp} --python={pyexe} '
-                    f'{vdir}'):
+        if not run(venv_args + [str(vdir)]):
             utils.rm_vdir(vdir, args)
             return f'Error: failed to recreate {vdir} for {pkgname}.'
 
-        if not utils.piprun(vdir, f'sync{pip_args} --compile --reinstall '
-                            f'{tfile}', args):
+        if not utils.piprun(vdir, args, pip_args + [str(tfile)]):
             utils.rm_vdir(vdir, args)
             return f'Error: failed to resync {pkgname}'
 
@@ -63,6 +67,7 @@ def reinstall(args: Namespace, pkgname: str, venv_args: str) -> Optional[str]:
         return err
 
     print(f'{pkgname} reinstalled.')
+    return None
 
 def init(parser: ArgumentParser) -> None:
     'Called to add command arguments to parser at init'
@@ -91,9 +96,10 @@ def init(parser: ArgumentParser) -> None:
 
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
-    venv_args = utils.make_args((args.verbose, '-v'), (not args.verbose, '-q'))
+    venv_args = [args._uv, 'venv'] + utils.make_args((args.verbose, '-v'),
+                                                     (not args.verbose, '-q'))
     for pkgname in utils.get_package_names(args):
-        error = reinstall(args, pkgname, venv_args)
+        error = _reinstall(args, pkgname, venv_args.copy())
         if error:
             return error
 

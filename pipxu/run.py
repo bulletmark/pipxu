@@ -2,25 +2,32 @@
 'Common module containing shared functions'
 from __future__ import annotations
 
+import shlex
 import subprocess
 import sys
-from typing import Optional
+from typing import Optional, Sequence
 
-def run(cmd: str, *, capture: bool = False, quiet: bool = False,
-        shell=True, ignore_error=False) -> Optional[str]:
-    'Run given command string'
+def run(cmd: Sequence[str], *, capture: bool = False,
+        quiet: bool = False, ignore_error=False) -> Optional[str]:
+    'Run given command'
+    # Lazy evaluation of cmdstr
+    cmdstr = None
+
     if capture:
         stdout = subprocess.PIPE
     else:
         stdout = None
         if not quiet:
-            print(f'>>> Running {cmd}')
+            if not cmdstr:
+                cmdstr = shlex.join(cmd)
+            print(f'>>> Running {cmdstr}')
     try:
-        res = subprocess.run(cmd if shell else cmd.split(), shell=shell,
-                             stdout=stdout, universal_newlines=True)
+        res = subprocess.run(cmd, stdout=stdout, text=True)
     except Exception as e:
         if not ignore_error:
-            print(f'{cmd} failed: {e}', file=sys.stderr)
+            if not cmdstr:
+                cmdstr = shlex.join(cmd)
+            print(f'{cmdstr} failed: {e}', file=sys.stderr)
         return None
 
     if res.returncode != 0:

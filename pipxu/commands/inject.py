@@ -28,10 +28,11 @@ def main(args: Namespace) -> Optional[str]:
 
     data = utils.get_json(vdir, args) or {}
     url = data.get('url')
-    pip_args = utils.make_args((args.verbose, '-v'), (url, f'-i "{url}"'))
-    extras = ' '.join(f'"{a}"' for a in args.extras)
-    if not utils.piprun(vdir, f'install{pip_args} --compile {extras}', args):
-        return f'Error: failed to install "{extras}" to {pkgname}'
+    pip_args = ['install'] + \
+            utils.make_args((args.verbose, '-v'), (url, ('-i', url))) + \
+            args.extras
+    if not utils.piprun(vdir, args, pip_args):
+        return f'Error: failed to install "{args.extras}" to {pkgname}'
 
-    return utils.add_or_remove_pkg(vdir, pkgname, args.extras, args,
+    return utils.add_or_remove_pkg(vdir, args, pkgname, args.extras,
                                    data=data, add=True)

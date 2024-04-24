@@ -145,8 +145,7 @@ def main() -> Optional[str]:
 
     # Ensure uv is installed/available
     uv = args.uv or DEFUV
-    version = run(f'{uv} --version', capture=True, shell=False,
-                  ignore_error=True)
+    version = run((uv, '--version'), capture=True, ignore_error=True)
     if not version:
         if args.uv:
             return f'Error: specified uv "{uv}" program not found.'
