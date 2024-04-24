@@ -6,7 +6,7 @@ check:
 	flake8 $(NAME)
 	mypy $(NAME)
 	pyright $(NAME)
-	vermin -vv --exclude importlib.metadata --exclude tomllib \
+	vermin -vv --exclude --exclude tomllib \
 		--no-tips -i $(NAME)/*.py $(NAME)/*/*.py
 	shellcheck $(NAME)-bootstrap
 

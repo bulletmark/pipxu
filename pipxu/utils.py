@@ -315,11 +315,7 @@ def get_python(args: Namespace) -> Path:
 
 def version() -> str:
     'Return the version of this package'
-    if sys.version_info >= (3, 8):
-        from importlib.metadata import version
-    else:
-        from importlib_metadata import version
-
+    from importlib.metadata import version
     try:
         ver = version(Path(sys.argv[0]).stem)
     except Exception:
