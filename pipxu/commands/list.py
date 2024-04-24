@@ -31,8 +31,7 @@ def main(args: Namespace) -> Optional[str]:
         if not vdir:
             return f'Application {pkgname} is not installed.'
 
-        data = utils.get_json(vdir, args)
-        if data:
+        if data := utils.get_json(vdir, args):
             data.pop('name', None)
             if args.json:
                 json_out[pkgname] = data

@@ -35,8 +35,7 @@ def init(parser: ArgumentParser) -> None:
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
     for pkgname in utils.get_package_names(args):
-        error = _uninstall(args, pkgname)
-        if error:
+        if error := _uninstall(args, pkgname):
             return error
 
     return None

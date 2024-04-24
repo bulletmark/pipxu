@@ -24,8 +24,7 @@ def _reinstall(args: Namespace, pkgname: str,
             utils.make_args((args.verbose, '-v'))
 
     data = utils.get_json(vdir, args) or {}
-    url = data.get('url')
-    if url:
+    if url := data.get('url'):
         pip_args.extend(['-i', url])
 
     # Use explicit python (or reset) if given, else use what was
@@ -62,8 +61,7 @@ def _reinstall(args: Namespace, pkgname: str,
             utils.rm_vdir(vdir, args)
             return f'Error: failed to resync {pkgname}'
 
-    err = utils.make_links(vdir, pkgname, args, data)
-    if err:
+    if err := utils.make_links(vdir, pkgname, args, data):
         return err
 
     print(f'{pkgname} reinstalled.')
@@ -99,8 +97,7 @@ def main(args: Namespace) -> Optional[str]:
     venv_args = [args._uv, 'venv'] + utils.make_args((args.verbose, '-v'),
                                                      (not args.verbose, '-q'))
     for pkgname in utils.get_package_names(args):
-        error = _reinstall(args, pkgname, venv_args.copy())
-        if error:
+        if error := _reinstall(args, pkgname, venv_args.copy()):
             return error
 
     return None

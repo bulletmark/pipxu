@@ -35,16 +35,13 @@ def is_admin() -> bool:
     'Check if we are running as root'
     if utils.is_windows:
         import ctypes
-        is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0  # type: ignore
-    else:
-        is_admin = os.geteuid() == 0
+        return ctypes.windll.shell32.IsUserAnAdmin() != 0  # type: ignore
 
-    return is_admin
+    return os.geteuid() == 0
 
 def path_check(bin_name: str, bin_dir: str) -> str:
     'Check and report that users PATH is set up correctly'
-    path = os.getenv('PATH')
-    if not path:
+    if not (path := os.getenv('PATH')):
         return 'WARNING: Your PATH is not set.'
 
     in_path = bin_dir.lower() in path.split(';') if utils.is_windows \
@@ -145,8 +142,7 @@ def main() -> Optional[str]:
 
     # Ensure uv is installed/available
     uv = args.uv or DEFUV
-    version = run((uv, '--version'), capture=True, ignore_error=True)
-    if not version:
+    if not run((uv, '--version'), capture=True, ignore_error=True):
         if args.uv:
             return f'Error: specified uv "{uv}" program not found.'
 

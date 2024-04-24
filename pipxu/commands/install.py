@@ -78,8 +78,7 @@ def main(args: Namespace) -> Optional[str]:
             utils.rm_vdir(vdir, args)
             return f'Error: failed to preinstall "{pkg}".'
 
-        versions = utils.get_versions(vdir, args)
-        if not versions:
+        if not (versions := utils.get_versions(vdir, args)):
             utils.rm_vdir(vdir, args)
             return f'Error: failed to get versions for {pkg}.'
 
@@ -119,8 +118,7 @@ def main(args: Namespace) -> Optional[str]:
         if args.python:
             data['python'] = args.python
 
-        err = utils.make_links(vdir, pkgname, args, data)
-        if err:
+        if err := utils.make_links(vdir, pkgname, args, data):
             pdir.unlink()
             utils.rm_vdir(vdir, args)
             return err

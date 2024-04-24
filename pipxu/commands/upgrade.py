@@ -19,18 +19,13 @@ def _upgrade(args: Namespace, pkgname: str) -> Optional[str]:
     pip_args = 'install --compile --reinstall -U'.split() + \
             utils.make_args((args.verbose, '-v'), (url, '-i', url))
     editpath = data.get('editpath')
-    if editpath:
-        pip_args += ['-e', editpath]
-    else:
-        pip_args.append(pkgname)
-
-    pip_args += data.get('injected', [])
+    pip_args.extend(['-e', editpath] if editpath else [pkgname])
+    pip_args.extend(data.get('injected', []))
 
     if not utils.piprun(vdir, args, pip_args):
         return f'Error: failed to {args.name} {pkgname}'
 
-    err = utils.make_links(vdir, pkgname, args, data)
-    if err:
+    if err := utils.make_links(vdir, pkgname, args, data):
         return err
 
     print(f'{pkgname} upgraded.')
@@ -52,8 +47,7 @@ def init(parser: ArgumentParser) -> None:
 def main(args: Namespace) -> Optional[str]:
     'Called to action this command'
     for pkgname in utils.get_package_names(args):
-        error = _upgrade(args, pkgname)
-        if error:
+        if error := _upgrade(args, pkgname):
             return error
 
     return None

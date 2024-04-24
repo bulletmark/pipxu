@@ -48,8 +48,7 @@ def piprun(vdir: Path, args: Namespace, cmd: list[str],
 def get_versions(vdir: Path, args: Namespace) -> \
         Optional[dict[str, tuple[str, Optional[str]]]]:
     'Return the versions of the packages in the virtual environment'
-    out = piprun(vdir, args, ['list'], capture=True)
-    if not out:
+    if not (out := piprun(vdir, args, ['list'], capture=True)):
         return None
 
     found = False
@@ -160,8 +159,7 @@ def make_links(vdir: Path, pkgname: str, args: Namespace,
     _unlink_all_files(vdir, args)
 
     # Link the package applications
-    data = data or get_json(vdir, args)
-    if not data:
+    if not data and not (data := get_json(vdir, args)):
         return 'Error: No JSON data found.'
 
     include_deps = bool(args.include_deps if hasattr(args, 'include_deps')
@@ -179,8 +177,7 @@ def make_links(vdir: Path, pkgname: str, args: Namespace,
     if not apps:
         return f'Error: {pkgname} has no executables to install.'
 
-    freeze = piprun(vdir, args, ['freeze'], capture=True)
-    if not freeze:
+    if not (freeze := piprun(vdir, args, ['freeze'], capture=True)):
         return 'Error: Failed to fetch freeze list.'
 
     (vdir / args._freeze_file).write_text(freeze)
@@ -237,8 +234,7 @@ def rm_package(pkgname: str, args: Namespace) -> bool:
 def get_all_pkg_venvs(args: Namespace) -> Iterable[tuple[Path, dict]]:
     'Return a list of all virtual environments and their JSON data'
     for pdir in sorted(args._packages_dir.iterdir()):
-        data = get_json(pdir, args)
-        if data:
+        if data := get_json(pdir, args):
             yield pdir, data
 
 def get_package_from_arg(name: str, args: Namespace) \
