@@ -16,7 +16,6 @@ dependencies = [
   "argcomplete",
   "filelock",
   "platformdirs",
-  "importlib-metadata",
 ]
 
 [[project.authors]]
