@@ -28,7 +28,7 @@ def main(args: Namespace) -> Optional[str]:
 
     data = utils.get_json(vdir, args) or {}
     url = data.get('url')
-    pip_args = ['install'] + \
+    pip_args = 'install --compile'.split() + \
             utils.make_args((args.verbose, '-v'), (url, ('-i', url))) + \
             args.extras
     if not utils.piprun(vdir, args, pip_args):
