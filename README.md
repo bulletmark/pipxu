@@ -273,7 +273,7 @@ Python 3.8 or later is required. Arch Linux users can install [`pipxu`
 from the AUR](https://aur.archlinux.org/packages/pipxu) and skip this
 section.
 
-The [`uv`][uv] program is also required.
+The [`uv`][uv] program is also required (version must be >=0.1.33).
 The following is an easy way to install it, see
 [here](https://github.com/astral-sh/uv#getting-started).
 

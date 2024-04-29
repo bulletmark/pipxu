@@ -23,6 +23,7 @@ from . import utils
 from .run import run
 
 DEFUV = 'uv'
+MIN_UV_VERSION = '0.1.33'
 DEFPY = 'python' if utils.is_windows else 'python3'
 
 # Some constants
@@ -30,6 +31,10 @@ MOD = Path(__file__)
 PROG = MOD.stem
 PROGU = PROG.upper()
 CNFFILE = platformdirs.user_config_path(f'{PROG}-flags.conf')
+
+def calc_version(verstr: str) -> tuple[int, ...]:
+    'Calculate a version tuple from a version string'
+    return tuple(int(x) for x in verstr.split('.'))
 
 def is_admin() -> bool:
     'Check if we are running as root'
@@ -142,12 +147,17 @@ def main() -> Optional[str]:
 
     # Ensure uv is installed/available
     uv = args.uv or DEFUV
-    if not run((uv, '--version'), capture=True, ignore_error=True):
+    if not (verstr := run((uv, '--version'), capture=True, ignore_error=True)):
         if args.uv:
             return f'Error: specified uv "{uv}" program not found.'
 
         return f'Error: {uv} program must be installed, and in your PATH '\
                 'or specified with --uv option.'
+
+    uv_vers = verstr.split()[1]
+    if calc_version(uv_vers) < calc_version(MIN_UV_VERSION):
+        return f'Error: {uv} version is {uv_vers} '\
+                f'but must be at least {MIN_UV_VERSION}.'
 
     # Keep some useful info in the namespace passed to the command
     args._uv = uv
