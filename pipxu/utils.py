@@ -42,7 +42,9 @@ def _set_json(vdir: Path, args: Namespace, data: dict) -> Optional[str]:
 def piprun(vdir: Path, args: Namespace, cmd: list[str],
            **kargs) -> Optional[str]:
     'Run given pip command in the virtual environment'
-    os.environ['VIRTUAL_ENV'] = str(vdir.resolve())
+    # First element in cmd is the command, the rest are arguments. So
+    # insert path to virtual environment after the command.
+    cmd[1:1] = ['-p', str(vdir.resolve())]
     return run([args._uv, 'pip'] + cmd, **kargs)
 
 def get_versions(vdir: Path, args: Namespace) -> \
