@@ -20,10 +20,10 @@ migration, the provided commands have the same names as [`pipx`][pipx].
 Most commands are implemented, at least for common use cases, although
 some command functionality, options, and output are slightly different.
 
-This utility has been developed and tested on Linux. It has been briefly
-tested and seems to run ok on Windows. It will likely work on macOS, but
-has not been tried there. The latest documentation and code is available
-at https://github.com/bulletmark/pipxu.
+This utility has been developed and tested on Linux but will likely also
+work on macOS. It has been briefly tested and seems to run ok on
+Windows. The latest documentation and code is available at
+https://github.com/bulletmark/pipxu.
 
 ## Usage
 
@@ -273,16 +273,24 @@ Python 3.8 or later is required. Arch Linux users can install [`pipxu`
 from the AUR](https://aur.archlinux.org/packages/pipxu) and skip this
 section.
 
-The [`uv`][uv] program is also required (version must be >=0.1.33).
-The following is an easy way to install it, see
-[here](https://github.com/astral-sh/uv#getting-started).
+The [`uv`][uv] program must be installed (and it's version must be
+0.1.33 or later). If [`uv`][uv] is not available via your system
+packages, you can install it by following the [uv installation
+instructions](https://github.com/astral-sh/uv#getting-started) for your
+platform.
 
+E.g. For Linux and macOS:
 ```sh
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Note [`pipxu` is on PyPI](https://pypi.org/project/pipxu/). Run the tiny
-[bootstrap shell
+E.g. For Windows:
+```sh
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+Note [`pipxu` is on PyPI](https://pypi.org/project/pipxu/). With `uv`
+installed and on your PATH, run the tiny [bootstrap shell
 script](https://github.com/bulletmark/pipxu/blob/main/pipxu-bootstrap)
 which installs `pipxu` to a temporary directory then runs `pipxu` from
 there to install itself normally:
@@ -292,7 +300,7 @@ $ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/pipxu-boots
 ```
 
 Or install `pipxu` using `pipx` if you prefer (or you are using Windows
-where `pipxu-bootstrap` does not work):
+where `pipxu-bootstrap` may not work):
 
 ```sh
 $ pipx install pipxu
@@ -327,6 +335,9 @@ upgrade where `pipxu` may have stopped working:
 $ pipxu-bootstrap
 $ pipxu reinstall --all --skip pipxu
 ```
+
+If you are on Windows, reinstall `pipxu` using `pipx` as described
+in the previous section then `pipxu reinstall --all --skip pipxu`.
 
 ## Comparison to pipx
 
