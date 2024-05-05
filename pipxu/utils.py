@@ -244,12 +244,20 @@ def get_package_from_arg(name: str, args: Namespace) \
     'Return the package name + vdir corresponding to the given arg, if any'
     if name == '.' or os.sep in name:
         pathstr = str(Path(name).resolve())
+
+        # Work out the package name from the current path. We look for
+        # the closest parent (i.e. longest path) across all matching
+        # application editpaths.
+        candidates = {}
         for pdir, data in get_all_pkg_venvs(args):
-            if data and data.get('editpath') == pathstr:
-                name = pdir.name
-                break
-        else:
+            if data and (path := data.get('editpath')) and \
+                    pathstr.startswith(path):
+                candidates[len(Path(path).parts)] = pdir.name
+
+        if not candidates:
             return name, None
+
+        name = candidates[max(candidates)]
 
     path = (args._packages_dir / name).resolve()
     return name, (path if path.exists() else None)
