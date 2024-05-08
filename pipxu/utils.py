@@ -90,7 +90,7 @@ def _load_record(rfile: Path, embedpath: str) -> Iterable[str]:
 
 def _link_exists(path: Path) -> bool:
     'Return True if the path is a link (regardless if the target exists)'
-    # Equivalent to path.exists(follow_symlinks=False) on Python < 3.12.
+    # Equivalent to path.exists(follow_symlinks=False) on Python >= 3.12.
     try:
         exists = path.lstat()
     except Exception:
@@ -242,22 +242,30 @@ def get_all_pkg_venvs(args: Namespace) -> Iterable[tuple[Path, dict]]:
 def get_package_from_arg(name: str, args: Namespace) \
         -> tuple[str, Optional[Path]]:
     'Return the package name + vdir corresponding to the given arg, if any'
-    if name == '.' or os.sep in name:
-        pathstr = str(Path(name).resolve())
+    if name in {'.', '..'} or os.sep in name:
+        if not (namepath := Path(name).resolve()).is_dir():
+            return name, None
 
         # Work out the package name from the current path. We look for
         # the closest parent (i.e. longest path) across all matching
-        # application editpaths.
+        # application editpaths, unless we find an exact match then just
+        # use that.
         candidates = {}
         for pdir, data in get_all_pkg_venvs(args):
-            if data and (path := data.get('editpath')) and \
-                    pathstr.startswith(path):
-                candidates[len(Path(path).parts)] = pdir.name
+            if data and (path := data.get('editpath')):
+                if (path := Path(path)) == namepath:
+                    # We have an exact match so use it and ignore any
+                    # previous candidates.
+                    name = pdir.name
+                    break
+                if path in namepath.parents:
+                    # This path has a candidate parent, so record it.
+                    candidates[len(path.parts)] = pdir.name
+        else:
+            if not candidates:
+                return name, None
 
-        if not candidates:
-            return name, None
-
-        name = candidates[max(candidates)]
+            name = candidates[max(candidates)]
 
     path = (args._packages_dir / name).resolve()
     return name, (path if path.exists() else None)
