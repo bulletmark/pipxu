@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Optional
 
 from filelock import FileLock
-from platformdirs import user_runtime_path
 
 from .. import utils
 from ..run import run
@@ -53,11 +52,10 @@ def main(args: Namespace) -> Optional[str]:
             (args.verbose, '-v'), (args.index_url, '-i', args.index_url))
     pip_earg = utils.make_args((args.editable, '-e'))
 
-    lockfile = user_runtime_path() / f'{args._prog}.lock'
     vdirbase = args._venvs_dir
     for pkg in args.package:
         # Use a lock file in case we are running multiple installs in parallel
-        with FileLock(lockfile):
+        with FileLock(args._lockfile):
             vdir = _get_next_vdir(vdirbase)
             if not vdir:
                 return f'Error: Too many vdirs (>{MAX_VDIRS}) in {vdirbase}'

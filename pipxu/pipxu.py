@@ -161,6 +161,7 @@ def main() -> Optional[str]:
 
     # Keep some useful info in the namespace passed to the command
     args._uv = uv
+    args._lockfile = home_dir / f'.{PROG}.lock'
     args._packages_dir = home_dir / 'packages'
     args._packages_dir.mkdir(parents=True, exist_ok=True)
     args._venvs_dir = home_dir / 'venvs'
