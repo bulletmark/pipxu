@@ -304,24 +304,26 @@ def purge_old_files(args: Namespace) -> None:
             _rm_path(exe)
 
 def get_package_names(args: Namespace) -> list[str]:
-    'Return a list of package names based on command line args'
+    'Return a list of validated package names based on command line args'
     if args.all:
         if not args.skip and args.package:
-            args.parser.error('Can not specify packages with '
-                              '--all unless also specifying --skip.')
+            args.parser.error('Can not specify package[s] with '
+                            '--all unless also specifying --skip.')
+    else:
+        if args.skip:
+            args.parser.error('--skip can only be specified with --all.')
 
-        # Return a sorted list of all package names, filtered by the
-        # skip list if specified
-        return sorted(set(f.name for f in args._packages_dir.iterdir())
-                      - set(args.package))
+        if not args.package:
+            args.parser.error('Must specify at least one package, or --all.')
 
-    if not args.package:
-        args.parser.error('Must specify at least one package, or --all.')
+    given_names = set(args.package)
+    all_names = set(f.name for f in args._packages_dir.iterdir() if f.is_dir())
 
-    if args.skip:
-        args.parser.error('--skip can only be specified with --all.')
+    if (unknown := given_names - all_names):
+        s = 's' if len(unknown) > 1 else ''
+        sys.exit(f'Error: Unknown package{s}: {", ".join(unknown)}')
 
-    return args.package
+    return sorted(all_names - given_names) if args.all else args.package
 
 def get_python(args: Namespace) -> Path:
     'Return the python executable based on command line args'
