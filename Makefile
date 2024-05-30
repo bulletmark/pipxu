@@ -18,7 +18,7 @@ build:
 	python3 -m build
 
 doc::
-	update-readme-usage -a
+	update-readme-usage
 
 clean:
 	@rm -vrf *.egg-info build/ dist/ __pycache__/ \

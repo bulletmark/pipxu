@@ -88,16 +88,6 @@ def _load_record(rfile: Path, embedpath: str) -> Iterable[str]:
             if line.startswith(embedpath):
                 yield Path(line.split(',', 1)[0]).name
 
-def _link_exists(path: Path) -> bool:
-    'Return True if the path is a link (regardless if the target exists)'
-    # Equivalent to path.exists(follow_symlinks=False) on Python >= 3.12.
-    try:
-        exists = path.lstat()
-    except Exception:
-        return False
-
-    return bool(exists)
-
 def _link_app_files(vdir: Path, tgtdir: Path, pkgname: str,
                     args: Namespace, include_deps: bool) -> Iterable[str]:
     'Link app files from entry_points to tgtdir'
@@ -113,7 +103,7 @@ def _link_app_files(vdir: Path, tgtdir: Path, pkgname: str,
                 if srcfile.is_file() and not srcfile.is_symlink() and \
                       (srcfile.stat().st_mode & 0o111) == 0o111:
                     tgtfile = tgtdir / app
-                    if _link_exists(tgtfile):
+                    if tgtfile.is_symlink():
                         tgtfile.unlink()
 
                     if args.verbose:
@@ -128,7 +118,7 @@ def _link_all_files(srcdir: Path, tgtdir: Path, pat: str,
     'Link files from srcdir to tgtdir'
     for srcfile in srcdir.glob(pat):
         tgtfile = tgtdir / srcfile.relative_to(srcdir)
-        if _link_exists(tgtfile):
+        if tgtfile.is_symlink():
             tgtfile.unlink()
 
         if verbose:
@@ -273,7 +263,7 @@ def get_package_from_arg(name: str, args: Namespace) \
 def _rm_path(path: Path) -> None:
     'Remove the given path'
     print(f'Purging stray "{path}"', file=sys.stderr)
-    if _link_exists(path):
+    if path.is_symlink():
         path.unlink()
     elif path.is_dir():
         shutil.rmtree(path)
