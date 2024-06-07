@@ -12,7 +12,7 @@ import os
 import re
 import shlex
 import sys
-from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from argparse import ArgumentParser
 from pathlib import Path
 from typing import Optional
 
@@ -86,7 +86,7 @@ def main() -> Optional[str]:
         mod = importlib.import_module(f'{PROG}.commands.{name}')
         docstr = mod.__doc__.strip().split('\n\n')[0] if mod.__doc__ else None
         parser = subparser.add_parser(name, description=mod.__doc__,
-                formatter_class=RawDescriptionHelpFormatter, help=docstr)
+                                      help=docstr)
 
         if hasattr(mod, 'init'):
             mod.init(parser)

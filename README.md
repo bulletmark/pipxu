@@ -77,11 +77,10 @@ individual command:
 ```
 usage: pipxu debug [-h] [-e EXECUTABLE] [-d DEBUGGER] package [args ...]
 
-Run an installed application using a debugger.
-
-Tries to work out your preferred debugger from the standard
-PYTHONBREAKPOINT environment variable. If not set it defaults to pdb. Or
-you can set it explicitly with the -d/--debugger option.
+Run an installed application using a debugger. Tries to work out your
+preferred debugger from the standard PYTHONBREAKPOINT environment variable. If
+not set it defaults to pdb. Or you can set it explicitly with the
+-d/--debugger option.
 
 positional arguments:
   package               installed application name
@@ -101,9 +100,8 @@ options:
 ```
 usage: pipxu inject [-h] [-v] package extras [extras ...]
 
-Install extra packages into an application.
-
-Note the same --index-url is used as/if specified in the original install.
+Install extra packages into an application. Note the same --index-url is used
+as/if specified in the original install.
 
 positional arguments:
   package        installed application name
