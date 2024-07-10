@@ -229,34 +229,36 @@ def get_all_pkg_venvs(args: Namespace) -> Iterable[tuple[Path, dict]]:
         if data := get_json(pdir, args):
             yield pdir, data
 
+def _get_package_if_dir(name: str, args: Namespace) -> str:
+    'Convert the given name if it corresponds to a package directory'
+    if name not in {'.', '..'} and os.sep not in name:
+        return name
+
+    if not (namepath := Path(name).resolve()).is_dir():
+        return name
+
+    # Work out the package name from the current path. We look for
+    # the closest parent (i.e. longest path) across all matching
+    # application editpaths, unless we find an exact match then just
+    # use that.
+    candidates = {}
+    for pdir, data in get_all_pkg_venvs(args):
+        if data and (path := data.get('editpath')):
+            # If we have an exact match then use it and ignore any
+            # previous candidates.
+            if (path := Path(path)) == namepath:
+                return pdir.name
+
+            if path in namepath.parents:
+                # This path has a candidate parent, so record it.
+                candidates[len(path.parts)] = pdir.name
+
+    return candidates[max(candidates)] if candidates else name
+
 def get_package_from_arg(name: str, args: Namespace) \
         -> tuple[str, Optional[Path]]:
     'Return the package name + vdir corresponding to the given arg, if any'
-    if name in {'.', '..'} or os.sep in name:
-        if not (namepath := Path(name).resolve()).is_dir():
-            return name, None
-
-        # Work out the package name from the current path. We look for
-        # the closest parent (i.e. longest path) across all matching
-        # application editpaths, unless we find an exact match then just
-        # use that.
-        candidates = {}
-        for pdir, data in get_all_pkg_venvs(args):
-            if data and (path := data.get('editpath')):
-                if (path := Path(path)) == namepath:
-                    # We have an exact match so use it and ignore any
-                    # previous candidates.
-                    name = pdir.name
-                    break
-                if path in namepath.parents:
-                    # This path has a candidate parent, so record it.
-                    candidates[len(path.parts)] = pdir.name
-        else:
-            if not candidates:
-                return name, None
-
-            name = candidates[max(candidates)]
-
+    name = _get_package_if_dir(name, args)
     path = (args._packages_dir / name).resolve()
     return name, (path if path.exists() else None)
 
@@ -306,7 +308,7 @@ def get_package_names(args: Namespace) -> list[str]:
         if not args.package:
             args.parser.error('Must specify at least one package, or --all.')
 
-    given_names = set(args.package)
+    given_names = set(_get_package_if_dir(p, args) for p in args.package)
     all_names = set(f.name for f in args._packages_dir.iterdir() if f.is_dir())
 
     if (unknown := given_names - all_names):
