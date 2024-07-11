@@ -11,6 +11,8 @@ from argparse import Namespace
 from pathlib import Path
 from typing import Iterable, Optional, Sequence
 
+from packaging.requirements import Requirement
+
 from .run import run
 
 is_windows = platform.system() == 'Windows'
@@ -188,6 +190,20 @@ def rm_vdir(vdir: Path, args: Namespace) -> None:
 
         shutil.rmtree(vdir)
 
+def _pkg_merge(inset: list[str], changeset: list[str], add: bool) \
+        -> Iterable[str]:
+    'Merge a new list of package names/requirements'
+    inset_names = {Requirement(p).name: p for p in inset}
+    changeset_names = {Requirement(p).name: p for p in changeset}
+
+    if add:
+        inset_names.update(changeset_names)
+    else:
+        for k in changeset_names:
+            inset_names.pop(k, None)
+
+    return inset_names.values()
+
 def add_or_remove_pkg(vdir: Path, args: Namespace, pkgname: str,
                       pkgs: list[str], *,
                       add: bool, data: Optional[dict] = None) -> Optional[str]:
@@ -197,12 +213,10 @@ def add_or_remove_pkg(vdir: Path, args: Namespace, pkgname: str,
         if not data:
             return 'No JSON data found'
 
-    dataset = set(data.get('injected') or [])
-    pkgset = set(pkgs)
-    newset = (dataset | pkgset) if add else (dataset - pkgset)
+    newpkgs = _pkg_merge(data.get('injected', []), pkgs, add)
 
-    if newset:
-        data['injected'] = sorted(list(newset))
+    if newpkgs:
+        data['injected'] = sorted(newpkgs)
     else:
         data.pop('injected', None)
 

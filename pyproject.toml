@@ -16,6 +16,7 @@ dependencies = [
   "argcomplete",
   "filelock",
   "platformdirs",
+  "packaging",
 ]
 
 [[project.authors]]
