@@ -23,7 +23,7 @@ from . import utils
 from .run import run
 
 DEFUV = 'uv'
-MIN_UV_VERSION = '0.1.33'
+MIN_UV_VERSION = '0.1.34'
 DEFPY = 'python' if utils.is_windows else 'python3'
 
 # Some constants

@@ -48,7 +48,7 @@ def main(args: Namespace) -> Optional[str]:
             (args.verbose, '-v'), (not args.verbose, '-q'),
             (args.system_site_packages, '--system-site-packages'))
 
-    pip_args = 'install --compile'.split() + utils.make_args(
+    pip_args = 'install --compile-bytecode'.split() + utils.make_args(
             (args.verbose, '-v'), (args.index_url, '-i', args.index_url))
     pip_earg = utils.make_args((args.editable, '-e'))
 

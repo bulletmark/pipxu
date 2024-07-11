@@ -20,7 +20,7 @@ def _reinstall(args: Namespace, pkgname: str,
         return f'Application {pkgname} is not installed.'
 
     print(f'Reinstalling {pkgname} ..')
-    pip_args = 'sync --compile --reinstall'.split() + \
+    pip_args = 'sync --compile-bytecode --reinstall'.split() + \
             utils.make_args((args.verbose, '-v'))
 
     data = utils.get_json(vdir, args) or {}
