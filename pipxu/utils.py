@@ -243,13 +243,13 @@ def get_all_pkg_venvs(args: Namespace) -> Iterable[tuple[Path, dict]]:
         if data := get_json(pdir, args):
             yield pdir, data
 
-def _get_package_if_dir(name: str, args: Namespace) -> str:
+def _get_package_if_dir(name: str, args: Namespace) -> Optional[str]:
     'Convert the given name if it corresponds to a package directory'
     if name not in {'.', '..'} and os.sep not in name:
         return name
 
     if not (namepath := Path(name).resolve()).is_dir():
-        return name
+        return None
 
     # Work out the package name from the current path. We look for
     # the closest parent (i.e. longest path) across all matching
@@ -267,14 +267,16 @@ def _get_package_if_dir(name: str, args: Namespace) -> str:
                 # This path has a candidate parent, so record it.
                 candidates[len(path.parts)] = pdir.name
 
-    return candidates[max(candidates)] if candidates else name
+    return candidates[max(candidates)] if candidates else None
 
 def get_package_from_arg(name: str, args: Namespace) \
         -> tuple[str, Optional[Path]]:
     'Return the package name + vdir corresponding to the given arg, if any'
-    name = _get_package_if_dir(name, args)
-    path = (args._packages_dir / name).resolve()
-    return name, (path if path.exists() else None)
+    if not (pkg := _get_package_if_dir(name, args)):
+        return name, None
+
+    vdir = (args._packages_dir / pkg).resolve()
+    return pkg, (vdir if vdir.exists() else None)
 
 def _rm_path(path: Path) -> None:
     'Remove the given path'
@@ -322,7 +324,7 @@ def get_package_names(args: Namespace) -> list[str]:
         if not args.package:
             args.parser.error('Must specify at least one package, or --all.')
 
-    given_names = set(_get_package_if_dir(p, args) for p in args.package)
+    given_names = set((_get_package_if_dir(p, args) or p) for p in args.package)
     all_names = set(f.name for f in args._packages_dir.iterdir() if f.is_dir())
 
     if (unknown := given_names - all_names):
