@@ -16,6 +16,8 @@ def init(parser: ArgumentParser) -> None:
     'Called to add command arguments to parser at init'
     parser.add_argument('--json', action='store_true',
                         help='output json instead')
+    parser.add_argument('-v', '--venv', action='store_true',
+                        help='also show the virtual environment dir/number')
     parser.add_argument('package', nargs='*',
                         help='list the given application[s] only')
 
@@ -33,6 +35,8 @@ def main(args: Namespace) -> Optional[str]:
 
         if data := utils.get_json(vdir, args):
             data.pop('name', None)
+            if args.venv:
+                data['venv'] = int(vdir.resolve().name)
             if args.json:
                 json_out[pkgname] = data
             else:

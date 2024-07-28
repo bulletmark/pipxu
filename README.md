@@ -32,7 +32,7 @@ Type `pipxu` or `pipxu -h` to view the usage summary:
 ```
 usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME] [--bin-dir BIN_DIR]
                    [--man-dir MAN_DIR] [--default-python DEFAULT_PYTHON] [-V]
-                   {debug,inject,install,list,reinstall,runpip,uninject,uninstall,upgrade,version}
+                   {debug,inject,install,list,reinstall,runpip,uninject,uninstall,upgrade,venv,version}
                    ...
 
 Install Python applications into isolated virtual environments and create
@@ -51,7 +51,7 @@ options:
   -V, --version         just print pipxu version and exit
 
 Commands:
-  {debug,inject,install,list,reinstall,runpip,uninject,uninstall,upgrade,version}
+  {debug,inject,install,list,reinstall,runpip,uninject,uninstall,upgrade,venv,version}
     debug               Run an installed application using a debugger.
     inject              Install extra packages into an application.
     install             Install one or more Python applications using isolated
@@ -63,6 +63,7 @@ Commands:
     uninject            Uninstall extra packages from an application.
     uninstall           Uninstall one, or more, or all applications.
     upgrade             Upgrade one, or more, or all applications.
+    venv                List application virtual environment paths.
     version             List installed application versions.
 
 Note you can set default starting global options in $HOME/.config/pipxu-
@@ -141,7 +142,7 @@ options:
 ### Command `list`
 
 ```
-usage: pipxu list [-h] [--json] [package ...]
+usage: pipxu list [-h] [--json] [-v] [package ...]
 
 List applications installed by this tool.
 
@@ -151,6 +152,7 @@ positional arguments:
 options:
   -h, --help  show this help message and exit
   --json      output json instead
+  -v, --venv  also show the virtual environment dir/number
 ```
 
 ### Command `reinstall`
@@ -249,6 +251,22 @@ options:
   --all          upgrade ALL applications
   --skip         skip the specified applications when upgrading all (only can
                  be specified with --all)
+```
+
+### Command `venv`
+
+```
+usage: pipxu venv [-h] [-p] [package ...]
+
+List application virtual environment paths.
+
+positional arguments:
+  package          list the path for the given application[s] rather than all
+                   applications.
+
+options:
+  -h, --help       show this help message and exit
+  -p, --path-full  don't abbreviate the path
 ```
 
 ### Command `version`

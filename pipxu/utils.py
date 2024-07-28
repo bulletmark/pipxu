@@ -17,9 +17,20 @@ from .run import run
 
 is_windows = platform.system() == 'Windows'
 
+HOME = Path.home()
+
 def subenvars(path: str) -> Path:
     'Substitute environment variables in a path string'
     return Path(os.path.expandvars(path)).expanduser()
+
+def unexpanduser(path: str | Path) -> str:
+    'Return path name, with $HOME replaced by ~ (opposite of Path.expanduser())'
+    ppath = Path(path)
+
+    if ppath.parts[:len(HOME.parts)] != HOME.parts:
+        return str(path)
+
+    return str(Path('~', *ppath.parts[len(HOME.parts):]))
 
 def get_json(vdir: Path, args: Namespace) -> Optional[dict]:
     'Get JSON data for this virtual environment'
@@ -260,7 +271,7 @@ def _get_package_if_dir(name: str, args: Namespace) -> Optional[str]:
         if data and (path := data.get('editpath')):
             # If we have an exact match then use it and ignore any
             # previous candidates.
-            if (path := Path(path)) == namepath:
+            if (path := Path(path).expanduser()) == namepath:
                 return pdir.name
 
             if path in namepath.parents:

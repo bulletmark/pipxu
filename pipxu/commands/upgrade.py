@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
+from pathlib import Path
 from typing import Optional
 
 from .. import utils
@@ -18,8 +19,11 @@ def _upgrade(args: Namespace, pkgname: str) -> Optional[str]:
     url = data.get('url')
     pip_args = 'install --compile-bytecode --reinstall -U'.split() + \
             utils.make_args((args.verbose, '-v'), (url, '-i', url))
-    editpath = data.get('editpath')
-    pip_args.extend(['-e', editpath] if editpath else [pkgname])
+    if editpath := data.get('editpath'):
+        pip_args.extend(['-e', str(Path(editpath).expanduser())])
+    else:
+        pip_args.extend([pkgname])
+
     pip_args.extend(data.get('injected', []))
 
     if not utils.piprun(vdir, args, pip_args):

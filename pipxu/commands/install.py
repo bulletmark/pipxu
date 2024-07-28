@@ -102,7 +102,7 @@ def main(args: Namespace) -> Optional[str]:
 
         data: dict = {'name': pkgname}
         if editpath:
-            data['editpath'] = editpath
+            data['editpath'] = utils.unexpanduser(editpath)
 
         if args.include_deps:
             data['deps'] = True
@@ -114,7 +114,7 @@ def main(args: Namespace) -> Optional[str]:
             data['url'] = args.index_url
 
         if args.python:
-            data['python'] = args.python
+            data['python'] = utils.unexpanduser(args.python)
 
         if err := utils.make_links(vdir, pkgname, args, data):
             pdir.unlink()

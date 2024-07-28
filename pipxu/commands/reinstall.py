@@ -34,9 +34,13 @@ def _reinstall(args: Namespace, pkgname: str,
     if args.reset_python:
         data.pop('python', None)
     elif args.python:
-        data['python'] = args.python
+        data['python'] = utils.unexpanduser(args.python)
     else:
         nargs.python = data.get('python')
+
+        # Update python path if still in expanded (old) format
+        if nargs.python:
+            data['python'] = utils.unexpanduser(nargs.python)
 
     venv_args.extend(['-p', str(utils.get_python(nargs))])
 
@@ -47,6 +51,10 @@ def _reinstall(args: Namespace, pkgname: str,
 
     if data.get('sys'):
         venv_args.append('--system-site-packages')
+
+    # Update editpath if still in expanded (old) format
+    if editpath := data.get('editpath'):
+        data['editpath'] = utils.unexpanduser(editpath)
 
     with tempfile.TemporaryDirectory() as tdir:
         tfile = Path(tdir, args._freeze_file)
