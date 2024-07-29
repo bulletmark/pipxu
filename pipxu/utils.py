@@ -9,7 +9,7 @@ import shutil
 import sys
 from argparse import Namespace
 from pathlib import Path
-from typing import Iterable, Optional, Sequence
+from typing import Iterable, Sequence
 
 from packaging.requirements import Requirement
 
@@ -32,7 +32,7 @@ def unexpanduser(path: str | Path) -> str:
 
     return str(Path('~', *ppath.parts[len(HOME.parts):]))
 
-def get_json(vdir: Path, args: Namespace) -> Optional[dict]:
+def get_json(vdir: Path, args: Namespace) -> dict | None:
     'Get JSON data for this virtual environment'
     tgt = vdir.resolve() / args._meta_file
     try:
@@ -41,7 +41,7 @@ def get_json(vdir: Path, args: Namespace) -> Optional[dict]:
     except Exception:
         return None
 
-def _set_json(vdir: Path, args: Namespace, data: dict) -> Optional[str]:
+def _set_json(vdir: Path, args: Namespace, data: dict) -> str | None:
     'Set JSON data for this virtual environment'
     tgt = vdir.resolve() / args._meta_file
     try:
@@ -53,7 +53,7 @@ def _set_json(vdir: Path, args: Namespace, data: dict) -> Optional[str]:
     return None
 
 def piprun(vdir: Path, args: Namespace, cmd: list[str],
-           **kargs) -> Optional[str]:
+           **kargs) -> str | None:
     'Run given pip command in the virtual environment'
     # First element in cmd is the command, the rest are arguments. So
     # insert path to virtual environment after the command.
@@ -61,13 +61,13 @@ def piprun(vdir: Path, args: Namespace, cmd: list[str],
     return run([args._uv, 'pip'] + cmd, **kargs)
 
 def get_versions(vdir: Path, args: Namespace) -> \
-        Optional[dict[str, tuple[str, Optional[str]]]]:
+        dict[str, tuple[str, str | None]] | None:
     'Return the versions of the packages in the virtual environment'
     if not (out := piprun(vdir, args, ['list'], capture=True)):
         return None
 
     found = False
-    data: dict[str, tuple[str, Optional[str]]] = {}
+    data: dict[str, tuple[str, str | None]] = {}
     for line in out.splitlines():
         if line.startswith('-'):
             found = True
@@ -155,7 +155,7 @@ def _unlink_all_files(vdir: Path, args: Namespace) -> None:
                     file.unlink()
 
 def make_links(vdir: Path, pkgname: str, args: Namespace,
-               data: Optional[dict]) -> Optional[str]:
+               data: dict | None) -> str | None:
     '[Re-]create app and man page links for package'
 
     vdir = vdir.resolve()
@@ -217,7 +217,7 @@ def _pkg_merge(inset: list[str], changeset: list[str], add: bool) \
 
 def add_or_remove_pkg(vdir: Path, args: Namespace, pkgname: str,
                       pkgs: list[str], *,
-                      add: bool, data: Optional[dict] = None) -> Optional[str]:
+                      add: bool, data: dict | None = None) -> str | None:
     'Record the addition/removal of a package into the virtual environment'
     if not data:
         data = get_json(vdir, args)
@@ -254,7 +254,7 @@ def get_all_pkg_venvs(args: Namespace) -> Iterable[tuple[Path, dict]]:
         if data := get_json(pdir, args):
             yield pdir, data
 
-def _get_package_if_dir(name: str, args: Namespace) -> Optional[str]:
+def _get_package_if_dir(name: str, args: Namespace) -> str | None:
     'Convert the given name if it corresponds to a package directory'
     if name not in {'.', '..'} and os.sep not in name:
         return name
@@ -281,7 +281,7 @@ def _get_package_if_dir(name: str, args: Namespace) -> Optional[str]:
     return candidates[max(candidates)] if candidates else None
 
 def get_package_from_arg(name: str, args: Namespace) \
-        -> tuple[str, Optional[Path]]:
+        -> tuple[str, Path | None]:
     'Return the package name + vdir corresponding to the given arg, if any'
     if not (pkg := _get_package_if_dir(name, args)):
         return name, None

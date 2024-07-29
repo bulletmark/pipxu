@@ -12,7 +12,6 @@ from __future__ import annotations
 import os
 import re
 from argparse import ArgumentParser, Namespace
-from typing import Optional
 
 from .. import utils
 from ..run import run
@@ -30,7 +29,7 @@ def init(parser: ArgumentParser) -> None:
                         help='options and arguments to pass to application, '
                         'should start with "--"')
 
-def main(args: Namespace) -> Optional[str]:
+def main(args: Namespace) -> str | None:
     'Called to action this command'
     pkgname, vdir = utils.get_package_from_arg(args.package, args)
     if not vdir:

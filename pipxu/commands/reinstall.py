@@ -7,13 +7,12 @@ import tempfile
 from argparse import ArgumentParser, Namespace
 from copy import copy
 from pathlib import Path
-from typing import Optional
 
 from .. import utils
 from ..run import run
 
 def _reinstall(args: Namespace, pkgname: str,
-              venv_args: list[str]) -> Optional[str]:
+              venv_args: list[str]) -> str | None:
     'Reinstall given application'
     pkgname, vdir = utils.get_package_from_arg(pkgname, args)
     if not vdir:
@@ -100,7 +99,7 @@ def init(parser: ArgumentParser) -> None:
                         help='application[s] to reinstall (or to skip for '
                         '--all --skip)')
 
-def main(args: Namespace) -> Optional[str]:
+def main(args: Namespace) -> str | None:
     'Called to action this command'
     venv_args = [args._uv, 'venv'] + utils.make_args((args.verbose, '-v'),
                                                      (not args.verbose, '-q'))

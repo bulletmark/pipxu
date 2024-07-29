@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
-from typing import Optional
 
 from .. import utils
 
@@ -15,7 +14,7 @@ def init(parser: ArgumentParser) -> None:
                         help='list the path for the given application[s] '
                         'rather than all applications.')
 
-def main(args: Namespace) -> Optional[str]:
+def main(args: Namespace) -> str | None:
     'Called to action this command'
     if args.package:
         pkgs = [utils.get_package_from_arg(p, args) for p in args.package]

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
-from typing import Optional
 
 from .. import utils
 
@@ -13,7 +12,7 @@ def init(parser: ArgumentParser) -> None:
                         help='report specific application and dependent '
                         'package versions')
 
-def main(args: Namespace) -> Optional[str]:
+def main(args: Namespace) -> str | None:
     'Called to action this command'
     def display(pkgname, version):
         ver, loc = version

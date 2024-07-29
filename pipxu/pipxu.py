@@ -14,7 +14,6 @@ import shlex
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Optional
 
 import argcomplete
 import platformdirs
@@ -57,7 +56,7 @@ def path_check(bin_name: str, bin_dir: str) -> str:
 
     return f'Your PATH contains {bin_name} ({bin_dir}).'
 
-def main() -> Optional[str]:
+def main() -> str | None:
     'Main code'
     mainparser = ArgumentParser(description=__doc__,
         epilog='Note you can set default starting global options '

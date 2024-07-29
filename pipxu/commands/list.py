@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 from argparse import ArgumentParser, Namespace
-from typing import Optional
 
 from .. import utils
 
@@ -21,7 +20,7 @@ def init(parser: ArgumentParser) -> None:
     parser.add_argument('package', nargs='*',
                         help='list the given application[s] only')
 
-def main(args: Namespace) -> Optional[str]:
+def main(args: Namespace) -> str | None:
     'Called to action this command'
     if args.package:
         pkgs = [utils.get_package_from_arg(p, args) for p in args.package]

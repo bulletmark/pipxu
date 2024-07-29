@@ -7,7 +7,6 @@ Note the same --index-url is used as/if specified in the original install.
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
-from typing import Optional
 
 from .. import utils
 
@@ -20,7 +19,7 @@ def init(parser: ArgumentParser) -> None:
     parser.add_argument('extras', nargs='+',
                         help='extra package name[s] to inject/install')
 
-def main(args: Namespace) -> Optional[str]:
+def main(args: Namespace) -> str | None:
     'Called to action this command'
     pkgname, vdir = utils.get_package_from_arg(args.package, args)
     if not vdir:

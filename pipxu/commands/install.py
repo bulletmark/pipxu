@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
-from typing import Optional
 
 from filelock import FileLock
 
@@ -13,7 +12,7 @@ from ..run import run
 
 MAX_VDIRS = 1_000_000
 
-def _get_next_vdir(vdirbase: Path) -> Optional[Path]:
+def _get_next_vdir(vdirbase: Path) -> Path | None:
     'Return the first available venv directory'
     vdirs = set(int(f.name) for f in vdirbase.iterdir())
     for n in range(1, MAX_VDIRS + 1):
@@ -41,7 +40,7 @@ def init(parser: ArgumentParser) -> None:
     parser.add_argument('package', nargs='+',
                         help='application[s] to install')
 
-def main(args: Namespace) -> Optional[str]:
+def main(args: Namespace) -> str | None:
     'Called to action this command'
     pyexe = str(utils.get_python(args))
     venv_args = [args._uv, 'venv', '-p', pyexe] + utils.make_args(

@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
-from typing import Optional
 
 from .. import utils
 
-def _uninstall(args: Namespace, pkgname: str) -> Optional[str]:
+def _uninstall(args: Namespace, pkgname: str) -> str | None:
     'Uninstall given package'
     pkgname, vdir = utils.get_package_from_arg(pkgname, args)
     if not vdir:
@@ -32,7 +31,7 @@ def init(parser: ArgumentParser) -> None:
                         help='application[s] to uninstall (or to skip for '
                         '--all --skip)')
 
-def main(args: Namespace) -> Optional[str]:
+def main(args: Namespace) -> str | None:
     'Called to action this command'
     for pkgname in utils.get_package_names(args):
         if error := _uninstall(args, pkgname):

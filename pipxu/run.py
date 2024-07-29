@@ -5,10 +5,10 @@ from __future__ import annotations
 import shlex
 import subprocess
 import sys
-from typing import Optional, Sequence
+from typing import Sequence
 
 def run(cmd: Sequence[str], *, capture: bool = False,
-        quiet: bool = False, ignore_error=False) -> Optional[str]:
+        quiet: bool = False, ignore_error=False) -> str | None:
     'Run given command'
     # Lazy evaluation of cmdstr
     cmdstr = None
