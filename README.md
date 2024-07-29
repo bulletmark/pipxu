@@ -388,11 +388,12 @@ modifies your PATH.
    `*-all` commands consistently, whereas `pipxu` does.
 
 2. You can do `pipxu` commands on an editable projects (as often used by
-   developers) in the current directory by simply typing "`.`" as the
+   developers) in your project directory by simply typing "`.`" as the
    package name and this works for all commands. E.g. `pipxu uninstall
    .` or `pipxu inject . pudb`. I.e. `pipxu` automatically determines
-   the package name associated with the current directory. Note that
-   `pipx` accepts "`.`" for the install command, but not for any others.
+   the package name associated with the current directory, or any child
+   directories. Note that `pipx` accepts "`.`" for the install command,
+   but not for any others.
 
 3. For Python developers,`pipxu` adds a [`debug`](#command-debug)
    command to conveniently run an installed application using a
