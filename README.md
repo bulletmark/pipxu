@@ -256,7 +256,7 @@ options:
 ### Command `venv`
 
 ```
-usage: pipxu venv [-h] [-p] [package ...]
+usage: pipxu venv [-h] [-p] [-s] [package ...]
 
 List application virtual environment paths.
 
@@ -267,6 +267,7 @@ positional arguments:
 options:
   -h, --help       show this help message and exit
   -p, --path-full  don't abbreviate the path
+  -s, --sort-venv  sort by venv path rather than package name
 ```
 
 ### Command `version`
