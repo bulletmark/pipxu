@@ -48,7 +48,8 @@ def main(args: Namespace) -> str | None:
             (args.system_site_packages, '--system-site-packages'))
 
     pip_args = 'install --compile-bytecode'.split() + utils.make_args(
-            (args.verbose, '-v'), (args.index_url, '-i', args.index_url))
+            (args.verbose, '-v'), (args.index_url, '-i', args.index_url),
+            (args.force and args.editable, '--refresh'))
     pip_earg = utils.make_args((args.editable, '-e'))
 
     vdirbase = args._venvs_dir
