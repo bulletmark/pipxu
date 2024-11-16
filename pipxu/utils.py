@@ -63,7 +63,7 @@ def piprun(vdir: Path, args: Namespace, cmd: list[str],
 def get_versions(vdir: Path, args: Namespace) -> \
         dict[str, tuple[str, str | None]] | None:
     'Return the versions of the packages in the virtual environment'
-    if not (out := piprun(vdir, args, ['list'], capture=True)):
+    if not (out := piprun(vdir, args, ['list', '-q'], capture=True)):
         return None
 
     found = False
