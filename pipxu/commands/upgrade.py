@@ -7,6 +7,8 @@ from pathlib import Path
 
 from .. import utils
 
+aliases = ['update']
+
 def _upgrade(args: Namespace, pkgname: str) -> str | None:
     'Upgrade given package'
     pkgname, vdir = utils.get_package_from_arg(pkgname, args)

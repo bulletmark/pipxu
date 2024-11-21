@@ -32,7 +32,7 @@ Type `pipxu` or `pipxu -h` to view the usage summary:
 ```
 usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME] [--bin-dir BIN_DIR]
                    [--man-dir MAN_DIR] [--default-python DEFAULT_PYTHON] [-V]
-                   {debug,inject,install,list,reinstall,runpip,uninject,uninstall,upgrade,venv,version}
+                   {debug,inject,install,list,reinstall,runpip,uninject,uninstall,remove,upgrade,update,venv,version}
                    ...
 
 Install Python applications into isolated virtual environments and create
@@ -51,7 +51,7 @@ options:
   -V, --version         just print pipxu version and exit
 
 Commands:
-  {debug,inject,install,list,reinstall,runpip,uninject,uninstall,upgrade,venv,version}
+  {debug,inject,install,list,reinstall,runpip,uninject,uninstall,remove,upgrade,update,venv,version}
     debug               Run an installed application using a debugger.
     inject              Install extra packages into an application.
     install             Install one or more Python applications using isolated
@@ -61,13 +61,13 @@ Commands:
     runpip              Run pip with given arguments on virtual environment
                         for the given application.
     uninject            Uninstall extra packages from an application.
-    uninstall           Uninstall one, or more, or all applications.
-    upgrade             Upgrade one, or more, or all applications.
+    uninstall (remove)  Uninstall one, or more, or all applications.
+    upgrade (update)    Upgrade one, or more, or all applications.
     venv                List application virtual environment paths.
     version             List installed application versions.
 
-Note you can set default starting global options in $HOME/.config/pipxu-
-flags.conf.
+Some commands offer aliases as shown in brackets above. Note you can set
+default starting global options in $HOME/.config/pipxu-flags.conf.
 ```
 
 Type `pipxu <command> -h` to see specific help/usage for any
@@ -233,6 +233,8 @@ options:
   --all          uninstall ALL applications
   --skip         skip the specified applications when uninstalling all (only
                  can be specified with --all)
+
+aliases: remove
 ```
 
 ### Command `upgrade`
@@ -251,6 +253,8 @@ options:
   --all          upgrade ALL applications
   --skip         skip the specified applications when upgrading all (only can
                  be specified with --all)
+
+aliases: update
 ```
 
 ### Command `venv`

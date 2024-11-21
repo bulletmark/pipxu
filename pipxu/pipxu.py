@@ -59,8 +59,8 @@ def path_check(bin_name: str, bin_dir: str) -> str:
 def main() -> str | None:
     'Main code'
     mainparser = ArgumentParser(description=__doc__,
-        epilog='Note you can set default starting global options '
-        f'in {CNFFILE}.')
+        epilog='Some commands offer aliases as shown in brackets above. '
+            f'Note you can set default starting global options in {CNFFILE}.')
     mainparser.add_argument('--uv', metavar='uv_path',
                             help=f'path to uv executable, default="{DEFUV}"')
     mainparser.add_argument('-m', '--no-man-pages', action='store_true',
@@ -83,9 +83,10 @@ def main() -> str | None:
     for modfile in sorted((MOD.parent / 'commands').glob('[!_]*.py')):
         name = modfile.stem
         mod = importlib.import_module(f'{PROG}.commands.{name}')
+        aliases = mod.aliases if hasattr(mod, 'aliases') else []
         docstr = mod.__doc__.strip().split('\n\n')[0] if mod.__doc__ else None
         parser = subparser.add_parser(name, description=mod.__doc__,
-                                      help=docstr)
+                                      help=docstr, aliases=aliases)
 
         if hasattr(mod, 'init'):
             mod.init(parser)

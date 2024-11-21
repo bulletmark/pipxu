@@ -6,6 +6,8 @@ from argparse import ArgumentParser, Namespace
 
 from .. import utils
 
+aliases = ['remove']
+
 def _uninstall(args: Namespace, pkgname: str) -> str | None:
     'Uninstall given package'
     pkgname, vdir = utils.get_package_from_arg(pkgname, args)
