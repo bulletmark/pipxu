@@ -17,9 +17,10 @@ is_windows = platform.system() == 'Windows'
 
 HOME = Path.home()
 
-def subenvars(path: str) -> Path:
+def subenvars(path: str, *, resolve: bool = False) -> Path:
     'Substitute environment variables in a path string'
-    return Path(os.path.expandvars(path)).expanduser()
+    spath = Path(os.path.expandvars(path)).expanduser()
+    return spath.resolve() if resolve else spath
 
 def unexpanduser(path: str | Path) -> str:
     'Return path name, with $HOME replaced by ~ (opposite of Path.expanduser())'

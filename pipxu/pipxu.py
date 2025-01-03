@@ -130,9 +130,9 @@ def main() -> str | None:
     if not man_dir:
         man_dir = '/usr/local/share/man' if is_root else '~/.local/share/man'
 
-    home_dir = utils.subenvars(home_dir)
-    bin_dir = utils.subenvars(bin_dir)
-    man_dir = utils.subenvars(man_dir)
+    home_dir = utils.subenvars(home_dir, resolve=True)
+    bin_dir = utils.subenvars(bin_dir, resolve=True)
+    man_dir = utils.subenvars(man_dir, resolve=True)
 
     if not args.func:
         mainparser.print_help()
