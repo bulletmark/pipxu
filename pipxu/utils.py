@@ -11,8 +11,6 @@ from argparse import Namespace
 from pathlib import Path
 from typing import Iterable, Sequence
 
-from packaging.requirements import Requirement
-
 from .run import run
 
 is_windows = platform.system() == 'Windows'
@@ -204,6 +202,8 @@ def rm_vdir(vdir: Path, args: Namespace) -> None:
 def _pkg_merge(inset: list[str], changeset: list[str], add: bool) \
         -> Iterable[str]:
     'Merge a new list of package names/requirements'
+    from packaging.requirements import Requirement
+
     inset_names = {Requirement(p).name: p for p in inset}
     changeset_names = {Requirement(p).name: p for p in changeset}
 

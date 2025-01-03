@@ -32,8 +32,7 @@ Type `pipxu` or `pipxu -h` to view the usage summary:
 ```
 usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME] [--bin-dir BIN_DIR]
                    [--man-dir MAN_DIR] [--default-python DEFAULT_PYTHON] [-V]
-                   {debug,inject,install,list,reinstall,runpip,uninject,uninstall,remove,upgrade,update,venv,version}
-                   ...
+                   {debug,inject,install,list,reinstall,runpip,uninject,uninstall,remove,upgrade,update,venv,version} ...
 
 Install Python applications into isolated virtual environments and create
 links to the executables in a bin directory for your PATH. Like pipx but uses
@@ -90,9 +89,9 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  -e EXECUTABLE, --executable EXECUTABLE
+  -e, --executable EXECUTABLE
                         executable to run, default is same as "package" name
-  -d DEBUGGER, --debugger DEBUGGER
+  -d, --debugger DEBUGGER
                         explicit debugger package to use
 ```
 
@@ -127,14 +126,13 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  -p PYTHON, --python PYTHON
-                        specify explicit python executable path
+  -p, --python PYTHON   specify explicit python executable path
   -f, --force           recreate any already installed venv
   -e, --editable        install application[s] in editable mode
   -d, --include-deps    include executables from dependencies
   --system-site-packages
                         allow venv access to system packages
-  -i INDEX_URL, --index-url INDEX_URL
+  -i, --index-url INDEX_URL
                         base URL of Python Package Index
   -v, --verbose         give more output
 ```
@@ -159,8 +157,8 @@ options:
 
 ```
 usage: pipxu reinstall [-h] [-p PYTHON | --reset-python]
-                             [--system-site-packages | --no-system-site-packages]
-                             [-v] [--all] [--skip]
+                             [--system-site-packages |
+                             --no-system-site-packages] [-v] [--all] [--skip]
                              [package ...]
 
 Reinstall one, or more, or all applications.
@@ -171,8 +169,7 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  -p PYTHON, --python PYTHON
-                        specify explicit python executable path
+  -p, --python PYTHON   specify explicit python executable path
   --reset-python        reset any explicit python path to default python
   --system-site-packages
                         allow venv access to system packages, overrides the
