@@ -18,7 +18,7 @@ def _upgrade(args: Namespace, pkgname: str) -> str | None:
     print(f'Upgrading {pkgname} ..')
     data = utils.get_json(vdir, args) or {}
     url = data.get('url')
-    pip_args = 'install --compile-bytecode --reinstall -U'.split() + \
+    pip_args = 'install --compile-bytecode -U'.split() + \
             utils.make_args((args.verbose, '-v'), (url, '-i', url))
     if editpath := data.get('editpath'):
         pip_args.extend(['-e', str(Path(editpath).expanduser())])
