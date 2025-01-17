@@ -59,7 +59,7 @@ def path_check(bin_name: str, bin_dir: str) -> str:
 def main() -> str | None:
     'Main code'
     mainparser = ArgumentParser(description=__doc__,
-        epilog='Some commands offer aliases as shown in brackets above. '
+        epilog='Some commands offer aliases as shown in parentheses above. '
             f'Note you can set default starting global options in {CNFFILE}.')
     mainparser.add_argument('--uv', metavar='uv_path',
                             help=f'path to uv executable, default="{DEFUV}"')

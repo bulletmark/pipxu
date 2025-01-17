@@ -65,7 +65,7 @@ Commands:
     venv                List application virtual environment paths.
     version             List installed application versions.
 
-Some commands offer aliases as shown in brackets above. Note you can set
+Some commands offer aliases as shown in parentheses above. Note you can set
 default starting global options in $HOME/.config/pipxu-flags.conf.
 ```
 
