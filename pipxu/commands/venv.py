@@ -1,23 +1,33 @@
 # Author: Mark Blakeney, Feb 2024.
-'List application virtual environment paths.'
+"List application virtual environment paths."
+
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
 
 from .. import utils
 
+
 def init(parser: ArgumentParser) -> None:
-    'Called to add command arguments to parser at init'
-    parser.add_argument('-p', '--path-full', action='store_true',
-                        help='don\'t abbreviate the path')
-    parser.add_argument('-s', '--sort-venv', action='store_true',
-                        help='sort by venv path rather than package name')
-    parser.add_argument('package', nargs='*',
-                        help='list the path for the given application[s] '
-                        'rather than all applications.')
+    "Called to add command arguments to parser at init"
+    parser.add_argument(
+        '-p', '--path-full', action='store_true', help="don't abbreviate the path"
+    )
+    parser.add_argument(
+        '-s',
+        '--sort-venv',
+        action='store_true',
+        help='sort by venv path rather than package name',
+    )
+    parser.add_argument(
+        'package',
+        nargs='*',
+        help='list the path for the given application[s] rather than all applications.',
+    )
+
 
 def main(args: Namespace) -> str | None:
-    'Called to action this command'
+    "Called to action this command"
     if args.package:
         pkgs = dict(utils.get_package_from_arg(p, args) for p in args.package)
     else:

@@ -1,5 +1,6 @@
 # Author: Mark Blakeney, Feb 2024.
-'Common module containing shared functions'
+"Common module containing shared functions"
+
 from __future__ import annotations
 
 import shlex
@@ -7,9 +8,15 @@ import subprocess
 import sys
 from typing import Sequence
 
-def run(cmd: Sequence[str], *, capture: bool = False,
-        quiet: bool = False, ignore_error=False) -> str | None:
-    'Run given command'
+
+def run(
+    cmd: Sequence[str],
+    *,
+    capture: bool = False,
+    quiet: bool = False,
+    ignore_error=False,
+) -> str | None:
+    "Run given command"
     # Lazy evaluation of cmdstr
     cmdstr = None
 

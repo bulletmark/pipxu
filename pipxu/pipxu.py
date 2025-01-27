@@ -1,10 +1,11 @@
 # Author: Mark Blakeney, Feb 2024.
 # PYTHON_ARGCOMPLETE_OK
-'''
+"""
 Install Python applications into isolated virtual environments and
 create links to the executables in a bin directory for your PATH. Like
 pipx but uses uv instead of venv + pip.
-'''
+"""
+
 from __future__ import annotations
 
 import importlib
@@ -31,53 +32,68 @@ PROG = MOD.stem
 PROGU = PROG.upper()
 CNFFILE = platformdirs.user_config_path(f'{PROG}-flags.conf')
 
+
 def calc_version(verstr: str) -> tuple[int, ...]:
-    'Calculate a version tuple from a version string'
+    "Calculate a version tuple from a version string"
     return tuple(int(x) for x in verstr.split('.'))
 
+
 def is_admin() -> bool:
-    'Check if we are running as root'
+    "Check if we are running as root"
     if utils.is_windows:
         import ctypes
+
         return ctypes.windll.shell32.IsUserAnAdmin() != 0  # type: ignore
 
     return os.geteuid() == 0
 
+
 def path_check(bin_name: str, bin_dir: str) -> str:
-    'Check and report that users PATH is set up correctly'
+    "Check and report that users PATH is set up correctly"
     if not (path := os.getenv('PATH')):
         return 'WARNING: Your PATH is not set.'
 
-    in_path = bin_dir.lower() in path.split(';') if utils.is_windows \
-            else bin_dir in path.split(':')
+    in_path = (
+        bin_dir.lower() in path.split(';')
+        if utils.is_windows
+        else bin_dir in path.split(':')
+    )
 
     if not in_path:
         return f'WARNING: Your PATH does not contain {bin_name} ({bin_dir}).'
 
     return f'Your PATH contains {bin_name} ({bin_dir}).'
 
+
 def main() -> str | None:
-    'Main code'
-    mainparser = ArgumentParser(description=__doc__,
+    "Main code"
+    mainparser = ArgumentParser(
+        description=__doc__,
         epilog='Some commands offer aliases as shown in parentheses above. '
-            f'Note you can set default starting global options in {CNFFILE}.')
-    mainparser.add_argument('--uv', metavar='uv_path',
-                            help=f'path to uv executable, default="{DEFUV}"')
-    mainparser.add_argument('-m', '--no-man-pages', action='store_true',
-                            help='do not install package man pages')
-    mainparser.add_argument('--home',
-                            help=f'specify {PROGU}_HOME')
-    mainparser.add_argument('--bin-dir',
-                            help=f'specify {PROGU}_BIN_DIR')
-    mainparser.add_argument('--man-dir',
-                            help=f'specify {PROGU}_MAN_DIR')
-    mainparser.add_argument('--default-python',
-                            help='path to default python executable, '
-                            f'default="{DEFPY}"')
-    mainparser.add_argument('-V', '--version', action='store_true',
-                            help=f'just print {PROG} version and exit')
-    subparser = mainparser.add_subparsers(title='Commands',
-            dest='func')
+        f'Note you can set default starting global options in {CNFFILE}.',
+    )
+    mainparser.add_argument(
+        '--uv', metavar='uv_path', help=f'path to uv executable, default="{DEFUV}"'
+    )
+    mainparser.add_argument(
+        '-m',
+        '--no-man-pages',
+        action='store_true',
+        help='do not install package man pages',
+    )
+    mainparser.add_argument('--home', help=f'specify {PROGU}_HOME')
+    mainparser.add_argument('--bin-dir', help=f'specify {PROGU}_BIN_DIR')
+    mainparser.add_argument('--man-dir', help=f'specify {PROGU}_MAN_DIR')
+    mainparser.add_argument(
+        '--default-python', help=f'path to default python executable, default="{DEFPY}"'
+    )
+    mainparser.add_argument(
+        '-V',
+        '--version',
+        action='store_true',
+        help=f'just print {PROG} version and exit',
+    )
+    subparser = mainparser.add_subparsers(title='Commands', dest='func')
 
     # Iterate over the commands to set up their parsers
     for modfile in sorted((MOD.parent / 'commands').glob('[!_]*.py')):
@@ -85,8 +101,9 @@ def main() -> str | None:
         mod = importlib.import_module(f'{PROG}.commands.{name}')
         aliases = mod.aliases if hasattr(mod, 'aliases') else []
         docstr = mod.__doc__.strip().split('\n\n')[0] if mod.__doc__ else None
-        parser = subparser.add_parser(name, description=mod.__doc__,
-                                      help=docstr, aliases=aliases)
+        parser = subparser.add_parser(
+            name, description=mod.__doc__, help=docstr, aliases=aliases
+        )
 
         if hasattr(mod, 'init'):
             mod.init(parser)
@@ -119,12 +136,16 @@ def main() -> str | None:
     bin_dir = args.bin_dir or os.getenv(f'{PROGU}_BIN_DIR')
     man_dir = args.man_dir or os.getenv(f'{PROGU}_MAN_DIR')
 
-    pyexe = utils.subenvars(args.default_python if args.default_python
-                else (os.getenv(f'{PROGU}_DEFAULT_PYTHON') or DEFPY))
+    pyexe = utils.subenvars(
+        args.default_python
+        if args.default_python
+        else (os.getenv(f'{PROGU}_DEFAULT_PYTHON') or DEFPY)
+    )
 
     if not home_dir:
-        home_dir = f'/opt/{PROG}' if is_root else \
-                f'{platformdirs.user_data_dir()}/{PROG}'
+        home_dir = (
+            f'/opt/{PROG}' if is_root else f'{platformdirs.user_data_dir()}/{PROG}'
+        )
     if not bin_dir:
         bin_dir = '/usr/local/bin' if is_root else '~/.local/bin'
     if not man_dir:
@@ -151,13 +172,16 @@ def main() -> str | None:
         if args.uv:
             return f'Error: specified uv "{uv}" program not found.'
 
-        return f'Error: {uv} program must be installed, and in your PATH '\
-                'or specified with --uv option.'
+        return (
+            f'Error: {uv} program must be installed, and in your PATH '
+            'or specified with --uv option.'
+        )
 
     uv_vers = verstr.split()[1]
     if calc_version(uv_vers) < calc_version(MIN_UV_VERSION):
-        return f'Error: {uv} version is {uv_vers} '\
-                f'but must be at least {MIN_UV_VERSION}.'
+        return (
+            f'Error: {uv} version is {uv_vers} but must be at least {MIN_UV_VERSION}.'
+        )
 
     # Keep some useful info in the namespace passed to the command
     args._uv = uv
@@ -183,6 +207,7 @@ def main() -> str | None:
 
     # Run the command that the user specified
     return args.func(args)
+
 
 if __name__ == '__main__':
     sys.exit(main())

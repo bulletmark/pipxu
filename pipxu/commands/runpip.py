@@ -1,21 +1,23 @@
 # Author: Mark Blakeney, Feb 2024.
-'Run pip with given arguments on virtual environment for the given application.'
+"Run pip with given arguments on virtual environment for the given application."
+
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
 
 from .. import utils
 
+
 def init(parser: ArgumentParser) -> None:
-    'Called to add command arguments to parser at init'
-    parser.add_argument('package',
-                        help='installed application name')
-    parser.add_argument('args', nargs='*',
-                        help='arguments to pass to uv pip, '
-                        'should start with "--".')
+    "Called to add command arguments to parser at init"
+    parser.add_argument('package', help='installed application name')
+    parser.add_argument(
+        'args', nargs='*', help='arguments to pass to uv pip, should start with "--".'
+    )
+
 
 def main(args: Namespace) -> str | None:
-    'Called to action this command'
+    "Called to action this command"
     pkgname, vdir = utils.get_package_from_arg(args.package, args)
     if not vdir:
         return f'Application {pkgname} is not installed.'

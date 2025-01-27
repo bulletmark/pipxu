@@ -3,7 +3,6 @@ PYNAME = $(subst -,_,$(NAME))
 
 check:
 	ruff check $(NAME)
-	flake8 $(NAME)
 	mypy $(NAME)
 	pyright $(NAME)
 	vermin -vv --exclude --exclude tomllib \
@@ -17,8 +16,11 @@ build:
 	rm -rf dist
 	python3 -m build
 
-doc::
+doc:
 	update-readme-usage -A
+
+format:
+	ruff format $(NAME)
 
 clean:
 	@rm -vrf *.egg-info build/ dist/ __pycache__/ \

@@ -45,10 +45,13 @@ allow_untyped_globals = true
 allow_redefinition = true
 ignore_missing_imports = true
 
+[tool.ruff.format]
+quote-style = "single"
+skip-magic-trailing-comma = true
+
 [tool.edit-lint]
 linters = [
   "ruff check",
-  "flake8",
   "mypy",
   "pyright",
 ]

@@ -1,19 +1,25 @@
 # Author: Mark Blakeney, Feb 2024.
-'List installed application versions.'
+"List installed application versions."
+
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
 
 from .. import utils
 
+
 def init(parser: ArgumentParser) -> None:
-    'Called to add command arguments to parser at init'
-    parser.add_argument('package', nargs='?',
-                        help='report specific application and dependent '
-                        'package versions')
+    "Called to add command arguments to parser at init"
+    parser.add_argument(
+        'package',
+        nargs='?',
+        help='report specific application and dependent package versions',
+    )
+
 
 def main(args: Namespace) -> str | None:
-    'Called to action this command'
+    "Called to action this command"
+
     def display(pkgname, version):
         ver, loc = version
         if loc:
@@ -25,8 +31,7 @@ def main(args: Namespace) -> str | None:
         if not vdir:
             return f'Application {pkgname} not found.'
 
-        if not (versions := utils.get_versions(args._packages_dir / pkgname,
-                                               args)):
+        if not (versions := utils.get_versions(args._packages_dir / pkgname, args)):
             return f'Application {pkgname} versions not found.'
 
         # Reorder version dict to put pkgname first
@@ -44,6 +49,6 @@ def main(args: Namespace) -> str | None:
     for pdir, data in utils.get_all_pkg_venvs(args):
         package = pdir.name
         if versions := utils.get_versions(pdir, args):
-            display(package, versions.get(package, ("unknown", None)))
+            display(package, versions.get(package, ('unknown', None)))
 
     return None
