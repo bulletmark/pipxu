@@ -2,13 +2,13 @@
 [![PyPi](https://img.shields.io/pypi/v/pipxu)](https://pypi.org/project/pipxu/)
 [![AUR](https://img.shields.io/aur/version/pipxu)](https://aur.archlinux.org/packages/pipxu/)
 
-[`pipxu`][pipxu] installs Python applications, i.e. Python packages
-which have one or more executable programs, into independent isolated
-virtual environments on your system. Each package and it's dependencies
-are thus insulated from all other applications, and from the system
-Python. [`pipxu`][pipxu] creates links to application executables in a
-common directory, which you have in your [PATH][path]. Packages are
-typically sourced from [PyPI][pypi], the Python Package Index.
+[`pipxu`][pipxu] installs Python applications, i.e. Python packages which have
+one or more executable programs, into independent isolated virtual environments
+on your system. Each package and it's dependencies are thus insulated from all
+other applications, and from the system Python. [`pipxu`][pipxu] creates links
+to application executables in a common directory, e.g. `$HOME/.local/bin` is
+default for most Linux users, which you should ensure is in your [PATH][path].
+Packages are typically sourced from [PyPI][pypi], the Python Package Index.
 
 [`pipxu`][pipxu] is a re-implementation of most of the functionality of
 the popular [`pipx`][pipx] tool but is **much faster** because it uses
