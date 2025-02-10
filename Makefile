@@ -1,12 +1,12 @@
 NAME = $(shell basename $(CURDIR))
-PYNAME = $(subst -,_,$(NAME))
+PYFILES = $(wildcard */*.py */*/*.py)
 
 check:
-	ruff check $(NAME)
-	mypy $(NAME)
-	pyright $(NAME)
+	ruff check $(PYFILES)
+	mypy $(PYFILES)
+	pyright $(PYFILES)
 	vermin -vv --exclude --exclude tomllib \
-		--no-tips -i $(NAME)/*.py $(NAME)/*/*.py
+		--no-tips -i $(PYFILES)
 	shellcheck $(NAME)-bootstrap
 
 upload: build
@@ -14,13 +14,13 @@ upload: build
 
 build:
 	rm -rf dist
-	python3 -m build
+	python3 -m build --sdist --wheel
 
 doc:
 	update-readme-usage -A
 
 format:
-	ruff format $(NAME)
+	ruff check --select I --fix $(PYFILES) && ruff format $(PYFILES)
 
 clean:
 	@rm -vrf *.egg-info build/ dist/ __pycache__/ \

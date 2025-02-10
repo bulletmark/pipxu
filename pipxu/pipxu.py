@@ -53,11 +53,10 @@ def path_check(bin_name: str, bin_dir: str) -> str:
     if not (path := os.getenv('PATH')):
         return 'WARNING: Your PATH is not set.'
 
-    in_path = (
-        bin_dir.lower() in path.split(';')
-        if utils.is_windows
-        else bin_dir in path.split(':')
-    )
+    if utils.is_windows:
+        in_path = bin_dir.lower() in path.split(';')
+    else:
+        in_path = bin_dir in path.split(':')
 
     if not in_path:
         return f'WARNING: Your PATH does not contain {bin_name} ({bin_dir}).'
