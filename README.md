@@ -326,6 +326,13 @@ $ pipxu install pipxu
 $ pipx uninstall pipxu
 ```
 
+edit shell rc file to add [env var](https://wiki.archlinux.org/title/Environment_variables#Using_shell_initialization_files)
+
+```
+PIPXU_BIN_DIR=~/.local/bin
+export PATH=$PATH:$PIPXU_BIN_DIR
+```
+
 To upgrade:
 
 ```sh

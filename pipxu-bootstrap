@@ -8,3 +8,9 @@ VENV=$(mktemp -d)
 python3 -m venv $VENV
 $VENV/bin/pip install pipxu
 $VENV/bin/pipxu install -f pipxu
+
+echo
+echo "edit shell rc file to add [env var](https://wiki.archlinux.org/title/Environment_variables#Using_shell_initialization_files)"
+echo
+echo "PIPXU_BIN_DIR=~/.local/bin"
+echo "export PATH=\"\$PATH:\$PIPXU_BIN_DIR\""
