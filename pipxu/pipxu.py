@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import importlib
 import os
+import platform
 import re
 import shlex
 import sys
@@ -24,7 +25,7 @@ from .run import run
 
 DEFUV = 'uv'
 MIN_UV_VERSION = '0.1.34'
-DEFPY = 'python' if utils.is_windows else 'python3'
+DEFPY = 'python3'
 
 # Some constants
 MOD = Path(__file__)
@@ -38,27 +39,12 @@ def calc_version(verstr: str) -> tuple[int, ...]:
     return tuple(int(x) for x in verstr.split('.'))
 
 
-def is_admin() -> bool:
-    "Check if we are running as root"
-    if utils.is_windows:
-        import ctypes
-
-        return ctypes.windll.shell32.IsUserAnAdmin() != 0  # type: ignore
-
-    return os.geteuid() == 0
-
-
 def path_check(bin_name: str, bin_dir: str) -> str:
     "Check and report that users PATH is set up correctly"
     if not (path := os.getenv('PATH')):
         return 'WARNING: Your PATH is not set.'
 
-    if utils.is_windows:
-        in_path = bin_dir.lower() in path.split(';')
-    else:
-        in_path = bin_dir in path.split(':')
-
-    if not in_path:
+    if bin_dir not in path.split(':'):
         return f'WARNING: Your PATH does not contain {bin_name} ({bin_dir}).'
 
     return f'Your PATH contains {bin_name} ({bin_dir}).'
@@ -130,7 +116,10 @@ def main() -> str | None:
         print(f'{PROG}=={utils.version()}')
         return None
 
-    is_root = is_admin()
+    if platform.system() == 'Windows':
+        return 'Error: Sorry, Windows platform is not supported.'
+
+    is_root = os.geteuid() == 0
     home_dir = args.home or os.getenv(f'{PROGU}_HOME')
     bin_dir = args.bin_dir or os.getenv(f'{PROGU}_BIN_DIR')
     man_dir = args.man_dir or os.getenv(f'{PROGU}_MAN_DIR')

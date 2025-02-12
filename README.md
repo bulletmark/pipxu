@@ -20,10 +20,9 @@ migration, the provided commands have the same names as [`pipx`][pipx].
 Most commands are implemented, at least for common use cases, although
 some command functionality, options, and output are slightly different.
 
-This utility has been developed and tested on Linux but will likely also
-work on macOS. It has been briefly tested and seems to run ok on
-Windows. The latest documentation and code is available at
-https://github.com/bulletmark/pipxu.
+This utility has been developed and tested on Linux but will likely also work
+on macOS. It does not work and is not supported on Windows. The latest
+documentation and code is available at https://github.com/bulletmark/pipxu.
 
 ## Usage
 
@@ -302,11 +301,6 @@ E.g. For Linux and macOS:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-E.g. For Windows:
-```sh
-powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
-
 Note [`pipxu` is on PyPI](https://pypi.org/project/pipxu/). With `uv`
 installed and on your PATH, run the tiny [bootstrap shell
 script](https://github.com/bulletmark/pipxu/blob/main/pipxu-bootstrap)
@@ -317,8 +311,7 @@ there to install itself normally:
 $ curl -LsSf https://raw.githubusercontent.com/bulletmark/pipxu/main/pipxu-bootstrap | sh
 ```
 
-Or install `pipxu` using `pipx` if you prefer (or you are using Windows
-where `pipxu-bootstrap` may not work):
+Or install `pipxu` using `pipx` if you prefer:
 
 ```sh
 $ pipx install pipxu
@@ -353,9 +346,6 @@ upgrade where `pipxu` may have stopped working:
 $ pipxu-bootstrap
 $ pipxu reinstall --all --skip pipxu
 ```
-
-If you are on Windows, reinstall `pipxu` using `pipx` as described
-in the previous section then `pipxu reinstall --all --skip pipxu`.
 
 ## Comparison to pipx
 

@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import json
 import os
-import platform
 import shutil
 import sys
 from argparse import Namespace
@@ -13,8 +12,6 @@ from pathlib import Path
 from typing import Iterable, Sequence
 
 from .run import run
-
-is_windows = platform.system() == 'Windows'
 
 HOME = Path.home()
 
@@ -99,15 +96,15 @@ def make_args(*args: Sequence) -> list[str]:
 
 def vdir_bin(vdir: Path) -> Path:
     "Return the bin directory for the virtual environment"
-    return vdir / ('Scripts' if is_windows else 'bin')
+    return vdir / 'bin'
 
 
-def _load_record(rfile: Path, embedpath: str) -> Iterable[str]:
+def _load_record(rfile: Path) -> Iterable[str]:
     "Yield the executable names from a RECORD file"
     with rfile.open() as fp:
         for line in fp:
             line = line.strip()
-            if line.startswith(embedpath):
+            if line.startswith('../../../bin/'):
                 yield Path(line.split(',', 1)[0]).name
 
 
@@ -116,12 +113,11 @@ def _link_app_files(
 ) -> Iterable[str]:
     "Link app files from entry_points to tgtdir"
     vpath = vdir_bin(vdir)
-    embedpath = '../../../bin/' if vpath.name == 'bin' else f'..\\..\\{vpath.name}\\'
 
     pkgname = pkgname.replace('-', '_')
     for efile in vdir.glob('**/*.dist-info/RECORD'):
         if include_deps or efile.parent.name.startswith(f'{pkgname}-'):
-            for app in _load_record(efile, embedpath):
+            for app in _load_record(efile):
                 srcfile = vpath / app
                 if (
                     srcfile.is_file()

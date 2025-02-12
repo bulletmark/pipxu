@@ -1,7 +1,7 @@
 NAME = $(shell basename $(CURDIR))
 PYFILES = $(wildcard */*.py */*/*.py)
 
-check:
+check::
 	ruff check $(PYFILES)
 	mypy $(PYFILES)
 	pyright $(PYFILES)
@@ -9,19 +9,19 @@ check:
 		--no-tips -i $(PYFILES)
 	shellcheck $(NAME)-bootstrap
 
-upload: build
+upload:: build
 	twine upload dist/*
 
-build:
+build::
 	rm -rf dist
 	python3 -m build --sdist --wheel
 
-doc:
+doc::
 	update-readme-usage -A
 
-format:
+format::
 	ruff check --select I --fix $(PYFILES) && ruff format $(PYFILES)
 
-clean:
+clean::
 	@rm -vrf *.egg-info build/ dist/ __pycache__/ \
 	    */__pycache__ */*/__pycache__
