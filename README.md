@@ -319,6 +319,15 @@ $ pipxu install pipxu
 $ pipx uninstall pipxu
 ```
 
+Or install `pipxu` using `uv` if you prefer:
+
+```sh
+$ uv tool install pipxu
+$ pipxu install pipxu
+$ uv tool uninstall pipxu
+$ ln -s $HOME/.local/share/pipxu/packages/pipxu/bin/pipxu $HOME/.local/bin
+```
+
 To upgrade:
 
 ```sh
