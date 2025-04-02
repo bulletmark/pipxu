@@ -325,7 +325,7 @@ Or install `pipxu` using `uv` if you prefer:
 $ uv tool install pipxu
 $ pipxu install pipxu
 $ uv tool uninstall pipxu
-$ ln -s $HOME/.local/share/pipxu/packages/pipxu/bin/pipxu $HOME/.local/bin
+$ ln -s $HOME/.local/share/pipxu/venvs/1/bin/pipxu $HOME/.local/bin
 ```
 
 To upgrade:
