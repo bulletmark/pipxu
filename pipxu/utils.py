@@ -132,7 +132,12 @@ def _link_app_files(
                         print(f'Linking "{srcfile}" -> "{tgtfile}"')
 
                     tgtfile.parent.mkdir(parents=True, exist_ok=True)
-                    tgtfile.symlink_to(srcfile)
+                    try:
+                        tgtfile.symlink_to(srcfile)
+                    except Exception as e:
+                        print(f'Error: {e}', file=sys.stderr)
+                        return
+
                     yield srcfile.name
 
 
@@ -147,7 +152,10 @@ def _link_all_files(srcdir: Path, tgtdir: Path, pat: str, verbose: bool) -> None
             print(f'Linking "{srcfile}" -> "{tgtfile}"')
 
         tgtfile.parent.mkdir(parents=True, exist_ok=True)
-        tgtfile.symlink_to(srcfile)
+        try:
+            tgtfile.symlink_to(srcfile)
+        except Exception as e:
+            print(f'Error: {e}', file=sys.stderr)
 
 
 def _unlink_all_files(vdir: Path, args: Namespace) -> None:
