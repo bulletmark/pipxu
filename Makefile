@@ -10,11 +10,11 @@ check::
 	shellcheck $(NAME)-bootstrap
 
 upload:: build
-	twine upload dist/*
+	uv-publish
 
 build::
 	rm -rf dist
-	python3 -m build --sdist --wheel
+	uv build
 
 doc::
 	update-readme-usage -A

@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "pipxu"
 description = "Install and Run Python Applications in Isolated Environments using UV"
 readme = "README.md"
+license = "GPL-3.0-or-later"
 requires-python = ">=3.8"
 keywords = ["pipx", "pip", "uv", "venv", "virtualenv"]
 classifiers = [
@@ -28,9 +29,6 @@ Homepage = "https://github.com/bulletmark/pipxu"
 
 [project.scripts]
 pipxu = "pipxu.pipxu:main"
-
-[project.license]
-text = "GPLv3"
 
 [tool.setuptools]
 script-files = ["pipxu-bootstrap"]
