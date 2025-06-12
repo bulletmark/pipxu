@@ -114,9 +114,9 @@ def _link_app_files(
     "Link app files from entry_points to tgtdir"
     vpath = vdir_bin(vdir)
 
-    pkgname = pkgname.replace('-', '_')
+    key = pkgname.replace('-', '_').lower() + '-'
     for efile in vdir.glob('**/*.dist-info/RECORD'):
-        if include_deps or efile.parent.name.startswith(f'{pkgname}-'):
+        if include_deps or efile.parent.name.lower().startswith(key):
             for app in _load_record(efile):
                 srcfile = vpath / app
                 if (
