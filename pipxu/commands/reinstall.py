@@ -118,9 +118,18 @@ def init(parser: ArgumentParser) -> None:
 
 def main(args: Namespace) -> str | None:
     "Called to action this command"
+    import os
+
     venv_args = [args._uv, 'venv'] + utils.make_args(
         (args.verbose, '-v'), (not args.verbose, '-q')
     )
+
+    # Since uv version 0.8+ we need `--clear` option on `venv` command, or set
+    # this env variable. We use the env var to ensure compatibility with older
+    # uv versions.
+
+    os.environ['UV_VENV_CLEAR'] = '1'
+
     for pkgname in utils.get_package_names(args):
         if error := _reinstall(args, pkgname, venv_args.copy()):
             return error
