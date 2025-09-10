@@ -9,7 +9,7 @@ import shutil
 import sys
 from argparse import Namespace
 from pathlib import Path
-from typing import Iterable, Sequence
+from collections.abc import Iterable, Sequence
 
 from .run import run
 
