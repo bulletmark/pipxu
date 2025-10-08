@@ -5,8 +5,7 @@ check::
 	ruff check $(PYFILES)
 	mypy $(PYFILES)
 	pyright $(PYFILES)
-	vermin -vv --exclude --exclude tomllib \
-		--no-tips -i $(PYFILES)
+	vermin -vv --exclude --no-tips -i $(PYFILES)
 	shellcheck $(NAME)-bootstrap
 
 upload:: build
