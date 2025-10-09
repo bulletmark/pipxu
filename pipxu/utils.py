@@ -226,8 +226,8 @@ def _pkg_merge(inset: list[str], changeset: list[str], add: bool) -> Iterable[st
     "Merge a new list of package names/requirements"
     from packaging.requirements import Requirement
 
-    inset_names = {Requirement(p).name: p for p in inset}
-    changeset_names = {Requirement(p).name: p for p in changeset}
+    inset_names = {Requirement(Path(p).name).name: p for p in inset}
+    changeset_names = {Requirement(Path(p).name).name: p for p in changeset}
 
     if add:
         inset_names.update(changeset_names)
