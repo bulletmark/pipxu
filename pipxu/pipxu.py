@@ -11,14 +11,12 @@ from __future__ import annotations
 import importlib
 import os
 import platform
-import re
-import shlex
 import sys
-from argparse import ArgumentParser
 from pathlib import Path
 
 import argcomplete
 import platformdirs
+from argparse_from_file import ArgumentParser
 
 from . import utils
 from .run import run
@@ -31,7 +29,6 @@ DEFPY = 'python3'
 MOD = Path(__file__)
 PROG = MOD.stem
 PROGU = PROG.upper()
-CNFFILE = platformdirs.user_config_path(f'{PROG}-flags.conf')
 
 
 def calc_version(verstr: str) -> tuple[int, ...]:
@@ -55,7 +52,7 @@ def main() -> str | None:
     mainparser = ArgumentParser(
         description=__doc__,
         epilog='Some commands offer aliases as shown in parentheses above. '
-        f'Note you can set default starting global options in {CNFFILE}.',
+        'Note you can set default starting global options in #FROM_FILE_PATH#.',
     )
     mainparser.add_argument(
         '--uv', metavar='uv_path', help=f'path to uv executable, default="{DEFUV}"'
@@ -101,16 +98,7 @@ def main() -> str | None:
     # Command arguments are now defined, so we can set up argcomplete
     argcomplete.autocomplete(mainparser)
 
-    # Merge in default args from user config file. Then parse the
-    # command line.
-    if CNFFILE.exists():
-        with CNFFILE.open() as fp:
-            lines = [re.sub(r'#.*$', '', line).strip() for line in fp]
-        cnflines = ' '.join(lines).strip()
-    else:
-        cnflines = ''
-
-    args = mainparser.parse_args(shlex.split(cnflines) + sys.argv[1:])
+    args = mainparser.parse_args()
 
     if args.version:
         print(f'{PROG}=={utils.version()}')

@@ -8,8 +8,8 @@ import os
 import shutil
 import sys
 from argparse import Namespace
-from pathlib import Path
 from collections.abc import Iterable, Sequence
+from pathlib import Path
 
 from .run import run
 

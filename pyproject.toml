@@ -17,6 +17,7 @@ dependencies = [
   "argcomplete",
   "filelock",
   "platformdirs",
+  "argparse-from-file",
   "packaging",
 ]
 
