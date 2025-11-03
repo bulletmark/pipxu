@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import platform
 from argparse import ArgumentParser, Namespace
+from pathlib import Path
 
 from .. import utils
 
@@ -12,6 +14,12 @@ def init(parser: ArgumentParser) -> None:
     "Called to add command arguments to parser at init"
     parser.add_argument(
         '-p', '--path-full', action='store_true', help="don't abbreviate the path"
+    )
+    parser.add_argument(
+        '-P',
+        '--path-python',
+        action='store_true',
+        help='show resolved path to python executable',
     )
     parser.add_argument(
         '-s',
@@ -28,6 +36,9 @@ def init(parser: ArgumentParser) -> None:
 
 def main(args: Namespace) -> str | None:
     "Called to action this command"
+    if args.path_python:
+        args.path_full = True
+
     if args.package:
         pkgs = dict(utils.get_package_from_arg(p, args) for p in args.package)
     else:
@@ -44,7 +55,16 @@ def main(args: Namespace) -> str | None:
         if not vdir:
             return f'Application {pkgname} is not installed.'
 
-        path = str(vdir) if args.path_full else utils.unexpanduser(vdir)
+        path = vdir if args.path_full else Path(utils.unexpanduser(vdir))
+
+        if args.path_python:
+            if platform.system() == 'Windows':
+                path = path / 'Scripts' / 'python.exe'
+            else:
+                path = path / 'bin' / 'python'
+
+            if path.is_file():
+                path = path.resolve()
 
         if len(pkgs) > 1:
             print(f'{pkgname} -> {path}')

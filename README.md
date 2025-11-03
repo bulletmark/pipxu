@@ -65,7 +65,7 @@ Commands:
     version             List installed application versions.
 
 Some commands offer aliases as shown in parentheses above. Note you can set
-default starting global options in $HOME/.config/pipxu-flags.conf.
+default starting global options in ~/.config/pipxu-flags.conf.
 ```
 
 Type `pipxu <command> -h` to see specific help/usage for any
@@ -256,18 +256,19 @@ aliases: update
 ### Command `venv`
 
 ```
-usage: pipxu venv [-h] [-p] [-s] [package ...]
+usage: pipxu venv [-h] [-p] [-P] [-s] [package ...]
 
 List application virtual environment paths.
 
 positional arguments:
-  package          list the path for the given application[s] rather than all
-                   applications.
+  package            list the path for the given application[s] rather than
+                     all applications.
 
 options:
-  -h, --help       show this help message and exit
-  -p, --path-full  don't abbreviate the path
-  -s, --sort-venv  sort by venv path rather than package name
+  -h, --help         show this help message and exit
+  -p, --path-full    don't abbreviate the path
+  -P, --path-python  show resolved path to python executable
+  -s, --sort-venv    sort by venv path rather than package name
 ```
 
 ### Command `version`
