@@ -227,6 +227,9 @@ def _pkg_merge(inset: list[str], changeset: list[str], add: bool) -> Iterable[st
     from packaging.requirements import Requirement
 
     inset_names = {Requirement(Path(p).name).name: p for p in inset}
+
+    wd = str(Path('.').resolve())
+    changeset = [p if p != '.' else wd for p in changeset]
     changeset_names = {Requirement(Path(p).name).name: p for p in changeset}
 
     if add:
