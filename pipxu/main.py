@@ -26,8 +26,8 @@ MIN_UV_VERSION = '0.1.34'
 DEFPY = 'python3'
 
 # Some constants
-MOD = Path(__file__)
-PROG = MOD.stem
+BASEDIR = Path(__file__).parent
+PROG = BASEDIR.stem
 PROGU = PROG.upper()
 
 
@@ -78,7 +78,7 @@ def main() -> str | None:
     subparser = mainparser.add_subparsers(title='Commands', dest='func')
 
     # Iterate over the commands to set up their parsers
-    for modfile in sorted((MOD.parent / 'commands').glob('[!_]*.py')):
+    for modfile in sorted((BASEDIR / 'commands').glob('[!_]*.py')):
         name = modfile.stem
         mod = importlib.import_module(f'{PROG}.commands.{name}')
         aliases = mod.aliases if hasattr(mod, 'aliases') else []

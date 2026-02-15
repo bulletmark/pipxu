@@ -29,7 +29,7 @@ email = "mark.blakeney@bullet-systems.net"
 Homepage = "https://github.com/bulletmark/pipxu"
 
 [project.scripts]
-pipxu = "pipxu.pipxu:main"
+pipxu = "pipxu.main:main"
 
 [tool.setuptools]
 script-files = ["pipxu-bootstrap"]
