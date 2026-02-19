@@ -29,9 +29,10 @@ documentation and code is available at https://github.com/bulletmark/pipxu.
 Type `pipxu` or `pipxu -h` to view the usage summary:
 
 ```
-usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME] [--bin-dir BIN_DIR]
-                   [--man-dir MAN_DIR] [--default-python DEFAULT_PYTHON] [-V]
-                   {debug,inject,install,list,reinstall,runpip,uninject,uninstall,remove,upgrade,update,venv,version} ...
+usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME]
+                        [--bin-dir BIN_DIR] [--man-dir MAN_DIR]
+                        [--default-python DEFAULT_PYTHON] [-V]
+                        {debug,inject,install,list,reinstall,runpip,uninject,uninstall,remove,upgrade,update,venv,version} ...
 
 Install Python applications into isolated virtual environments and create
 links to the executables in a bin directory for your PATH. Like pipx but uses
@@ -74,7 +75,8 @@ individual command:
 ### Command `debug`
 
 ```
-usage: pipxu debug [-h] [-e EXECUTABLE] [-d DEBUGGER] package [args ...]
+usage: pipxu debug [-h] [-e EXECUTABLE] [-d DEBUGGER]
+                              package [args ...]
 
 Run an installed application using a debugger. Tries to work out your
 preferred debugger from the standard PYTHONBREAKPOINT environment variable. If
@@ -115,8 +117,8 @@ options:
 
 ```
 usage: pipxu install [-h] [-p PYTHON] [-f] [-e] [-d]
-                           [--system-site-packages] [-i INDEX_URL] [-v]
-                           package [package ...]
+                                [--system-site-packages] [-i INDEX_URL] [-v]
+                                package [package ...]
 
 Install one or more Python applications using isolated virtual environments.
 
@@ -156,9 +158,10 @@ options:
 
 ```
 usage: pipxu reinstall [-h] [-p PYTHON | --reset-python]
-                             [--system-site-packages |
-                             --no-system-site-packages] [-v] [--all] [--skip]
-                             [package ...]
+                                  [--system-site-packages |
+                                  --no-system-site-packages] [-v] [--all]
+                                  [--skip]
+                                  [package ...]
 
 Reinstall one, or more, or all applications.
 
@@ -445,15 +448,6 @@ after on a line) are ignored. Type `pipxu` to see all supported options.
 The global options: `--uv`, `--no-man-pages`, `--home`, `--bin-dir`,
 `--man-dir`, `--default-python`, are the only sensible candidates to
 consider setting as defaults.
-
-## Command Line Tab Completion
-
-Command line shell [tab
-completion](https://en.wikipedia.org/wiki/Command-line_completion) is
-automatically enabled on `pipxu` commands and options using
-[`argcomplete`](https://github.com/kislyuk/argcomplete). You may need to
-first (once-only) [activate argcomplete global
-completion](https://github.com/kislyuk/argcomplete#global-completion).
 
 ## License
 

@@ -1,5 +1,4 @@
 # Author: Mark Blakeney, Feb 2024.
-# PYTHON_ARGCOMPLETE_OK
 """
 Install Python applications into isolated virtual environments and
 create links to the executables in a bin directory for your PATH. Like
@@ -14,7 +13,6 @@ import platform
 import sys
 from pathlib import Path
 
-import argcomplete
 import platformdirs
 from argparse_from_file import ArgumentParser
 
@@ -94,9 +92,6 @@ def main() -> str | None:
             mainparser.error(f'"{name}" command must define a main()')
 
         parser.set_defaults(func=mod.main, parser=parser, name=name)
-
-    # Command arguments are now defined, so we can set up argcomplete
-    argcomplete.autocomplete(mainparser)
 
     args = mainparser.parse_args()
 
