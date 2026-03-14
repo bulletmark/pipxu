@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .. import utils
 
-aliases = ['update']
+aliases = ['update', 'up']
 
 
 def _upgrade(args: Namespace, pkgname: str) -> str | None:

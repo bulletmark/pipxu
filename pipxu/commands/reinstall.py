@@ -12,6 +12,8 @@ from pathlib import Path
 from .. import utils
 from ..run import run
 
+aliases = ['re']
+
 
 def _reinstall(args: Namespace, pkgname: str, venv_args: list[str]) -> str | None:
     "Reinstall given application"

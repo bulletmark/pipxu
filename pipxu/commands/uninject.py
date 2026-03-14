@@ -7,6 +7,8 @@ from argparse import ArgumentParser, Namespace
 
 from .. import utils
 
+aliases = ['uj']
+
 
 def init(parser: ArgumentParser) -> None:
     "Called to add command arguments to parser at init"

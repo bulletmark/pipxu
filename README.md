@@ -32,7 +32,7 @@ Type `pipxu` or `pipxu -h` to view the usage summary:
 usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME]
                         [--bin-dir BIN_DIR] [--man-dir MAN_DIR]
                         [--default-python DEFAULT_PYTHON] [-V]
-                        {debug,inject,install,list,reinstall,runpip,uninject,uninstall,remove,upgrade,update,venv,version} ...
+                        {debug,d,inject,ij,install,i,list,l,reinstall,runpip,uninject,uj,uninstall,remove,rm,upgrade,update,up,venv,version} ...
 
 Install Python applications into isolated virtual environments and create
 links to the executables in a bin directory for your PATH. Like pipx but uses
@@ -50,18 +50,20 @@ options:
   -V, --version         just print pipxu version and exit
 
 Commands:
-  {debug,inject,install,list,reinstall,runpip,uninject,uninstall,remove,upgrade,update,venv,version}
-    debug               Run an installed application using a debugger.
-    inject              Install extra packages into an application.
-    install             Install one or more Python applications using isolated
+  {debug,d,inject,ij,install,i,list,l,reinstall,runpip,uninject,uj,uninstall,remove,rm,upgrade,update,up,venv,version}
+    debug (d)           Run an installed application using a debugger.
+    inject (ij)         Install extra packages into an application.
+    install (i)         Install one or more Python applications using isolated
                         virtual environments.
-    list                List applications installed by this tool.
+    list (l)            List applications installed by this tool.
     reinstall           Reinstall one, or more, or all applications.
     runpip              Run pip with given arguments on virtual environment
                         for the given application.
-    uninject            Uninstall extra packages from an application.
-    uninstall (remove)  Uninstall one, or more, or all applications.
-    upgrade (update)    Upgrade one, or more, or all applications.
+    uninject (uj)       Uninstall extra packages from an application.
+    uninstall (remove, rm)
+                        Uninstall one, or more, or all applications.
+    upgrade (update, up)
+                        Upgrade one, or more, or all applications.
     venv                List application virtual environment paths.
     version             List installed application versions.
 
@@ -94,6 +96,8 @@ options:
                         executable to run, default is same as "package" name
   -d, --debugger DEBUGGER
                         explicit debugger package to use
+
+aliases: d
 ```
 
 ### Command `inject`
@@ -111,6 +115,8 @@ positional arguments:
 options:
   -h, --help     show this help message and exit
   -v, --verbose  give more output
+
+aliases: ij
 ```
 
 ### Command `install`
@@ -136,6 +142,8 @@ options:
   -i, --index-url INDEX_URL
                         base URL of Python Package Index
   -v, --verbose         give more output
+
+aliases: i
 ```
 
 ### Command `list`
@@ -152,6 +160,8 @@ options:
   -h, --help  show this help message and exit
   --json      output json instead
   -v, --venv  also show the virtual environment dir/number
+
+aliases: l
 ```
 
 ### Command `reinstall`
@@ -214,6 +224,8 @@ positional arguments:
 options:
   -h, --help     show this help message and exit
   -v, --verbose  give more output
+
+aliases: uj
 ```
 
 ### Command `uninstall`
@@ -233,7 +245,7 @@ options:
   --skip         skip the specified applications when uninstalling all (only
                  can be specified with --all)
 
-aliases: remove
+aliases: remove, rm
 ```
 
 ### Command `upgrade`
@@ -253,7 +265,7 @@ options:
   --skip         skip the specified applications when upgrading all (only can
                  be specified with --all)
 
-aliases: update
+aliases: update, up
 ```
 
 ### Command `venv`

@@ -8,6 +8,8 @@ from argparse import ArgumentParser, Namespace
 
 from .. import utils
 
+aliases = ['l']
+
 
 def _show(value: str) -> str:
     "Show a string with quotes"

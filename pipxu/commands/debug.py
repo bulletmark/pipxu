@@ -16,6 +16,8 @@ from argparse import ArgumentParser, Namespace
 from .. import utils
 from ..run import run
 
+aliases = ['d']
+
 
 def init(parser: ArgumentParser) -> None:
     "Called to add command arguments to parser at init"

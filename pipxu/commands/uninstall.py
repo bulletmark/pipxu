@@ -7,7 +7,7 @@ from argparse import ArgumentParser, Namespace
 
 from .. import utils
 
-aliases = ['remove']
+aliases = ['remove', 'rm']
 
 
 def _uninstall(args: Namespace, pkgname: str) -> str | None:

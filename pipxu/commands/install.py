@@ -13,6 +13,8 @@ from ..run import run
 
 MAX_VDIRS = 1_000_000
 
+aliases = ['i']
+
 
 def _get_next_vdir(vdirbase: Path) -> Path | None:
     "Return the first available venv directory"
