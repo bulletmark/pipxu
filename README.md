@@ -32,7 +32,7 @@ Type `pipxu` or `pipxu -h` to view the usage summary:
 usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME]
                         [--bin-dir BIN_DIR] [--man-dir MAN_DIR]
                         [--default-python DEFAULT_PYTHON] [-V]
-                        {debug,d,inject,ij,install,i,list,l,reinstall,runpip,uninject,uj,uninstall,remove,rm,upgrade,update,up,venv,version} ...
+                        {debug,d,inject,ij,install,i,list,l,reinstall,re,runpip,uninject,uj,uninstall,remove,rm,upgrade,update,up,venv,version} ...
 
 Install Python applications into isolated virtual environments and create
 links to the executables in a bin directory for your PATH. Like pipx but uses
@@ -50,13 +50,13 @@ options:
   -V, --version         just print pipxu version and exit
 
 Commands:
-  {debug,d,inject,ij,install,i,list,l,reinstall,runpip,uninject,uj,uninstall,remove,rm,upgrade,update,up,venv,version}
+  {debug,d,inject,ij,install,i,list,l,reinstall,re,runpip,uninject,uj,uninstall,remove,rm,upgrade,update,up,venv,version}
     debug (d)           Run an installed application using a debugger.
     inject (ij)         Install extra packages into an application.
     install (i)         Install one or more Python applications using isolated
                         virtual environments.
     list (l)            List applications installed by this tool.
-    reinstall           Reinstall one, or more, or all applications.
+    reinstall (re)      Reinstall one, or more, or all applications.
     runpip              Run pip with given arguments on virtual environment
                         for the given application.
     uninject (uj)       Uninstall extra packages from an application.
@@ -193,6 +193,8 @@ options:
   --all                 reinstall ALL applications
   --skip                skip the specified applications when reinstalling all
                         (only can be specified with --all)
+
+aliases: re
 ```
 
 ### Command `runpip`
