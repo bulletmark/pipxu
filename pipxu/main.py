@@ -36,10 +36,8 @@ def calc_version(verstr: str) -> tuple[int, ...]:
 
 def path_check(env_name: str, dir: str) -> str:
     "Check and report that users PATH is set up correctly"
-    if not (path := os.getenv('PATH')):
-        return 'WARNING: Your PATH is not set.'
-
-    if dir not in path.split(':'):
+    path = os.getenv('PATH')
+    if not path or dir not in path.split(':'):
         return f'WARNING: Your PATH does not contain {env_name} ({dir}).'
 
     return f'Your PATH contains {env_name} ({dir}).'
@@ -47,12 +45,9 @@ def path_check(env_name: str, dir: str) -> str:
 
 def man_path_check(env_name: str, dir: str) -> str:
     "Check and report that users MANPATH is set up correctly"
-    if not (path := run(['manpath'], capture=True, ignore_error=True)):
-        if not (path := os.getenv('MANPATH')):
-            return 'WARNING: Your MANPATH is not set.'
-
-    if dir not in path.split(':'):
-        return f'WARNING: Your MANPATH does not contain {env_name} ({dir}).'
+    path = run(['manpath'], capture=True, ignore_error=True) or os.getenv('MANPATH')
+    if not path or dir not in path.split(':'):
+        return f'Your MANPATH does not contain {env_name} ({dir}).'
 
     return f'Your MANPATH contains {env_name} ({dir}).'
 
