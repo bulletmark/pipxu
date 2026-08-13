@@ -29,10 +29,9 @@ documentation and code is available at https://github.com/bulletmark/pipxu.
 Type `pipxu` or `pipxu -h` to view the usage summary:
 
 ```
-usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME]
-                        [--bin-dir BIN_DIR] [--man-dir MAN_DIR]
-                        [--default-python DEFAULT_PYTHON] [-V]
-                        {debug,d,inject,ij,install,i,list,l,reinstall,re,runpip,uninject,uj,uninstall,remove,rm,upgrade,update,up,venv,version} ...
+usage: pipxu [-h] [--uv uv_path] [-m] [--home HOME] [--bin-dir BIN_DIR]
+             [--man-dir MAN_DIR] [--default-python DEFAULT_PYTHON] [-V]
+             {debug,d,inject,ij,install,i,list,l,reinstall,re,runpip,uninject,uj,uninstall,remove,rm,upgrade,update,up,venv,version} ...
 
 Install Python applications into isolated virtual environments and create
 links to the executables in a bin directory for your PATH. Like pipx but uses
@@ -71,14 +70,12 @@ Some commands offer aliases as shown in parentheses above. Note you can set
 default starting global options in ~/.config/pipxu-flags.conf.
 ```
 
-Type `pipxu <command> -h` to see specific help/usage for any
-individual command:
+Type `pipxu <command> -h` to see specific help/usage for any individual command:
 
 ### Command `debug`
 
 ```
-usage: pipxu debug [-h] [-e EXECUTABLE] [-d DEBUGGER]
-                              package [args ...]
+usage: pipxu debug [-h] [-e EXECUTABLE] [-d DEBUGGER] package [args ...]
 
 Run an installed application using a debugger. Tries to work out your
 preferred debugger from the standard PYTHONBREAKPOINT environment variable. If
@@ -122,9 +119,9 @@ aliases: ij
 ### Command `install`
 
 ```
-usage: pipxu install [-h] [-p PYTHON] [-f] [-e] [-d]
-                                [--system-site-packages] [-i INDEX_URL] [-v]
-                                package [package ...]
+usage: pipxu install [-h] [-p PYTHON] [-f] [-e] [-d] [--system-site-packages]
+                     [-i INDEX_URL] [-v]
+                     package [package ...]
 
 Install one or more Python applications using isolated virtual environments.
 
@@ -168,10 +165,9 @@ aliases: l
 
 ```
 usage: pipxu reinstall [-h] [-p PYTHON | --reset-python]
-                                  [--system-site-packages |
-                                  --no-system-site-packages] [-v] [--all]
-                                  [--skip]
-                                  [package ...]
+                       [--system-site-packages | --no-system-site-packages]
+                       [-v] [--all] [--skip]
+                       [package ...]
 
 Reinstall one, or more, or all applications.
 
